@@ -1,14 +1,8 @@
 # OpenRec by Naga Codex
 
-![OpenRec Banner](assets/banner.jpg)
-
 A free, open-source screen recorder and demo builder — built for creators, developers, and AI pipelines.
 
 > **OpenRec** is Naga Codex's build of the open-source [OpenScreen](https://github.com/getopenscreen/openscreen) project, rebranded and maintained for our own tooling and community. MIT licensed.
-
----
-
-![OpenRec Editor](assets/mockup.jpg)
 
 ---
 
