@@ -1,8 +1,14 @@
 # OpenRec by Naga Codex
 
+![OpenRec Banner](assets/banner.jpg)
+
 A free, open-source screen recorder and demo builder — built for creators, developers, and AI pipelines.
 
 > **OpenRec** is Naga Codex's build of the open-source [OpenScreen](https://github.com/getopenscreen/openscreen) project, rebranded and maintained for our own tooling and community. MIT licensed.
+
+---
+
+![OpenRec Editor](assets/mockup.jpg)
 
 ---
 
@@ -25,8 +31,6 @@ Record your screen and turn the result into polished product demos, walkthroughs
 
 ## Build it yourself (macOS Apple Silicon)
 
-This repo includes a build script that compiles everything from source and produces a plain `.app` — no DMG, no installer, no code signing required for local use.
-
 **Prerequisites:** macOS 13+, Xcode, Homebrew, Node 22.22.1, Rust, LLVM
 
 ```bash
@@ -36,30 +40,23 @@ chmod +x build-openrec.sh
 ./build-openrec.sh
 ```
 
-The script checks all prerequisites, builds each native component in the right order, and outputs `dist/mac-arm64/OpenRec.app`. Drag it to `/Applications` and you're done.
+Outputs `dist/mac-arm64/OpenRec.app` — drag it to `/Applications`.
 
-Full step-by-step instructions: see [BUILD_GUIDE.md](BUILD_GUIDE.md)
+Full instructions: [BUILD_GUIDE.md](BUILD_GUIDE.md)
 
 ---
 
 ## Stack
 
-- **Shell:** Electron
-- **Frontend:** React + TypeScript + Vite + TailwindCSS
-- **Rendering:** PixiJS + Rust compositor (wgpu/Metal on macOS)
-- **Screen capture:** ScreenCaptureKit (macOS), WGC (Windows), PipeWire (Linux)
-- **Captions:** whisper.cpp (on-device)
-- **Video:** FFmpeg (vendored LGPL binaries)
+Electron · React · TypeScript · Vite · Rust (wgpu/Metal) · ScreenCaptureKit · whisper.cpp · FFmpeg
 
 ---
 
 ## Links
 
 - **Naga Codex:** [nagacodex.cloud](https://nagacodex.cloud)
-- **Upstream project:** [github.com/getopenscreen/openscreen](https://github.com/getopenscreen/openscreen)
+- **Upstream:** [github.com/getopenscreen/openscreen](https://github.com/getopenscreen/openscreen)
 
 ---
 
-## License
-
-MIT — free for personal and commercial use. Original work by the OpenScreen contributors.
+MIT License — free for personal and commercial use.
