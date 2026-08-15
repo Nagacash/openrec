@@ -1,1 +1,201 @@
-Ly8gQHNlZSAtIGh0dHBzOi8vd3d3LmVsZWN0cm9uLmJ1aWxkL2NvbmZpZ3VyYXRpb24vY29uZmlndXJhdGlvbgp7CiAgIiRzY2hlbWEiOiAiaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2VsZWN0cm9uLXVzZXJsYW5kL2VsZWN0cm9uLWJ1aWxkZXIvbWFzdGVyL3BhY2thZ2VzL2FwcC1idWlsZGVyLWxpYi9zY2hlbWUuanNvbiIsCiAgImFwcElkIjogImNsb3VkLm5hZ2Fjb2RleC5vcGVucmVjIiwKICAiYXNhciI6IHRydWUsCiAgImFzYXJVbnBhY2siOiBbCiAgICAiKiovKi5ub2RlIgogIF0sCiAgInByb2R1Y3ROYW1lIjogIk9wZW5SZWMiLAogICJwdWJsaXNoIjogWwogICAgewogICAgICAicHJvdmlkZXIiOiAiZ2l0aHViIiwKICAgICAgIm93bmVyIjogIk5hZ2FjYXNoIiwKICAgICAgInJlcG8iOiAib3BlbnJlYyIKICAgIH0KICBdLAogICJiZWZvcmVQYWNrIjogInNjcmlwdHMvYmVmb3JlLXBhY2suY2pzIiwKICAibnBtUmVidWlsZCI6IHRydWUsCiAgImJ1aWxkRGVwZW5kZW5jaWVzRnJvbVNvdXJjZSI6IGZhbHNlLAogICJjb21wcmVzc2lvbiI6ICJub3JtYWwiLAogICJkaXJlY3RvcmllcyI6IHsKICAgICJvdXRwdXQiOiAicmVsZWFzZS8ke3ZlcnNpb259IiwKICAgICJidWlsZFJlc291cmNlcyI6ICJidWlsZCIKICB9LAogICJmaWxlcyI6IFsKICAgICJkaXN0IiwKICAgICJkaXN0LWVsZWN0cm9uIiwKICAgICIhKi5wbmciLAogICAgIiFwcmV2aWV3Ki5wbmciLAogICAgIiEqLm1kIiwKICAgICIhUkVBRE1FLm1kIiwKICAgICIhQ09OVFJJQlVUSU5HLm1kIiwKICAgICIhTElDRU5TRSIKICBdLAogICJleHRyYVJlc291cmNlcyI6IFsKICAgIHsKICAgICAgImZyb20iOiAiVEhJUkQtUEFSVFktTk9USUNFUy5tZCIsCiAgICAgICJ0byI6ICJUSElSRC1QQVJUWS1OT1RJQ0VTLm1kIgogICAgfSwKICAgIHsKICAgICAgImZyb20iOiAiTElDRU5TRSIsCiAgICAgICJ0byI6ICJMSUNFTlNFIgogICAgfSwKICAgIHsKICAgICAgImZyb20iOiAicHVibGljL3dhbGxwYXBlcnMiLAogICAgICAidG8iOiAid2FsbHBhcGVycyIKICAgIH0sCiAgICB7CiAgICAgICJmcm9tIjogInB1YmxpYy9jdXJzb3JzIiwKICAgICAgInRvIjogImN1cnNvcnMiCiAgICB9CiAgXSwKICAibWFjIjogewogICAgIm5vdGFyaXplIjogZmFsc2UsCiAgICAiaGFyZGVuZWRSdW50aW1lIjogdHJ1ZSwKICAgICJlbnRpdGxlbWVudHMiOiAibWFjb3MuZW50aXRsZW1lbnRzIiwKICAgICJlbnRpdGxlbWVudHNJbmhlcml0IjogIm1hY29zLmVudGl0bGVtZW50cyIsCiAgICAidGFyZ2V0IjogWwogICAgICB7CiAgICAgICAgInRhcmdldCI6ICJkbWciLAogICAgICAgICJhcmNoIjogWyJ4NjQiLCAiYXJtNjQiXQogICAgICB9CiAgICBdLAogICAgImljb24iOiAiaWNvbnMvaWNvbnMvbWFjL2ljb24uaWNucyIsCiAgICAiYXJ0aWZhY3ROYW1lIjogIiR7cHJvZHVjdE5hbWV9LU1hYy0ke2FyY2h9LSR7dmVyc2lvbn0tSW5zdGFsbGVyLiR7ZXh0fSIsCiAgICAiZXh0cmFSZXNvdXJjZXMiOiBbCiAgICAgIHsKICAgICAgICAiZnJvbSI6ICJlbGVjdHJvbi9uYXRpdmUvYmluIiwKICAgICAgICAidG8iOiAiZWxlY3Ryb24vbmF0aXZlL2JpbiIsCiAgICAgICAgImZpbHRlciI6IFsiZGFyd2luLSovKiJdCiAgICAgIH0KICAgIF0sCiAgICAiZXh0ZW5kSW5mbyI6IHsKICAgICAgIk5TQXVkaW9DYXB0dXJlVXNhZ2VEZXNjcmlwdGlvbiI6ICJPcGVuUmVjIG5lZWRzIGF1ZGlvIGNhcHR1cmUgcGVybWlzc2lvbiB0byByZWNvcmQgc3lzdGVtIGF1ZGlvLiIsCiAgICAgICJOU01pY3JvcGhvbmVVc2FnZURlc2NyaXB0aW9uIjogIk9wZW5SZWMgbmVlZHMgbWljcm9waG9uZSBhY2Nlc3MgdG8gcmVjb3JkIHZvaWNlIGF1ZGlvLiIsCiAgICAgICJOU0NhbWVyYVVzYWdlRGVzY3JpcHRpb24iOiAiT3BlblJlYyBuZWVkcyBjYW1lcmEgYWNjZXNzIHRvIHJlY29yZCB3ZWJjYW0gdmlkZW8uIiwKICAgICAgIk5TU2NyZWVuQ2FwdHVyZVVzYWdlRGVzY3JpcHRpb24iOiAiT3BlblJlYyBuZWVkcyBzY3JlZW4gcmVjb3JkaW5nIHBlcm1pc3Npb24gdG8gZGV0ZWN0IGFuZCBjYXB0dXJlIHdpbmRvd3MuIiwKICAgICAgIk5TQ2FtZXJhVXNlQ29udGludWl0eUNhbWVyYURldmljZVR5cGUiOiB0cnVlCiAgICB9CiAgfSwKICAibGludXgiOiB7CiAgICAidGFyZ2V0IjogWwogICAgICAiQXBwSW1hZ2UiLAogICAgICAiZGViIiwKICAgICAgInBhY21hbiIsCiAgICAgICJycG0iCiAgICBdLAogICAgImljb24iOiAiaWNvbnMvaWNvbnMvcG5nIiwKICAgICJhcnRpZmFjdE5hbWUiOiAiJHtwcm9kdWN0TmFtZX0tTGludXgtJHt2ZXJzaW9ufS4ke2V4dH0iLAogICAgIm1haW50YWluZXIiOiAiTmFnYSBDb2RleCA8aGVsbG9AbmFnYWNvZGV4LmNsb3VkPiIsCiAgICAiY2F0ZWdvcnkiOiAiQXVkaW9WaWRlbyIsCiAgICAiZXh0cmFSZXNvdXJjZXMiOiBbCiAgICAgIHsKICAgICAgICAiZnJvbSI6ICJlbGVjdHJvbi9uYXRpdmUvYmluIiwKICAgICAgICAidG8iOiAiZWxlY3Ryb24vbmF0aXZlL2JpbiIsCiAgICAgICAgImZpbHRlciI6IFsibGludXgtKi8qKiJdCiAgICAgIH0KICAgIF0KICB9LAogICJkZWIiOiB7CiAgICAiZGVwZW5kcyI6IFsKICAgICAgImxpYmd0ay0zLTAiLAogICAgICAibGlibm90aWZ5NCIsCiAgICAgICJsaWJuc3MzIiwKICAgICAgImxpYnhzczEiLAogICAgICAibGlieHRzdDYiLAogICAgICAieGRnLXV0aWxzIiwKICAgICAgImxpYmF0c3BpMi4wLTAiLAogICAgICAibGlidXVpZDEiLAogICAgICAibGlic2VjcmV0LTEtMCIsCiAgICAgICJtZXNhLXZ1bGthbi1kcml2ZXJzIiwKICAgICAgImxpYmdibTEiLAogICAgICAibGliYXNvdW5kMiIsCiAgICAgICJsaWJnb21wMSIsCiAgICAgICJ4ZGctZGVza3RvcC1wb3J0YWwiCiAgICBdCiAgfSwKICAicGFjbWFuIjogewogICAgImRlcGVuZHMiOiBbCiAgICAgICJjLWFyZXMiLAogICAgICAiZmZtcGVnIiwKICAgICAgImd0azMiLAogICAgICAibGliZXZlbnQiLAogICAgICAibGlidnB4IiwKICAgICAgImxpYnhzbHQiLAogICAgICAibGlieHNzIiwKICAgICAgIm1pbml6aXAiLAogICAgICAibnNzIiwKICAgICAgInJlMiIsCiAgICAgICJzbmFwcHkiLAogICAgICAibGlibm90aWZ5IiwKICAgICAgImxpYmFwcGluZGljYXRvci1ndGszIiwKICAgICAgInZ1bGthbi1zd3Jhc3QiLAogICAgICAibWVzYSIsCiAgICAgICJhbHNhLWxpYiIsCiAgICAgICJsaWJnb21wIiwKICAgICAgInhkZy1kZXNrdG9wLXBvcnRhbCIKICAgIF0KICB9LAogICJycG0iOiB7CiAgICAiZGVwZW5kcyI6IFsKICAgICAgImd0azMiLAogICAgICAibGlibm90aWZ5IiwKICAgICAgIm5zcyIsCiAgICAgICJsaWJYU2NyblNhdmVyIiwKICAgICAgIihsaWJYdHN0IG9yIGxpYlh0c3Q2KSIsCiAgICAgICJ4ZGctdXRpbHMiLAogICAgICAiYXQtc3BpMi1jb3JlIiwKICAgICAgIihsaWJ1dWlkIG9yIGxpYnV1aWQxKSIsCiAgICAgICJsaWJzZWNyZXQiLAogICAgICAibWVzYS12dWxrYW4tZHJpdmVycyIsCiAgICAgICJtZXNhLWxpYmdibSIsCiAgICAgICJhbHNhLWxpYiIsCiAgICAgICJsaWJnb21wIiwKICAgICAgInhkZy1kZXNrdG9wLXBvcnRhbCIKICAgIF0KICB9LAogICJ3aW4iOiB7CiAgICAidGFyZ2V0IjogWwogICAgICAibnNpcyIKICAgIF0sCiAgICAiaWNvbiI6ICJpY29ucy9pY29ucy93aW4vaWNvbi5pY28iLAogICAgImFydGlmYWN0TmFtZSI6ICIke3Byb2R1Y3ROYW1lfS5TZXR1cC4ke3ZlcnNpb259LiR7ZXh0fSIsCiAgICAiZXh0cmFSZXNvdXJjZXMiOiBbCiAgICAgIHsKICAgICAgICAiZnJvbSI6ICJlbGVjdHJvbi9uYXRpdmUvYmluIiwKICAgICAgICAidG8iOiAiZWxlY3Ryb24vbmF0aXZlL2JpbiIsCiAgICAgICAgImZpbHRlciI6IFsid2luMzItKi8qIiwgIiF3aW4zMi0qL2ZmbXBlZy5leGUiXQogICAgICB9CiAgICBdCiAgfSwKICAibnNpcyI6IHsKICAgICJvbmVDbGljayI6IGZhbHNlLAogICAgImFsbG93VG9DaGFuZ2VJbnN0YWxsYXRpb25EaXJlY3RvcnkiOiB0cnVlCiAgfSwKICAiYXBweCI6IHsKICAgICJpZGVudGl0eU5hbWUiOiAiTmFnYUNvZGV4Lk9wZW5SZWMiLAogICAgInB1Ymxpc2hlciI6ICJDTj1OYWdhIENvZGV4IiwKICAgICJwdWJsaXNoZXJEaXNwbGF5TmFtZSI6ICJOYWdhIENvZGV4IiwKICAgICJhcHBsaWNhdGlvbklkIjogIk9wZW5SZWMiLAogICAgImRpc3BsYXlOYW1lIjogIk9wZW5SZWMiLAogICAgImJhY2tncm91bmRDb2xvciI6ICJ0cmFuc3BhcmVudCIsCiAgICAiY2FwYWJpbGl0aWVzIjogWyJydW5GdWxsVHJ1c3QiLCAibWljcm9waG9uZSIsICJ3ZWJjYW0iXSwKICAgICJsYW5ndWFnZXMiOiBbCiAgICAgICJlbi1VUyIsCiAgICAgICJmci1GUiIsCiAgICAgICJhciIsCiAgICAgICJlcyIsCiAgICAgICJpdCIsCiAgICAgICJqYS1KUCIsCiAgICAgICJrby1LUiIsCiAgICAgICJwdC1CUiIsCiAgICAgICJydSIsCiAgICAgICJ0ciIsCiAgICAgICJ2aSIsCiAgICAgICJ6aC1DTiIsCiAgICAgICJ6aC1UVyIKICAgIF0sCiAgICAic2hvd05hbWVPblRpbGVzIjogdHJ1ZQogIH0KfQo=
+// @see - https://www.electron.build/configuration/configuration
+{
+  "$schema": "https://raw.githubusercontent.com/electron-userland/electron-builder/master/packages/app-builder-lib/scheme.json",
+  "appId": "cloud.nagacodex.openrec",
+  "asar": true,
+  "asarUnpack": [
+    "**/*.node"
+  ],
+  "productName": "OpenRec",
+  "publish": [
+    {
+      "provider": "github",
+      "owner": "Nagacash",
+      "repo": "openrec"
+    }
+  ],
+  "beforePack": "scripts/before-pack.cjs",
+  "npmRebuild": true,
+  "buildDependenciesFromSource": false,
+  "compression": "normal",
+  "directories": {
+    "output": "release/${version}",
+    "buildResources": "build"
+  },
+  "files": [
+    "dist",
+    "dist-electron",
+    "!*.png",
+    "!preview*.png",
+    "!*.md",
+    "!README.md",
+    "!CONTRIBUTING.md",
+    "!LICENSE"
+  ],
+  "extraResources": [
+    {
+      "from": "THIRD-PARTY-NOTICES.md",
+      "to": "THIRD-PARTY-NOTICES.md"
+    },
+    {
+      "from": "LICENSE",
+      "to": "LICENSE"
+    },
+    {
+      "from": "public/wallpapers",
+      "to": "wallpapers"
+    },
+    {
+      "from": "public/cursors",
+      "to": "cursors"
+    }
+  ],
+  "mac": {
+    "notarize": false,
+    "hardenedRuntime": true,
+    "entitlements": "macos.entitlements",
+    "entitlementsInherit": "macos.entitlements",
+    "target": [
+      {
+        "target": "dmg",
+        "arch": ["x64", "arm64"]
+      }
+    ],
+    "icon": "icons/icons/mac/icon.icns",
+    "artifactName": "${productName}-Mac-${arch}-${version}-Installer.${ext}",
+    "extraResources": [
+      {
+        "from": "electron/native/bin",
+        "to": "electron/native/bin",
+        "filter": ["darwin-*/*"]
+      }
+    ],
+    "extendInfo": {
+      "NSAudioCaptureUsageDescription": "OpenRec needs audio capture permission to record system audio.",
+      "NSMicrophoneUsageDescription": "OpenRec needs microphone access to record voice audio.",
+      "NSCameraUsageDescription": "OpenRec needs camera access to record webcam video.",
+      "NSScreenCaptureUsageDescription": "OpenRec needs screen recording permission to detect and capture windows.",
+      "NSCameraUseContinuityCameraDeviceType": true
+    }
+  },
+  "linux": {
+    "target": [
+      "AppImage",
+      "deb",
+      "pacman",
+      "rpm"
+    ],
+    "icon": "icons/icons/png",
+    "artifactName": "${productName}-Linux-${version}.${ext}",
+    "maintainer": "Naga Codex <hello@nagacodex.cloud>",
+    "category": "AudioVideo",
+    "extraResources": [
+      {
+        "from": "electron/native/bin",
+        "to": "electron/native/bin",
+        "filter": ["linux-*/**"]
+      }
+    ]
+  },
+  "deb": {
+    "depends": [
+      "libgtk-3-0",
+      "libnotify4",
+      "libnss3",
+      "libxss1",
+      "libxtst6",
+      "xdg-utils",
+      "libatspi2.0-0",
+      "libuuid1",
+      "libsecret-1-0",
+      "mesa-vulkan-drivers",
+      "libgbm1",
+      "libasound2",
+      "libgomp1",
+      "xdg-desktop-portal"
+    ]
+  },
+  "pacman": {
+    "depends": [
+      "c-ares",
+      "ffmpeg",
+      "gtk3",
+      "libevent",
+      "libvpx",
+      "libxslt",
+      "libxss",
+      "minizip",
+      "nss",
+      "re2",
+      "snappy",
+      "libnotify",
+      "libappindicator-gtk3",
+      "vulkan-swrast",
+      "mesa",
+      "alsa-lib",
+      "libgomp",
+      "xdg-desktop-portal"
+    ]
+  },
+  "rpm": {
+    "depends": [
+      "gtk3",
+      "libnotify",
+      "nss",
+      "libXScrnSaver",
+      "(libXtst or libXtst6)",
+      "xdg-utils",
+      "at-spi2-core",
+      "(libuuid or libuuid1)",
+      "libsecret",
+      "mesa-vulkan-drivers",
+      "mesa-libgbm",
+      "alsa-lib",
+      "libgomp",
+      "xdg-desktop-portal"
+    ]
+  },
+  "win": {
+    "target": [
+      "nsis"
+    ],
+    "icon": "icons/icons/win/icon.ico",
+    "artifactName": "${productName}.Setup.${version}.${ext}",
+    "extraResources": [
+      {
+        "from": "electron/native/bin",
+        "to": "electron/native/bin",
+        "filter": ["win32-*/*", "!win32-*/ffmpeg.exe"]
+      }
+    ]
+  },
+  "nsis": {
+    "oneClick": false,
+    "allowToChangeInstallationDirectory": true
+  },
+  "appx": {
+    "identityName": "NagaCodex.OpenRec",
+    "publisher": "CN=Naga Codex",
+    "publisherDisplayName": "Naga Codex",
+    "applicationId": "OpenRec",
+    "displayName": "OpenRec",
+    "backgroundColor": "transparent",
+    "capabilities": ["runFullTrust", "microphone", "webcam"],
+    "languages": [
+      "en-US",
+      "fr-FR",
+      "ar",
+      "es",
+      "it",
+      "ja-JP",
+      "ko-KR",
+      "pt-BR",
+      "ru",
+      "tr",
+      "vi",
+      "zh-CN",
+      "zh-TW"
+    ],
+    "showNameOnTiles": true
+  }
+}
