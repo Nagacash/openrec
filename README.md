@@ -1,3 +1,4 @@
+<img width="2752" height="1536" alt="OpenRec UI mockup" src="https://github.com/user-attachments/assets/2af26c62-f5be-4a0c-8d92-657a37737d6c" />
 # OpenRec by Naga Codex
 
 A free, open-source screen recorder and demo builder — built for creators, developers, and AI pipelines.
