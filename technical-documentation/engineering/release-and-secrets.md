@@ -1,6 +1,6 @@
 # Release and secrets
 
-OpenScreen's release machinery lives in `.github/workflows/prerelease.yml`, `promote.yml`, and `build.yml`; its credentials are repository secrets and variables consumed by those workflows and the downstream package and Discord automations. This page is the operational reference for cutting releases and maintaining those credentials.
+OpenRec's release machinery lives in `.github/workflows/prerelease.yml`, `promote.yml`, and `build.yml`; its credentials are repository secrets and variables consumed by those workflows and the downstream package and Discord automations. This page is the operational reference for cutting releases and maintaining those credentials.
 
 ## Release flow
 
@@ -19,7 +19,7 @@ The workflow computes `X.Y.Z-rc.N`, migrates items from `Next Release` to the `v
 - **Explicit**, because a tag pushed with `GITHUB_TOKEN` does not fire `build.yml`'s `push:` trigger in this org's setup — GitHub withholds that to stop workflows triggering each other in a loop. `promote.yml` does push the stable tag that way, so without the dispatch nothing would build.
 - **Pinned with `--ref`**, because the build must check out the **tag**, not the default branch. The version bump lives only on the release branch; `main` still carries the previous stable version, and `build.yml`'s publish step would fail its guard (`package.json version X does not match <tag>`).
 
-The two workflows push their tags with different credentials, which is deliberate: `promote.yml` uses `GITHUB_TOKEN` (a tag is a ref, not a file change), while `prerelease.yml` pushes the RC tag with `OPENSCREEN_RELEASE_TOKEN`. A `GITHUB_TOKEN` tag push is answered with `remote: Internal Server Error` — a 500, not a 403 — by a tag ruleset that rejects the Actions token, and that failure took down the whole `v1.8.0-rc.1` cut, skipping the build trigger and the Discord announce with it.
+The two workflows push their tags with different credentials, which is deliberate: `promote.yml` uses `GITHUB_TOKEN` (a tag is a ref, not a file change), while `prerelease.yml` pushes the RC tag with `OPENREC_RELEASE_TOKEN`. A `GITHUB_TOKEN` tag push is answered with `remote: Internal Server Error` — a 500, not a 403 — by a tag ruleset that rejects the Actions token, and that failure took down the whole `v1.8.0-rc.1` cut, skipping the build trigger and the Discord announce with it.
 
 RC tags are signed and notarized exactly like stable ones. That keeps testers out of `xattr -rd com.apple.quarantine`, and exercises the whole credential path on every candidate instead of first proving it on the promotion build.
 
@@ -30,7 +30,7 @@ Run `Promote RC to stable release` (`promote.yml`) with:
 - `rc_tag`: required tag matching `vX.Y.Z-(rc|beta|alpha).N`.
 - `release_notes_extra`: optional text prepended to the stable Discord announcement.
 
-The workflow validates the tag, closes the version milestone, checks out `release/vX.Y.Z`, changes `package.json` to the stable version, tags that branch tip, opens and rebase-merges a release-sync PR into `main`, explicitly dispatches `build.yml` at the stable tag, and announces the stable release. The build publishes signed/notarized artifacts when Apple credentials are complete; publication with `OPENSCREEN_RELEASE_TOKEN` emits the event that starts stable Homebrew, WinGet, Nix, and AUR workflows.
+The workflow validates the tag, closes the version milestone, checks out `release/vX.Y.Z`, changes `package.json` to the stable version, tags that branch tip, opens and rebase-merges a release-sync PR into `main`, explicitly dispatches `build.yml` at the stable tag, and announces the stable release. The build publishes signed/notarized artifacts when Apple credentials are complete; publication with `OPENREC_RELEASE_TOKEN` emits the event that starts stable Homebrew, WinGet, Nix, and AUR workflows.
 
 ### Release branches (the contract)
 
@@ -102,11 +102,11 @@ No new workflow code is needed; the tag-pushed trigger is branch-agnostic.
 
 ## Required release credential
 
-### `OPENSCREEN_RELEASE_TOKEN`
+### `OPENREC_RELEASE_TOKEN`
 
 This fine-grained personal access token is used by `prerelease.yml`, `promote.yml`, and `build.yml`. It migrates and closes issues/milestones, pushes release branches, creates and merges the release-sync PR, dispatches `build.yml`, and creates GitHub releases so `release: published` can start downstream workflows. The automatic `GITHUB_TOKEN` cannot reliably trigger those subsequent workflows.
 
-Grant the token access only to the OpenScreen repository with:
+Grant the token access only to the OpenRec repository with:
 
 - Contents: read and write.
 - Issues: read and write.
@@ -115,10 +115,10 @@ Grant the token access only to the OpenScreen repository with:
 - Workflows: read and write, because the pushed release branch contains `.github/workflows/`.
 - Metadata: read-only.
 
-Create a fine-grained token from GitHub settings, set a finite expiry, and save it as the repository secret `OPENSCREEN_RELEASE_TOKEN`:
+Create a fine-grained token from GitHub settings, set a finite expiry, and save it as the repository secret `OPENREC_RELEASE_TOKEN`:
 
 ```bash
-gh secret set OPENSCREEN_RELEASE_TOKEN --body "<token>" --repo getopenscreen/openscreen
+gh secret set OPENREC_RELEASE_TOKEN --body "<token>" --repo Nagacash/openrec
 ```
 
 Rotate it by creating the replacement with the same repository and scopes, updating the secret, verifying a non-destructive workflow/API operation, then revoking the old token. Do not revoke the previous token until the replacement is installed.
@@ -169,7 +169,7 @@ Two constraints from Microsoft's documentation: automated updates through GitHub
 
 `msstore submission updateMetadata` can also drive the Store listing text from a versioned `metadata.json`, which would replace the CSV export/import round-trip. Not wired up here.
 
-**It has submitted nothing yet.** v1.9.5 was the job's first real run — it did not exist on the v1.9.1 or v1.9.2 builds — and it failed: `We could not find a project publisher for the project at …Openscreen.Setup.1.9.5.appx`. Credentials were fine; the CLI reported the configuration valid and resolved the product. The call was wrong. `msstore publish` takes a **project root** as its positional argument, detects the app type there, and only then accepts a built package through `--inputFile`; the job passed the `.appx` positionally and never checked the repo out, so there was no project to detect. Fixed by adding a checkout (before the artifact download — `actions/checkout` cleans the workspace) and calling `msstore publish . --inputFile <appx> --appId <id>`.
+**It has submitted nothing yet.** v1.9.5 was the job's first real run — it did not exist on the v1.9.1 or v1.9.2 builds — and it failed: `We could not find a project publisher for the project at …Openrec.Setup.1.9.5.appx`. Credentials were fine; the CLI reported the configuration valid and resolved the product. The call was wrong. `msstore publish` takes a **project root** as its positional argument, detects the app type there, and only then accepts a built package through `--inputFile`; the job passed the `.appx` positionally and never checked the repo out, so there was no project to detect. Fixed by adding a checkout (before the artifact download — `actions/checkout` cleans the workspace) and calling `msstore publish . --inputFile <appx> --appId <id>`.
 
 That failure was visible only because the same release carried the fix that reports the submission's real outcome instead of the configuration's. The prior version wrote "Submitted to the Store" whenever credentials resolved, under `always()` — so this exact failure would have shipped as a green success.
 
@@ -208,7 +208,7 @@ The bot token comes from a Discord application authorized with the `bot` scope. 
 | `HOMEBREW_TAP_TOKEN` | Secret | Token accepted by checkout/push for the repository named by `HOMEBREW_TAP_OWNER` and `HOMEBREW_TAP_REPO`; contents write is sufficient for a dedicated tap. | Create a replacement, update the secret, manually dispatch `update-homebrew-cask.yml`, then revoke the old token. |
 | `HOMEBREW_TAP_OWNER` | Variable | Owner of the tap repository. | Update when the tap moves. |
 | `HOMEBREW_TAP_REPO` | Variable | Tap repository name. | Update when the tap moves. |
-| `HOMEBREW_CASK_NAME` | Variable | Cask filename/name; defaults to `openscreen` when unset. | Update with the tap's cask rename. |
+| `HOMEBREW_CASK_NAME` | Variable | Cask filename/name; defaults to `openrec` when unset. | Update with the tap's cask rename. |
 | `WINGET_ACC_TOKEN` | Secret | Token consumed by `winget-releaser` to submit to the WinGet community repository; grant the scopes required by that action's upstream submission account and no unrelated repository access. | Replace the token, update the secret, replay `publish-winget.yml` for a stable tag, then revoke the old token. |
 | `WINGET_IDENTIFIER` | Variable | Package identifier passed to the WinGet action. | Update only if the Store/community identifier changes. |
 | `AUR_SSH_PRIVATE_KEY` | Secret | Private SSH key whose public key is authorized for the configured AUR package repository. | Add a replacement public key to AUR, update the private-key secret, manually dispatch and verify, then remove the old AUR key. |
@@ -217,11 +217,11 @@ The bot token comes from a Discord application authorized with the `bot` scope. 
 
 `bump-nix-package.yml` uses the workflow-scoped `GITHUB_TOKEN`; it requires repository contents and pull-request write permissions as declared in the workflow and has no additional long-lived secret.
 
-**Homebrew publishing does not complete yet, and now says so.** `update-homebrew-cask.yml` has never published a cask — not once since it was written for the v1.5.0 pipeline. Neither `HOMEBREW_TAP_OWNER` nor `HOMEBREW_TAP_REPO` has ever existed on this repository, both sat in the job-level `if`, and an unconfigured job resolves to `skipped`, which is green: every release run reads as a success. The same failure as WinGet below, found the same way and fixed the same way — the configuration test now lives in a step that names what is missing (#335). Three things are needed, and the third is the one a variable cannot supply: `HOMEBREW_TAP_OWNER` and `HOMEBREW_TAP_REPO`; the `HOMEBREW_TAP_TOKEN` secret with contents write on that repository; and the tap repository itself, which **must** be named `homebrew-<something>` — that prefix is how `brew tap` resolves a repository at all, so `getopenscreen/openscreen-tap` would be checked out and pushed to successfully and still be untappable. With `getopenscreen/homebrew-openscreen`, the install command is `brew install --cask getopenscreen/openscreen/openscreen`.
+**Homebrew publishing does not complete yet, and now says so.** `update-homebrew-cask.yml` has never published a cask — not once since it was written for the v1.5.0 pipeline. Neither `HOMEBREW_TAP_OWNER` nor `HOMEBREW_TAP_REPO` has ever existed on this repository, both sat in the job-level `if`, and an unconfigured job resolves to `skipped`, which is green: every release run reads as a success. The same failure as WinGet below, found the same way and fixed the same way — the configuration test now lives in a step that names what is missing (#335). Three things are needed, and the third is the one a variable cannot supply: `HOMEBREW_TAP_OWNER` and `HOMEBREW_TAP_REPO`; the `HOMEBREW_TAP_TOKEN` secret with contents write on that repository; and the tap repository itself, which **must** be named `homebrew-<something>` — that prefix is how `brew tap` resolves a repository at all, so `Nagacash/openrec-tap` would be checked out and pushed to successfully and still be untappable. With `Nagacash/homebrew-openrec`, the install command is `brew install --cask Nagacash/openrec/openrec`.
 
 Note what it would publish before turning it on: the two DMGs attached to the release — signed, notarized and stapled when the Apple credentials above are complete, ad-hoc-signed and un-notarized when they are not. A cask does not change either state, because `brew install --cask` runs the same Gatekeeper path as a manual download: on the ad-hoc artifact users still need to strip the quarantine flag by hand (`xattr -rd com.apple.quarantine`). The README no longer documents that step, because every build since 1.9.0 is notarized and does not need it — so an ad-hoc release would strand users with no written way out. What the tap buys is discovery and `brew upgrade`, not trust.
 
-**WinGet publishing does not complete yet, and now says so.** `publish-winget.yml` starts on every stable release; whether it publishes depends on four prerequisites, and it names the missing ones in a `::warning::` instead of passing quietly. It used to pass quietly: the configuration test sat in the job-level `if`, an unconfigured job resolved to `skipped`, and a skipped job is green — so eight releases in a row reported success while publishing nothing, which is how #148 stayed open without anyone noticing. The four are: `WINGET_IDENTIFIER` (set, `OpenScreen.OpenScreen`); `WINGET_ACC_TOKEN` (absent — it must be a *classic* PAT with `public_repo`, since `winget-releaser` does not support fine-grained ones); a fork of `microsoft/winget-pkgs` under `getopenscreen`, which is where the action pushes its branch; and at least one version of the package already merged into `winget-pkgs`, because the action writes each manifest from the previous one and refuses to author the first. That first submission is manual, via `wingetcreate new`.
+**WinGet publishing does not complete yet, and now says so.** `publish-winget.yml` starts on every stable release; whether it publishes depends on four prerequisites, and it names the missing ones in a `::warning::` instead of passing quietly. It used to pass quietly: the configuration test sat in the job-level `if`, an unconfigured job resolved to `skipped`, and a skipped job is green — so eight releases in a row reported success while publishing nothing, which is how #148 stayed open without anyone noticing. The four are: `WINGET_IDENTIFIER` (set, `OpenRec.OpenRec`); `WINGET_ACC_TOKEN` (absent — it must be a *classic* PAT with `public_repo`, since `winget-releaser` does not support fine-grained ones); a fork of `microsoft/winget-pkgs` under `Nagacash`, which is where the action pushes its branch; and at least one version of the package already merged into `winget-pkgs`, because the action writes each manifest from the previous one and refuses to author the first. That first submission is manual, via `wingetcreate new`.
 
 Note what it would publish before turning it on: `winget-releaser` submits the **NSIS `.exe`** attached to the release to the community repository, and that installer is unsigned. Users who install through the Microsoft Store, or through `winget --source msstore`, get the Store package that Microsoft signs during certification instead. Publishing to the community source therefore adds a second, unsigned route alongside the signed one — worth doing deliberately rather than by flipping a variable.
 

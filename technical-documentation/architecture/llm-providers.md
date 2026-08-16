@@ -7,7 +7,7 @@ The provider layer defines model metadata, protects credentials, discovers model
 | [`electron/ai-edition/provider-registry.ts`](../../electron/ai-edition/provider-registry.ts) | Static `ProviderDefinition[]`, id normalization, reasoning-effort option lists and labels. No runtime deps. |
 | [`electron/ai-edition/llm-config-store.ts`](../../electron/ai-edition/llm-config-store.ts) | `LlmConfigStore` — plain JSON for selection, `safeStorage` blob for credentials. |
 | [`electron/ai-edition/llm-provider-auth.ts`](../../electron/ai-edition/llm-provider-auth.ts) | Model-list discovery per provider. Despite the filename it performs no authentication any more — see [Known gaps](#known-gaps). |
-| [`electron/ai-edition/deep-agent/chat-model.ts`](../../electron/ai-edition/deep-agent/chat-model.ts) | `createOpenScreenChatModel` — the single transport. Picks a `@langchain/*` chat model class per provider. |
+| [`electron/ai-edition/deep-agent/chat-model.ts`](../../electron/ai-edition/deep-agent/chat-model.ts) | `createOpenRecChatModel` — the single transport. Picks a `@langchain/*` chat model class per provider. |
 | [`electron/ai-edition/deep-agent/chat-model.ts`](../../electron/ai-edition/deep-agent/chat-model.ts) | Per-provider reasoning-effort capability and its LangChain wire options. |
 | [`electron/native-bridge/services/aiEditionService.ts`](../../electron/native-bridge/services/aiEditionService.ts) | IPC surface: connect / disconnect, snapshot, `llmListProviderModels`. |
 | [`src/components/ai-edition/ProviderSettings.tsx`](../../src/components/ai-edition/ProviderSettings.tsx) | Renders cards and forms directly from `PROVIDER_DEFINITIONS`. |
@@ -15,7 +15,7 @@ The provider layer defines model metadata, protects credentials, discovers model
 > **There is one transport.** `llm-call.ts` (`streamLlm` / `callLlm`) and
 > `codex-session.ts` were deleted in 1.8.0 along with the two account-backed
 > providers that needed them. Everything now goes through
-> `createOpenScreenChatModel`; neither symbol has any remaining reference in
+> `createOpenRecChatModel`; neither symbol has any remaining reference in
 > the repo. The duplicated fetch-vs-LangChain routing that earlier revisions
 > of this document called out as a gap no longer exists.
 
@@ -34,7 +34,7 @@ Each `ProviderDefinition` carries a stable id and label, default model, `authKin
 | `minimax-token-plan` | MiniMax Token Plan | `MiniMax-M3` | Same as `minimax`, different env key |
 | `openai-compatible` | OpenAI Compatible | *(user-supplied)* | OpenAI-compatible at a required custom base URL |
 
-`normalizeProviderId` coerces historical aliases before lookup: `claude` and `anthropic-proxy` → `anthropic`, `gemini` → `google`. `createOpenScreenChatModel` normalizes once on entry, so every provider comparison downstream is an exact match against a registry id.
+`normalizeProviderId` coerces historical aliases before lookup: `claude` and `anthropic-proxy` → `anthropic`, `gemini` → `google`. `createOpenRecChatModel` normalizes once on entry, so every provider comparison downstream is an exact match against a registry id.
 
 MiniMax's `baseUrl` deliberately omits `/v1`: `ChatAnthropic` wraps `@anthropic-ai/sdk`, which appends `/v1/messages` itself.
 
@@ -65,7 +65,7 @@ Renderer snapshots expose connection summaries, never raw credential values.
 
 ## Calling a model
 
-`createOpenScreenChatModel({provider, model, apiKey, baseUrl, reasoningEffort})` normalizes the provider id, builds the reasoning options, and returns a `BaseChatModel`:
+`createOpenRecChatModel({provider, model, apiKey, baseUrl, reasoningEffort})` normalizes the provider id, builds the reasoning options, and returns a `BaseChatModel`:
 
 - `minimax` / `minimax-token-plan` → `ChatAnthropic` with `anthropicApiUrl` pointed at the MiniMax base and an explicit `maxTokens` (`ANTHROPIC_API_MAX_OUTPUT_TOKENS`, 16384). ChatAnthropic's default-output table only knows Claude slugs (16k) and falls back to 4096 for anything else — with adaptive thinking on, a cold-start MiniMax turn could spend that entire budget on reasoning and truncate before any text block (the "first call returns empty" bug, #181).
 - `anthropic` → `ChatAnthropic`, plus `thinking` / `outputConfig` when reasoning is on. Known `claude-*` slugs keep LangChain's per-model `maxTokens` default (overriding it would exceed legacy limits like claude-3-haiku's 4096); non-Claude model names — a self-hosted Anthropic-compatible endpoint behind `baseUrl` — get the same 16384 floor as MiniMax.
@@ -80,7 +80,7 @@ Three call sites share that factory:
 
 | Caller | What it does |
 |---|---|
-| [`deep-agent/service.ts`](../../electron/ai-edition/deep-agent/service.ts) `invokeOpenScreenAgent` | The chat agent. Builds a fresh `createDeepAgent` per turn with the timeline tools bound; each turn is single-shot (no checkpointer yet). |
+| [`deep-agent/service.ts`](../../electron/ai-edition/deep-agent/service.ts) `invokeOpenRecAgent` | The chat agent. Builds a fresh `createDeepAgent` per turn with the timeline tools bound; each turn is single-shot (no checkpointer yet). |
 | [`chat-service.ts`](../../electron/ai-edition/chat-service.ts) `tryCompactSession` | One-shot summary of older turns for context compaction. A failure here is swallowed — it must not break the chat turn. |
 | [`caption-translate.ts`](../../electron/ai-edition/caption-translate.ts) | One-shot caption translation. Deliberately not the agent loop: a pure text transform has no reason to hold document-mutating tools. |
 
@@ -112,7 +112,7 @@ Everything returns `{models, error?}` rather than throwing, so the settings UI c
 ## Adding a provider
 
 1. Add a complete `ProviderDefinition` in `provider-registry.ts` (auth kind, env keys, default model, base URL, `wireProtocol`, reasoning support). Widen `authKind` if the provider is not API-key-based.
-2. Add a branch in `createOpenScreenChatModel` if none of the three existing adapters fits.
+2. Add a branch in `createOpenRecChatModel` if none of the three existing adapters fits.
 3. Add a capability branch in `chat-model.ts` if the provider exposes reasoning, and constrain `getReasoningEffortOptions` if its scale is not the full six tiers.
 4. Add a discovery branch in `aiEditionService.llmListProviderModels`, plus its fetch helper in `llm-provider-auth.ts`.
 5. Extend the native-bridge contracts if the provider needs operations the existing IPC surface doesn't cover.
@@ -125,4 +125,4 @@ Everything returns `{models, error?}` rather than throwing, so the settings UI c
 - **`llm-provider-auth.ts` is misnamed.** It performs no authentication since the device flows were removed — it is purely model-list discovery. `model-discovery.ts` would say what it does.
 - **MiniMax discovery spends the user's key.** Nine probe requests per discovery click, uncached, at `max_tokens: 1`. Cache per key if it ever moves to a hot path.
 - **No reasoning-effort validation at the IPC boundary.** `LlmConfig.reasoningEffort` is a bare `string` in `llm-config-store.ts` and is cast with `as never` into `buildLangChainReasoningOptions`; an unrecognised value falls through to the capability default rather than being rejected.
-- **The agent is stateless per turn.** `invokeOpenScreenAgent` builds a fresh `createDeepAgent` for every message; conversation continuity comes from replaying `history`. Passing a `checkpointer` would make langgraph threads stateful — noted in the code as a later step.
+- **The agent is stateless per turn.** `invokeOpenRecAgent` builds a fresh `createDeepAgent` for every message; conversation continuity comes from replaying `history`. Passing a `checkpointer` would make langgraph threads stateful — noted in the code as a later step.

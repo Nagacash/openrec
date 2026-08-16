@@ -72,8 +72,8 @@ async function closeApp(app: ElectronApplication) {
  */
 async function exportFromLoadedVideo(format: "gif" | "mp4"): Promise<Buffer> {
 	const outputPath = path.join(os.tmpdir(), `test-${format}-export-${Date.now()}.${format}`);
-	const userDataDir = fs.mkdtempSync(path.join(os.tmpdir(), "openscreen-e2e-export-"));
-	const appTmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "openscreen-e2e-tmp-"));
+	const userDataDir = fs.mkdtempSync(path.join(os.tmpdir(), "openrec-e2e-export-"));
+	const appTmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "openrec-e2e-tmp-"));
 	const app = await launchApp(userDataDir, appTmpDir);
 
 	try {

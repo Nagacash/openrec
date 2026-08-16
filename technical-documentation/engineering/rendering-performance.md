@@ -163,7 +163,7 @@ Foundation picks its own encoder MFT independently of our D3D device, so on this
 which *has* an AMD GPU, just not one this compositor is using — it can still reach hardware.
 On a genuinely GPU-less host `h264_mf` would fall to its own software encoder or fail, and
 `libopenh264` is the floor. The forced row is there precisely because the automatic one
-cannot be trusted to represent that host: `OPENSCREEN_EXPORT_ENCODER=libopenh264` is the
+cannot be trusted to represent that host: `OPENREC_EXPORT_ENCODER=libopenh264` is the
 only way to exercise the real last resort from a machine that has a GPU.
 
 The encoder is not the bottleneck either way — the two CPU rows differ by 5 %, while the
@@ -280,7 +280,7 @@ So the shadow cache is doing exactly what it was built for — it takes the shad
 
 #### What the 16.7 ms is
 
-A cache miss is two stacked things: the three chained gaussians, and the full-frame Canvas2D plumbing feeding them (silhouette copy, `source-in` fill, filtered blit — 2 Mpx each). They have different fixes, so they were priced apart with a third arm that runs the whole miss path with the filter chain switched off (`openscreen.shadowNoFilter` — renders no shadow; diagnostic only). Both arms fenced, 122 frames, 66 of them missing the cache, two independent runs:
+A cache miss is two stacked things: the three chained gaussians, and the full-frame Canvas2D plumbing feeding them (silhouette copy, `source-in` fill, filtered blit — 2 Mpx each). They have different fixes, so they were priced apart with a third arm that runs the whole miss path with the filter chain switched off (`openrec.shadowNoFilter` — renders no shadow; diagnostic only). Both arms fenced, 122 frames, 66 of them missing the cache, two independent runs:
 
 | arm | run A | run B |
 |---|---:|---:|
@@ -379,7 +379,7 @@ The first frames of a 4-second export cost 358/113/28/350 ms — 10.3 ms/frame o
 - Electron cannot transfer an ArrayBuffer renderer→main. The transfer list takes `MessagePort[]`; transferring a buffer silently drops the whole message ([electron#34905](https://github.com/electron/electron/issues/34905)) — it works renderer→renderer.
 - `Buffer.from(typedArray)` copies. Wrapping (`Buffer.from(buf.buffer, byteOffset, byteLength)`) measured +31 %.
 - A stale `dist-electron` bundle runs the *previous* main process against the new renderer. It read as "export IPC not registered" once and as "the bench flag does nothing" once. The bench now refuses to run against one.
-- A second instance of the same build quits silently: the lock keys on the `userData` path, so another dev build already running makes a launch exit 0 and report nothing. The installed app (`openscreen.exe`) resolves a different `userData` path and does not conflict.
+- A second instance of the same build quits silently: the lock keys on the `userData` path, so another dev build already running makes a launch exit 0 and report nothing. The installed app (`openrec.exe`) resolves a different `userData` path and does not conflict.
 
 ## What the numbers mean
 
@@ -492,7 +492,7 @@ Unit tests never look at a pixel. The `native*` arms write real files: export th
 
 ### Tauri / a separate native core
 
-**What it was.** OpenScreen, but on Tauri, with the compositor in a Rust core. **What the measurement said.** It is not Node vs Rust, and not Electron vs Tauri. Neither the language nor the shell forces the descent — **the browser engine does.** The compositor is Pixi/WebGL/Canvas2D inside Chromium's renderer, and Chromium exposes its GPU textures to nobody. Tauri's webview on Windows is Chromium (WebView2): composite in the webview under Tauri and you pay the identical descent. Zero descent requires the compositor to stop being a web canvas and become the project's own GPU code, owning the same device as the encoder. That is reachable **from Electron too** — an N-API addon, or a native sidecar. **The shell is a consequence, not a cause**; it earns its place on bundle size and memory, never on this measurement. What would actually force the shell question is the preview: once the compositor is native, the preview must come from it too, or the product ships two compositors and loses the parity that is its entire value. Hardware findings (measured 2026-07-17, bundled ffmpeg, reference laptop): GPU decode → GPU encode, no descent, no compositing = 234 fps; Vulkan is a dead end for the encoder here (the driver exposes `video_decode_queue` only, no encode queue; AMF refuses to initialise from a Vulkan device — *"not supported"*, explicitly); `scale_d3d11` fails to create its texture (`80070057`) on every format tried; d3d11 → OpenCL `hwmap` fails on NV12's UV plane. So **the ffmpeg CLI cannot express GPU-composite → GPU-encode on this hardware** — a limit of its filter plumbing, not of the GPU. **One-line reason not to re-propose:** the engine forces the descent, not the shell; the same engine runs under Tauri.
+**What it was.** OpenRec, but on Tauri, with the compositor in a Rust core. **What the measurement said.** It is not Node vs Rust, and not Electron vs Tauri. Neither the language nor the shell forces the descent — **the browser engine does.** The compositor is Pixi/WebGL/Canvas2D inside Chromium's renderer, and Chromium exposes its GPU textures to nobody. Tauri's webview on Windows is Chromium (WebView2): composite in the webview under Tauri and you pay the identical descent. Zero descent requires the compositor to stop being a web canvas and become the project's own GPU code, owning the same device as the encoder. That is reachable **from Electron too** — an N-API addon, or a native sidecar. **The shell is a consequence, not a cause**; it earns its place on bundle size and memory, never on this measurement. What would actually force the shell question is the preview: once the compositor is native, the preview must come from it too, or the product ships two compositors and loses the parity that is its entire value. Hardware findings (measured 2026-07-17, bundled ffmpeg, reference laptop): GPU decode → GPU encode, no descent, no compositing = 234 fps; Vulkan is a dead end for the encoder here (the driver exposes `video_decode_queue` only, no encode queue; AMF refuses to initialise from a Vulkan device — *"not supported"*, explicitly); `scale_d3d11` fails to create its texture (`80070057`) on every format tried; d3d11 → OpenCL `hwmap` fails on NV12's UV plane. So **the ffmpeg CLI cannot express GPU-composite → GPU-encode on this hardware** — a limit of its filter plumbing, not of the GPU. **One-line reason not to re-propose:** the engine forces the descent, not the shell; the same engine runs under Tauri.
 
 ### Native ffmpeg encode driven from the renderer
 

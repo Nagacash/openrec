@@ -86,10 +86,10 @@ The STT workflow uploads standalone archives for binary refresh and does not cur
 | `typecheck` | Ubuntu | `npx tsc --noEmit` |
 | `test` | Ubuntu | Vitest unit tests, Chromium installation, then browser-mode Vitest |
 | `build` | Ubuntu | `npx vite build`; this is not electron-builder packaging |
-| `appstream` | Ubuntu | `appstreamcli validate` on `build/com.getopenscreen.OpenScreen.metainfo.xml` |
+| `appstream` | Ubuntu | `appstreamcli validate` on `build/cloud.nagacodex.openrec.metainfo.xml` |
 | `semantic-pr` | Ubuntu | Validates Conventional Commit-style PR titles |
 
-`build/com.getopenscreen.OpenScreen.metainfo.xml` is upstream AppStream metadata: the name, summary, description, licence, screenshots and release history a software centre shows instead of a bare icon. Nothing in this repository consumes it yet — the shipped deb installs a `.desktop` file and nine icon sizes and no `/usr/share/metainfo/` at all — so the `appstream` job is the only thing that can catch a broken edit before a Flathub reviewer does. Its component ID is `com.getopenscreen.OpenScreen`, deliberately not the Electron `appId` `com.etiennelescot.openscreen`: Flathub requires the ID to map to a domain the project controls, and `getopenscreen.com` is that domain.
+`build/cloud.nagacodex.openrec.metainfo.xml` is upstream AppStream metadata: the name, summary, description, licence, screenshots and release history a software centre shows instead of a bare icon. Nothing in this repository consumes it yet — the shipped deb installs a `.desktop` file and nine icon sizes and no `/usr/share/metainfo/` at all — so the `appstream` job is the only thing that can catch a broken edit before a Flathub reviewer does. Its component ID is `cloud.nagacodex.openrec`, deliberately not the Electron `appId` `com.etiennelescot.openscreen`: Flathub requires the ID to map to a domain the project controls, and `nagacodex.cloud` is that domain.
 
 Jobs that need the root dependencies use `.github/actions/setup`, which requests Node 22 and runs `npm ci`; callers perform checkout themselves.
 
@@ -101,11 +101,11 @@ Jobs that need the root dependencies use `.github/actions/setup`, which requests
 
 A `v*` tag or manual dispatch starts platform builds. Dispatch accepts `arch` (`arm64`, `x64`, or `both`) for macOS and an optional `release_tag` that enables publication.
 
-- `build-windows` runs `npm run build:win` and uploads `openscreen-windows` for 30 days.
-- `build-windows-store` runs `npm run build:win:store` and uploads `openscreen-windows-store` for 30 days.
+- `build-windows` runs `npm run build:win` and uploads `openrec-windows` for 30 days.
+- `build-windows-store` runs `npm run build:win:store` and uploads `openrec-windows-store` for 30 days.
 - `build-macos` is an `arm64`/`x64` matrix. It builds Vite/Electron and native helpers, packages and optionally signs the app, creates DMGs, notarizes every signed build including pre-releases, and uploads one artifact per architecture for 30 days.
-- `build-linux` produces AppImage, deb, pacman, and rpm files and uploads `openscreen-linux` for 30 days. It asserts one artifact per format before uploading, because `if-no-files-found: error` evaluates the union of the upload globs and so cannot catch a single format that stopped being produced. No zsync: that is electron-updater's delta format, this repo ships no updater, and app-builder-lib 26.x embeds a block map in the AppImage instead.
-- `publish-release` waits for Windows NSIS, macOS, and Linux jobs; the Store job is not a dependency. It checks the tag against `package.json`, downloads the NSIS/macOS/Linux artifacts, and creates or updates a GitHub release with `OPENSCREEN_RELEASE_TOKEN`.
+- `build-linux` produces AppImage, deb, pacman, and rpm files and uploads `openrec-linux` for 30 days. It asserts one artifact per format before uploading, because `if-no-files-found: error` evaluates the union of the upload globs and so cannot catch a single format that stopped being produced. No zsync: that is electron-updater's delta format, this repo ships no updater, and app-builder-lib 26.x embeds a block map in the AppImage instead.
+- `publish-release` waits for Windows NSIS, macOS, and Linux jobs; the Store job is not a dependency. It checks the tag against `package.json`, downloads the NSIS/macOS/Linux artifacts, and creates or updates a GitHub release with `OPENREC_RELEASE_TOKEN`.
 
 The build comments and package behavior refer to the local Whisper architecture documented in [transcription and captions](../architecture/transcription-and-captions.md). The STT model downloads to user data at runtime and is not a release-build asset.
 

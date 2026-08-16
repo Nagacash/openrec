@@ -2,10 +2,10 @@
 id: installation
 title: Installation
 sidebar_position: 2
-description: "Install OpenScreen on macOS, Windows, or Linux — .dmg, .exe, .deb, .rpm, .pacman, AppImage, and a Nix flake, including the macOS Gatekeeper step."
+description: "Install OpenRec on macOS, Windows, or Linux — .dmg, .exe, .deb, .rpm, .pacman, AppImage, and a Nix flake, including the macOS Gatekeeper step."
 keywords:
   - install screen recorder
-  - download OpenScreen
+  - download OpenRec
   - macOS dmg
   - Windows installer
   - Linux deb
@@ -16,25 +16,25 @@ keywords:
 
 # Installation
 
-Download the latest installer for your platform from the [download page](/download), or straight from [GitHub Releases](https://github.com/getopenscreen/openscreen/releases).
+Download the latest installer for your platform from the [download page](/download), or straight from [GitHub Releases](https://github.com/Nagacash/openrec/releases).
 
 ## macOS
 
-Download the `.dmg` installer from [Releases](https://github.com/getopenscreen/openscreen/releases) and drag OpenScreen into your Applications folder. Builds from 1.9.0 onward are signed with a Developer ID certificate and notarized by Apple, so Gatekeeper does not block them and no terminal step is needed.
+Download the `.dmg` installer from [Releases](https://github.com/Nagacash/openrec/releases) and drag OpenRec into your Applications folder. Builds from 1.9.0 onward are signed with a Developer ID certificate and notarized by Apple, so Gatekeeper does not block them and no terminal step is needed.
 
-Then go to **System Settings → Privacy & Security** and grant **Screen Recording** and **Accessibility** to OpenScreen. Recording cannot start until both are granted.
+Then go to **System Settings → Privacy & Security** and grant **Screen Recording** and **Accessibility** to OpenRec. Recording cannot start until both are granted.
 
 :::note macOS 15 and later re-ask periodically
 macOS re-requests screen-recording permission from time to time for every third-party screen recorder. That prompt comes from the operating system — it does not mean your install is broken or that an update went wrong. Grant it again when asked.
 :::
 
 :::tip Upgrading from a version older than 1.9.0?
-Those builds were not signed with a Developer ID certificate, and macOS ties Screen Recording and Accessibility grants to an app's signature — so it cannot tell the new build is the same app, and the permissions you granted the old one do not carry over. If a new version won't record even after granting them, remove OpenScreen's entries under both permissions in System Settings, then launch it again and grant them fresh.
+Those builds were not signed with a Developer ID certificate, and macOS ties Screen Recording and Accessibility grants to an app's signature — so it cannot tell the new build is the same app, and the permissions you granted the old one do not carry over. If a new version won't record even after granting them, remove OpenRec's entries under both permissions in System Settings, then launch it again and grant them fresh.
 :::
 
 ## Windows
 
-Download and run the `.exe` installer from [Releases](https://github.com/getopenscreen/openscreen/releases).
+Download and run the `.exe` installer from [Releases](https://github.com/Nagacash/openrec/releases).
 
 ## Linux
 
@@ -42,51 +42,51 @@ Four packages are published per release — pick the one matching your distro.
 
 **Debian / Ubuntu / Pop!_OS**
 ```bash
-sudo apt install ./Openscreen-Linux-*.deb
+sudo apt install ./Openrec-Linux-*.deb
 ```
 
 **Fedora / RHEL / CentOS**
 ```bash
-sudo dnf install ./Openscreen-Linux-*.rpm
+sudo dnf install ./Openrec-Linux-*.rpm
 ```
 
 **Arch / Manjaro**
 ```bash
-sudo pacman -U Openscreen-Linux-*.pacman
+sudo pacman -U Openrec-Linux-*.pacman
 ```
 
 **Any distro (AppImage)**
 ```bash
-chmod +x Openscreen-Linux-*.AppImage
-./Openscreen-Linux-*.AppImage
+chmod +x Openrec-Linux-*.AppImage
+./Openrec-Linux-*.AppImage
 ```
 
 If the AppImage fails to launch with a sandbox error:
 ```bash
-./Openscreen-Linux-*.AppImage --no-sandbox
+./Openrec-Linux-*.AppImage --no-sandbox
 ```
 
 **NixOS / Nix (flake)**
 
 Try it without installing:
 ```bash
-nix run github:getopenscreen/openscreen
+nix run github:Nagacash/openrec
 ```
 
 Install into your user profile:
 ```bash
-nix profile install github:getopenscreen/openscreen
+nix profile install github:Nagacash/openrec
 ```
 
 As a NixOS system module:
 ```nix
 {
-  inputs.openscreen.url = "github:getopenscreen/openscreen";
+  inputs.openrec.url = "github:Nagacash/openrec";
 
-  outputs = { nixpkgs, openscreen, ... }: {
+  outputs = { nixpkgs, openrec, ... }: {
     nixosConfigurations.<host> = nixpkgs.lib.nixosSystem {
       modules = [
-        openscreen.nixosModules.default
+        openrec.nixosModules.default
         { programs.openscreen.enable = true; }
       ];
     };
@@ -94,7 +94,7 @@ As a NixOS system module:
 }
 ```
 
-Home Manager users can use `openscreen.homeManagerModules.default` with the same `programs.openscreen.enable = true;`.
+Home Manager users can use `openrec.homeManagerModules.default` with the same `programs.openscreen.enable = true;`.
 
 You may need to grant screen-recording permission depending on your desktop environment.
 
@@ -113,7 +113,7 @@ The editing tools are the same everywhere — zooms, backgrounds, crop/trim/spee
 | On-device transcription | Metal (Apple Silicon) / CPU | Vulkan / CPU | Vulkan / CPU |
 
 :::warning MP4 export is Windows-only for now
-The GPU compositor behind the live preview and MP4 export is built on Direct3D 11 and currently ships only in the Windows build. Recording, editing, and GIF export work on all three platforms; MP4 export does not yet. Track it on the [roadmap](https://github.com/getopenscreen/openscreen/blob/main/ROADMAP.md).
+The GPU compositor behind the live preview and MP4 export is built on Direct3D 11 and currently ships only in the Windows build. Recording, editing, and GIF export work on all three platforms; MP4 export does not yet. Track it on the [roadmap](https://github.com/Nagacash/openrec/blob/main/ROADMAP.md).
 :::
 
 Next: [Quick start](./quick-start.md) walks through your first recording.

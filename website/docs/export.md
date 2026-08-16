@@ -3,7 +3,7 @@ id: export
 title: Exporting video
 sidebar_position: 9
 sidebar_label: Export
-description: "Export from OpenScreen to MP4 (720p, 1080p, or source resolution, H.264 or H.265) or animated GIF, and how the MP4 render path actually works."
+description: "Export from OpenRec to MP4 (720p, 1080p, or source resolution, H.264 or H.265) or animated GIF, and how the MP4 render path actually works."
 keywords:
   - export MP4
   - H.264
@@ -48,7 +48,7 @@ MP4 export runs through the same native Rust + Direct3D 11 compositor that draws
 Because preview and export consume the same scene description, the frame you're looking at is the frame you get — there is no separate export renderer that could drift.
 
 :::warning Platform support
-The native compositor is **Windows-only today**, so MP4 export currently requires Windows. GIF export has its own renderer-side path and works on all three platforms. See the [roadmap](https://github.com/getopenscreen/openscreen/blob/main/ROADMAP.md) for status.
+The native compositor is **Windows-only today**, so MP4 export currently requires Windows. GIF export has its own renderer-side path and works on all three platforms. See the [roadmap](https://github.com/Nagacash/openrec/blob/main/ROADMAP.md) for status.
 :::
 
 ## Exported file vs. project file

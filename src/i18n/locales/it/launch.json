@@ -10,7 +10,7 @@
 		"openProject": "Apri progetto",
 		"useVerticalTray": "Usa barra verticale",
 		"useHorizontalTray": "Usa barra orizzontale",
-		"openStudio": "Apri Studio",
+		"openStudio": "Apri OpenRec Studio",
 		"openNotes": "Apri note",
 		"openNotesPlaceholder": "Scrivi le tue note qui...",
 		"notesToolbar": {
@@ -63,8 +63,8 @@
 		"screens": "Schermi ({{count}})",
 		"windows": "Finestre ({{count}})",
 		"emptyTitle": "Nessuno schermo o finestra trovati",
-		"emptyDescription": "Se hai appena concesso il permesso di registrazione dello schermo, ricarica questo selettore. Su macOS potrebbe essere necessario riaprire OpenScreen.",
-		"loadFailedDescription": "OpenScreen non è riuscito a caricare le sorgenti di cattura. Ricarica questo selettore e riprova.",
+		"emptyDescription": "Se hai appena concesso il permesso di registrazione dello schermo, ricarica questo selettore. Su macOS potrebbe essere necessario riaprire OpenRec.",
+		"loadFailedDescription": "OpenRec non è riuscito a caricare le sorgenti di cattura. Ricarica questo selettore e riprova.",
 		"defaultSourceName": "Schermo"
 	},
 	"recording": {
@@ -76,13 +76,13 @@
 	"language": "Lingua",
 	"systemLanguagePrompt": {
 		"title": "Usare la lingua del sistema?",
-		"description": "Abbiamo rilevato {{language}} come lingua del sistema. Vuoi passare OpenScreen a {{language}}?",
+		"description": "Abbiamo rilevato {{language}} come lingua del sistema. Vuoi passare OpenRec a {{language}}?",
 		"switch": "Passa a {{language}}",
 		"keepDefault": "Mantieni la lingua corrente"
 	},
 	"softwareEncoderFallback": {
 		"title": "Passaggio alla codifica software",
-		"description": "L'encoder GPU predefinito non si è avviato, quindi OpenScreen è passato alla codifica H.264 software. La registrazione dovrebbe continuare normalmente, ma l'uso della CPU potrebbe essere più alto.",
+		"description": "L'encoder GPU predefinito non si è avviato, quindi OpenRec è passato alla codifica H.264 software. La registrazione dovrebbe continuare normalmente, ma l'uso della CPU potrebbe essere più alto.",
 		"dismiss": "Ho capito",
 		"dontShowAgain": "Non mostrare più"
 	},

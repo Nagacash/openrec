@@ -1,4 +1,4 @@
-// Post-export voiceover mixing for the CLI (`openscreen export --audio`).
+// Post-export voiceover mixing for the CLI (`openrec export --audio`).
 //
 // Takes the finished MP4 blob, copies its video packets untouched (no
 // re-encode), renders a new audio track with OfflineAudioContext — the

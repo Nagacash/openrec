@@ -30,17 +30,17 @@ Optional settings include:
 $env:CURSOR_TEST_DURATION_MS = "3000"
 $env:CURSOR_TEST_SAMPLE_INTERVAL_MS = "16"
 $env:CURSOR_TEST_SCREEN_FRAME_INTERVAL_MS = "80"
-$env:CURSOR_TEST_OUTPUT_DIR = "C:\temp\openscreen-cursor-test"
+$env:CURSOR_TEST_OUTPUT_DIR = "C:\temp\openrec-cursor-test"
 npm run test:cursor-native:win
 ```
 
 To inspect the real editor preview using the generated sidecar, run:
 
 ```powershell
-npm run capture:openscreen-preview
+npm run capture:openrec-preview
 ```
 
-Set `CURSOR_RECORDING_DATA_PATH` to select a particular sidecar. `capture-openscreen-preview.mjs` also accepts `OPENSCREEN_PREVIEW_SKIP_BUILD`, `OPENSCREEN_PREVIEW_FRAME_COUNT`, `OPENSCREEN_PREVIEW_FPS`, and `OPENSCREEN_PREVIEW_OUTPUT_DIR`.
+Set `CURSOR_RECORDING_DATA_PATH` to select a particular sidecar. `capture-openrec-preview.mjs` also accepts `OPENREC_PREVIEW_SKIP_BUILD`, `OPENREC_PREVIEW_FRAME_COUNT`, `OPENREC_PREVIEW_FPS`, and `OPENREC_PREVIEW_OUTPUT_DIR`.
 
 ## macOS cursor helper
 
@@ -55,7 +55,7 @@ The build copies development binaries to `electron/native/screencapturekit/build
 Run the cursor helper directly after building it:
 
 ```bash
-BIN=electron/native/screencapturekit/build/openscreen-macos-cursor-helper
+BIN=electron/native/screencapturekit/build/openrec-macos-cursor-helper
 ("$BIN" '{"sampleIntervalMs":100}' & PID=$!; sleep 2; kill $PID) | head -20
 ```
 
@@ -64,7 +64,7 @@ The first JSON line should have `type: "ready"`, together with `mouseTapReady` a
 To run the app with a specific helper binary:
 
 ```bash
-export OPENSCREEN_MAC_CURSOR_HELPER_EXE=/path/to/openscreen-macos-cursor-helper
+export OPENREC_MAC_CURSOR_HELPER_EXE=/path/to/openrec-macos-cursor-helper
 npm run dev
 ```
 

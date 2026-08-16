@@ -1,6 +1,6 @@
 # Transcription and captions
 
-OpenScreen turns recorded audio into on-device text, and renders that text as
+OpenRec turns recorded audio into on-device text, and renders that text as
 captions over both the preview and the export. The recogniser runs natively on
 the desktop — no network calls, no Python — and feeds a single transcript per
 asset into a caption layer that derives its cues on every render. Code lives
@@ -224,7 +224,7 @@ so no second pass is needed.
 
 ### Long-form recordings
 
-`whisper_full()` handles recordings longer than 30 s internally; OpenScreen
+`whisper_full()` handles recordings longer than 30 s internally; OpenRec
 implements no chunking of its own. The validation set exercises 130 s at WER
 0.076 with full per-word coverage (see the validation report linked above).
 
@@ -284,7 +284,7 @@ bash scripts/build-whisper-stt.sh
 # issues inside whisper.cpp's vulkan-shaders-gen sub-project.
 
 # Run the helper directly for manual testing
-set OPENSCREEN_WHISPER_MODEL=%APPDATA%\Electron\stt-models\whisper-ggml\ggml-small-q8_0.bin
+set OPENREC_WHISPER_MODEL=%APPDATA%\Electron\stt-models\whisper-ggml\ggml-small-q8_0.bin
 electron\native\bin\win32-x64\whisper-stt-server.exe --port 20199 --threads 8
 
 # Test

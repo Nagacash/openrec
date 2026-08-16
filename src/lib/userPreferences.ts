@@ -5,7 +5,7 @@ import {
 import type { ExportFormat, ExportQuality } from "@/lib/exporter";
 import { type AspectRatio, isAspectRatio } from "@/utils/aspectRatioUtils";
 
-const PREFS_KEY = "openscreen_user_preferences";
+const PREFS_KEY = "openrec_user_preferences";
 
 export interface UserPreferences {
 	/** Default padding % */

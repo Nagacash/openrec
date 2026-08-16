@@ -34,7 +34,7 @@ type ShimDesktopSource = {
 const SHIM_SOURCES: ShimDesktopSource[] = [
 	{ id: "screen:0", name: "Entire Screen", display_id: "0", thumbnail: null, appIcon: null },
 	{ id: "screen:1", name: "Display 2", display_id: "1", thumbnail: null, appIcon: null },
-	{ id: "window:100", name: "OpenScreen", display_id: "", thumbnail: null, appIcon: null },
+	{ id: "window:100", name: "OpenRec", display_id: "", thumbnail: null, appIcon: null },
 	{ id: "window:101", name: "Terminal", display_id: "", thumbnail: null, appIcon: null },
 ];
 let shimSelectedSource: ShimDesktopSource | null = null;
@@ -637,7 +637,7 @@ export function installBrowserShims(): void {
 			}
 		}
 	}
-	console.info("[openscreen] browser-mode shims active (no Electron)");
+	console.info("[openrec] browser-mode shims active (no Electron)");
 }
 
 export { isBrowserMode };

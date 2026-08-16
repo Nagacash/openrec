@@ -1,6 +1,6 @@
 # Build and packaging
 
-OpenScreen builds its renderer, Electron main process, preload bridge, native helpers, and installers from the root npm scripts, `vite.config.ts`, `electron-builder.json5`, and platform-native projects under `electron/native/`. Nix provides a separate Linux package and development shell.
+OpenRec builds its renderer, Electron main process, preload bridge, native helpers, and installers from the root npm scripts, `vite.config.ts`, `electron-builder.json5`, and platform-native projects under `electron/native/`. Nix provides a separate Linux package and development shell.
 
 ## Commands
 
@@ -115,7 +115,7 @@ The two failures above were found by the Store, not by us, and each was fixed wi
 `scripts/verify-appx-native.ps1` is the check that does. It registers a built `.appx` and asks the Windows loader to resolve every shipped binary from inside the package: `LoadLibraryEx` with `LOAD_WITH_ALTERED_SEARCH_PATH` for each `.dll`/`.node` — the same call Node makes for an addon — and, for each helper executable, a start with no arguments. Whatever the next unresolvable dependency turns out to be, this fails on it.
 
 ```bash
-powershell -File scripts/verify-appx-native.ps1 -Appx release/1.9.1/Openscreen.Setup.1.9.1.appx
+powershell -File scripts/verify-appx-native.ps1 -Appx release/1.9.1/Openrec.Setup.1.9.1.appx
 ```
 
 Add `-KeepRegistered` to leave the package installed and click through the app afterwards. Loose registration needs Developer Mode; the script will not enable it for you, because that is a machine-wide setting. The `Windows Store package` job runs the same script on every build, enabling Developer Mode on the runner it is about to discard.
@@ -130,10 +130,10 @@ The symbol-version guard could not have seen it. It checks how *new* the require
 
 All three hid behind the same accident. Desktop metapackages pull every one of them, `libgomp1` only via `libfftw3-single3`, `libimagequant0` and `libsoxr0` — three peripheral media libraries no desktop actually needs. Every machine anyone tested on therefore had them.
 
-`scripts/verify-linux-package.sh` installs a built package into a **bare container** of the target distro and runs `ldd` over every ELF that ships, reporting any soname the package neither declares nor bundles. It then starts `openscreen`, `whisper-stt-server` and `openscreen-pipewire-helper`, because reaching `main()` is the part `ldd` cannot show: a binary the loader rejects exits `127` with `error while loading shared libraries`, while one that starts prints its own usage or its own structured error.
+`scripts/verify-linux-package.sh` installs a built package into a **bare container** of the target distro and runs `ldd` over every ELF that ships, reporting any soname the package neither declares nor bundles. It then starts `openrec`, `whisper-stt-server` and `openrec-pipewire-helper`, because reaching `main()` is the part `ldd` cannot show: a binary the loader rejects exits `127` with `error while loading shared libraries`, while one that starts prints its own usage or its own structured error.
 
 ```bash
-bash scripts/verify-linux-package.sh deb release/1.9.2/Openscreen-Linux-1.9.2.deb
+bash scripts/verify-linux-package.sh deb release/1.9.2/Openrec-Linux-1.9.2.deb
 ```
 
 The container is the point, not an implementation detail — the runner has more installed than the machines we ship to, so a check that runs on it is not a check. For the same reason the script installs no convenience tooling inside the container: `binutils` would arrive with a transitive closure that could mask what is being measured, and `ldd` is glibc, already there.
@@ -146,10 +146,10 @@ The exposure is instead handled at the source, which is the layer to prefer anyw
 
 **Which script does the copying is the interesting part.** It belongs to the build, not to packaging, because provenance is what makes the bundled copy correct: `build-whisper-stt.yml` pins its Linux leg to `ubuntu-22.04`, the same floor `before-pack.cjs` enforces, so the library that ships comes from the same machine and the same glibc as the binaries that load it, and it travels inside the whisper artifact to every consumer. Copying it at packaging time instead would take it from whoever ran the build — and a 24.04 desktop's `libgomp` needs `GLIBC_2.38`, which the symbol-version guard then rejects, leaving a developer on a current distro unable to package at all. `scripts/stage-whisper-stt.sh` only asserts it arrived, and says to re-run the whisper workflow if it did not.
 
-That last consequence — a developer on a current distro unable to package at all — has a supported way out, because the alternative is that nobody can test a packaging change without pushing and waiting for CI. `OPENSCREEN_SYMBOL_FLOOR=host` swaps the pinned ceiling for what this machine's own `libc.so.6` and `libstdc++.so.6` *define*, read straight out of the libraries node is already running against, so there is no `ldconfig` to parse and no `binutils` to require.
+That last consequence — a developer on a current distro unable to package at all — has a supported way out, because the alternative is that nobody can test a packaging change without pushing and waiting for CI. `OPENREC_SYMBOL_FLOOR=host` swaps the pinned ceiling for what this machine's own `libc.so.6` and `libstdc++.so.6` *define*, read straight out of the libraries node is already running against, so there is no `ldconfig` to parse and no `binutils` to require.
 
 ```bash
-OPENSCREEN_SYMBOL_FLOOR=host npm run build:linux
+OPENREC_SYMBOL_FLOOR=host npm run build:linux
 ```
 
 It relaxes the ceiling rather than removing the guard: a payload needing something even the host lacks still fails, and the parser assertion that keeps the scan honest runs either way. What it gives up is the distro-floor promise, which is the promise a local build is not making — so the build prints the ceiling it substituted and says not to publish the result. Any value other than `host` is an error rather than a silent enforce or a silent waive, and the variable is **refused outright when `CI` is set**: an escape hatch that can reach a published artifact is a hole, and the runners are pinned to the floor so nothing on CI needs it. `scripts/before-pack.test.mjs` covers both refusals.
@@ -207,7 +207,7 @@ The hook now reads `electron/native/bin/darwin-<arch>/` — the directory `mac.e
 | `libavcodec/libavformat/libavutil.*.dylib` | the addon cannot load at all (dyld error at `require()`) |
 | `whisper-stt-server` | transcription and captions fail with a developer error shown to end users |
 | `libggml*.dylib` | the helper dies in dyld before `main()`; STT times out with no diagnostic |
-| `openscreen-screencapturekit-helper` | native screen capture unavailable |
+| `openrec-screencapturekit-helper` | native screen capture unavailable |
 
 It then applies the same staleness comparison to the **shipped** addon (the arch-tagged copy), not the dev copy under `electron/native/compositor-view/build/`, since the arch-tagged one is what electron-builder actually packages.
 
@@ -221,7 +221,7 @@ Diagnosing a suspected stale addon: serde embeds its field-name literals in the 
 
 ### Windows
 
-The default electron-builder target is NSIS, with an assisted installer that allows users to change the installation directory. `npm run build:win:store` explicitly selects the configured `appx` target for Microsoft Store packaging. The AppX identity, publisher, capabilities, and Store languages come from `electron-builder.json5`. Release CI builds and retains both the NSIS installer and AppX package, although the GitHub release publisher currently downloads only the `openscreen-windows` NSIS artifact.
+The default electron-builder target is NSIS, with an assisted installer that allows users to change the installation directory. `npm run build:win:store` explicitly selects the configured `appx` target for Microsoft Store packaging. The AppX identity, publisher, capabilities, and Store languages come from `electron-builder.json5`. Release CI builds and retains both the NSIS installer and AppX package, although the GitHub release publisher currently downloads only the `openrec-windows` NSIS artifact.
 
 #### Store tile assets
 
@@ -236,8 +236,8 @@ Unlike macOS, no Windows signing is configured anywhere in the repo. Both CI art
 
 | Artifact | Signature |
 |---|---|
-| `Openscreen.Setup.1.8.0.exe` | `NotSigned` |
-| `Openscreen.Setup.1.8.0.appx` | `NotSigned` |
+| `Openrec.Setup.1.8.0.exe` | `NotSigned` |
+| `Openrec.Setup.1.8.0.appx` | `NotSigned` |
 
 That the AppX is unsigned is not a defect: Microsoft signs Store submissions during certification, and the signed copy exists only in the Store. It is never handed back, so it cannot be redistributed. Two consequences worth knowing before anyone tries to "just ship the appx instead":
 

@@ -4,8 +4,8 @@ import { themes as prismThemes } from "prism-react-renderer";
 
 import type { LatestRelease } from "./src/lib/release";
 
-const SITE_URL = "https://getopenscreen.com";
-const REPO_SLUG = "getopenscreen/openscreen";
+const SITE_URL = "https://nagacodex.cloud";
+const REPO_SLUG = "Nagacash/openrec";
 const REPO_URL = `https://github.com/${REPO_SLUG}`;
 const UPSTREAM_REPO_URL = "https://github.com/siddharthvaddem/openscreen";
 const DISCORD_URL = "https://discord.gg/VvT6Vtnyh";
@@ -23,7 +23,7 @@ const ORGANIZATION_LD = {
 	"@context": "https://schema.org",
 	"@type": "Organization",
 	"@id": `${SITE_URL}/#organization`,
-	name: "OpenScreen",
+	name: "OpenRec",
 	url: SITE_URL,
 	logo: `${SITE_URL}/img/logo-icon.png`,
 	description: SITE_DESCRIPTION,
@@ -34,7 +34,7 @@ const WEBSITE_LD = {
 	"@context": "https://schema.org",
 	"@type": "WebSite",
 	"@id": `${SITE_URL}/#website`,
-	name: "OpenScreen",
+	name: "OpenRec",
 	url: SITE_URL,
 	description: SITE_DESCRIPTION,
 	inLanguage: "en",
@@ -56,7 +56,7 @@ function formatStarCount(count: number): string {
 // across deploys without faking data or fighting a third-party widget's styling.
 async function fetchStarCount(): Promise<number | null> {
 	try {
-		const res = await fetch("https://api.github.com/repos/getopenscreen/openscreen", {
+		const res = await fetch("https://api.github.com/repos/Nagacash/openrec", {
 			headers: { Accept: "application/vnd.github+json" },
 			signal: AbortSignal.timeout(5000),
 		});
@@ -147,12 +147,12 @@ export default async function createConfig(): Promise<Config> {
 			: "";
 
 	return {
-		title: "OpenScreen",
+		title: "OpenRec",
 		tagline: "A free, open-source screen recorder and editor.",
 		favicon: "img/logo-icon.png",
 
 		// Pages serves this from the custom domain's root, not from
-		// getopenscreen.github.io/openscreen/, so baseUrl has to be "/" — a project
+		// nagacash.github.io/openrec/, so baseUrl has to be "/" — a project
 		// baseUrl would prefix every asset URL with a path the server has nothing at.
 		url: SITE_URL,
 		baseUrl: "/",
@@ -165,8 +165,8 @@ export default async function createConfig(): Promise<Config> {
 		// removes the redirect from the canonical path entirely.
 		trailingSlash: true,
 
-		organizationName: "getopenscreen",
-		projectName: "openscreen",
+		organizationName: "Nagacash",
+		projectName: "openrec",
 
 		// Read back by src/pages/download.tsx. Serialized into the client bundle,
 		// so it stays plain JSON.
@@ -256,8 +256,8 @@ export default async function createConfig(): Promise<Config> {
 				},
 				{ name: "robots", content: "index, follow, max-image-preview:large, max-snippet:-1" },
 				{ property: "og:type", content: "website" },
-				{ property: "og:site_name", content: "OpenScreen" },
-				{ name: "twitter:image:alt", content: "OpenScreen — free, open-source screen recorder" },
+				{ property: "og:site_name", content: "OpenRec" },
+				{ name: "twitter:image:alt", content: "OpenRec — free, open-source screen recorder" },
 			],
 			colorMode: {
 				defaultMode: "dark",
@@ -265,11 +265,11 @@ export default async function createConfig(): Promise<Config> {
 				respectPrefersColorScheme: false,
 			},
 			navbar: {
-				title: "OpenScreen",
+				title: "OpenRec",
 				logo: {
 					// Explicit intrinsic size: without it the navbar reserves no space
 					// for the mark and the whole bar reflows once the PNG decodes.
-					alt: "OpenScreen logo",
+					alt: "OpenRec logo",
 					src: "img/logo-icon.png",
 					width: 32,
 					height: 32,
