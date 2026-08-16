@@ -1,13 +1,13 @@
 //! Harnais de mesure du POC (§9/§10) et aiguillage des modes.
 //!
 //! Vivait dans `lib.rs` de l'ancienne crate `poc-d3d`, quand bibliothèque et POC étaient le même
-//! paquet. Rien ici n'est packagé : c'est du banc de mesure au-dessus d'`openscreen-compositor`.
+//! paquet. Rien ici n'est packagé : c'est du banc de mesure au-dessus d'`openrec-compositor`.
 
 use anyhow::{Context as _, Result};
-use openscreen_compositor::compositor::Compositor;
-use openscreen_compositor::gif_export::{GifExportParams, GifStats};
-use openscreen_compositor::pipeline::ClipSource;
-use openscreen_compositor::{config, cursor, d3d, gif_export, live, pipeline, scene};
+use openrec_compositor::compositor::Compositor;
+use openrec_compositor::gif_export::{GifExportParams, GifStats};
+use openrec_compositor::pipeline::ClipSource;
+use openrec_compositor::{config, cursor, d3d, gif_export, live, pipeline, scene};
 use std::fmt::Write as _;
 use std::path::Path;
 

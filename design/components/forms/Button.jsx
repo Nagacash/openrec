@@ -1,7 +1,7 @@
 import React from 'react';
 
 /**
- * OpenScreen Button — the primary text action.
+ * OpenRec Button — the primary text action.
  * variants: primary (emerald fill) · secondary (surface + border) · ghost (transparent).
  * Icons are passed as children alongside a label, or use IconButton for icon-only.
  */

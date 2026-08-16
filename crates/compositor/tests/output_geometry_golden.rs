@@ -10,8 +10,8 @@
 //! n'a pas forcément de GPU D3D11 :
 //!
 //! ```powershell
-//! $env:OPENSCREEN_GOLDEN_SCREEN = "...\recording-<id>.mp4"
-//! $env:OPENSCREEN_GOLDEN_WEBCAM = "...\recording-<id>-webcam.webm"
+//! $env:OPENREC_GOLDEN_SCREEN = "...\recording-<id>.mp4"
+//! $env:OPENREC_GOLDEN_WEBCAM = "...\recording-<id>-webcam.webm"
 //! cargo test --test output_geometry_golden -- --nocapture
 //! ```
 //!
@@ -30,11 +30,11 @@
 // plateforme, et sans cette porte le crate ne compile pas sous Linux.
 #![cfg(not(target_os = "linux"))]
 
-use openscreen_compositor::compositor::Compositor;
-use openscreen_compositor::d3d::Gpu;
-use openscreen_compositor::live::Player;
-use openscreen_compositor::scene::Scene;
-use openscreen_compositor::config;
+use openrec_compositor::compositor::Compositor;
+use openrec_compositor::d3d::Gpu;
+use openrec_compositor::live::Player;
+use openrec_compositor::scene::Scene;
+use openrec_compositor::config;
 
 /// Instant fixe dans la source. Un seek explicite (`present_frame`) plutôt que
 /// la lecture libre : le golden doit être reproductible à l'octet près.
@@ -117,20 +117,20 @@ fn scene_json(screen: &str, webcam: &str, w: u32, h: u32) -> String {
 #[test]
 fn golden_frames_per_output_format() {
     let (screen, webcam) = match (
-        std::env::var("OPENSCREEN_GOLDEN_SCREEN"),
-        std::env::var("OPENSCREEN_GOLDEN_WEBCAM"),
+        std::env::var("OPENREC_GOLDEN_SCREEN"),
+        std::env::var("OPENREC_GOLDEN_WEBCAM"),
     ) {
         (Ok(s), Ok(w)) => (s, w),
         _ => {
             println!(
-                "SKIP: definir OPENSCREEN_GOLDEN_SCREEN et OPENSCREEN_GOLDEN_WEBCAM \
+                "SKIP: definir OPENREC_GOLDEN_SCREEN et OPENREC_GOLDEN_WEBCAM \
                  (chemins d'un enregistrement reel) pour produire le golden."
             );
             return;
         }
     };
 
-    let out_dir = std::env::var("OPENSCREEN_GOLDEN_OUT")
+    let out_dir = std::env::var("OPENREC_GOLDEN_OUT")
         .map(std::path::PathBuf::from)
         .unwrap_or_else(|_| std::path::PathBuf::from("target/golden"));
     std::fs::create_dir_all(&out_dir).expect("creer le dossier de sortie");
@@ -197,16 +197,16 @@ fn golden_frames_per_output_format() {
 #[test]
 fn golden_side_by_side_webcam_is_not_stretched() {
     let (screen, webcam) = match (
-        std::env::var("OPENSCREEN_GOLDEN_SCREEN"),
-        std::env::var("OPENSCREEN_GOLDEN_WEBCAM"),
+        std::env::var("OPENREC_GOLDEN_SCREEN"),
+        std::env::var("OPENREC_GOLDEN_WEBCAM"),
     ) {
         (Ok(s), Ok(w)) => (s, w),
         _ => {
-            println!("SKIP: definir OPENSCREEN_GOLDEN_SCREEN / _WEBCAM");
+            println!("SKIP: definir OPENREC_GOLDEN_SCREEN / _WEBCAM");
             return;
         }
     };
-    let out_dir = std::env::var("OPENSCREEN_GOLDEN_OUT")
+    let out_dir = std::env::var("OPENREC_GOLDEN_OUT")
         .map(std::path::PathBuf::from)
         .unwrap_or_else(|_| std::path::PathBuf::from("target/golden"));
     std::fs::create_dir_all(&out_dir).expect("dossier de sortie");
@@ -259,16 +259,16 @@ fn golden_side_by_side_webcam_is_not_stretched() {
 #[test]
 fn golden_cropped_clip_is_not_stretched() {
     let (screen, webcam) = match (
-        std::env::var("OPENSCREEN_GOLDEN_SCREEN"),
-        std::env::var("OPENSCREEN_GOLDEN_WEBCAM"),
+        std::env::var("OPENREC_GOLDEN_SCREEN"),
+        std::env::var("OPENREC_GOLDEN_WEBCAM"),
     ) {
         (Ok(s), Ok(w)) => (s, w),
         _ => {
-            println!("SKIP: definir OPENSCREEN_GOLDEN_SCREEN / _WEBCAM");
+            println!("SKIP: definir OPENREC_GOLDEN_SCREEN / _WEBCAM");
             return;
         }
     };
-    let out_dir = std::env::var("OPENSCREEN_GOLDEN_OUT")
+    let out_dir = std::env::var("OPENREC_GOLDEN_OUT")
         .map(std::path::PathBuf::from)
         .unwrap_or_else(|_| std::path::PathBuf::from("target/golden"));
     std::fs::create_dir_all(&out_dir).expect("dossier de sortie");

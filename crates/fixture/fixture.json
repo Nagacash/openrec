@@ -1,5 +1,5 @@
 {
-	"_comment": "Fixture gelée pour spike-native. Coupée en -c copy : le bitstream est EXACTEMENT celui produit par la capture openscreen. Ne pas ré-encoder — cela changerait la complexité du flux et viderait C0 de son sens.",
+	"_comment": "Fixture gelée pour spike-native. Coupée en -c copy : le bitstream est EXACTEMENT celui produit par la capture openrec. Ne pas ré-encoder — cela changerait la complexité du flux et viderait C0 de son sens.",
 	"frozen_at": "2026-07-17",
 	"duration_s": 6.0,
 	"frames_per_source": 360,
@@ -8,7 +8,7 @@
 			"file": "screen.mp4",
 			"role": "source 1 — quad 16:9 scalé/positionné, coins arrondis (§6)",
 			"provenance": {
-				"origin": "C:\\Users\\camil\\AppData\\Roaming\\openscreen\\recordings\\recording-1783845220910.mp4",
+				"origin": "C:\\Users\\camil\\AppData\\Roaming\\openrec\\recordings\\recording-1783845220910.mp4",
 				"origin_duration_s": 111.6,
 				"cut_offset_s": 100,
 				"cut_method": "ffmpeg -ss 100 -t 6 -c copy (IDR-aligned, GOP=60)"
@@ -33,7 +33,7 @@
 			"file": "webcam.mp4",
 			"role": "source 2 — center-crop carré + masque circulaire (§6/E5). Simule une webcam HQ : deuxième flux screen, pas la vraie webcam.",
 			"provenance": {
-				"origin": "C:\\Users\\camil\\AppData\\Roaming\\openscreen\\recordings\\recording-1783894784128.mp4",
+				"origin": "C:\\Users\\camil\\AppData\\Roaming\\openrec\\recordings\\recording-1783894784128.mp4",
 				"origin_duration_s": 866.5,
 				"cut_offset_s": 428,
 				"cut_method": "ffmpeg -ss 428 -t 6 -c copy (IDR-aligned, GOP=60)"
@@ -59,7 +59,7 @@
 			"file": "screen.cursor.json",
 			"role": "télémétrie curseur de la source screen — consommée par C7 (curseur custom + click bounce) et par le suivi auto du zoom.",
 			"provenance": {
-				"origin": "C:\\Users\\camil\\AppData\\Roaming\\openscreen\\recordings\\recording-1783845220910.mp4.cursor.json",
+				"origin": "C:\\Users\\camil\\AppData\\Roaming\\openrec\\recordings\\recording-1783845220910.mp4.cursor.json",
 				"cut_method": "AUCUNE coupe — copier le fichier BRUT tel quel. Le loader fenêtre lui-même : CursorTrack::load(path, offset_ms=100_000, dur_s=6.0) filtre samples[] sur timeMs et rebase à 0 (crates/compositor/src/cursor.rs). L'offset correspond au cut_offset_s=100 de la source screen."
 			},
 			"samples_total": 2582,

@@ -12,7 +12,7 @@ let dir;
 // byte-faithful rather than merely structurally right.
 const pkg = [
 	"{",
-	'\t"name": "openscreen",',
+	'\t"name": "openrec",',
 	'\t"version": "1.8.0",',
 	'\t"private": true',
 	"}",
@@ -21,13 +21,13 @@ const pkg = [
 
 const lock = [
 	"{",
-	'\t"name": "openscreen",',
+	'\t"name": "openrec",',
 	'\t"version": "1.8.0",',
 	'\t"lockfileVersion": 3,',
 	'\t"requires": true,',
 	'\t"packages": {',
 	'\t\t"": {',
-	'\t\t\t"name": "openscreen",',
+	'\t\t\t"name": "openrec",',
 	'\t\t\t"version": "1.8.0",',
 	'\t\t\t"dependencies": {',
 	'\t\t\t\t"zod": "^4.0.0"',
@@ -104,7 +104,7 @@ describe("setReleaseVersion", () => {
 	it("throws rather than half-bumping when the lockfile shape is unknown", () => {
 		writeFileSync(
 			join(dir, "package-lock.json"),
-			`${JSON.stringify({ name: "openscreen", version: "1.8.0" }, null, "\t")}\n`,
+			`${JSON.stringify({ name: "openrec", version: "1.8.0" }, null, "\t")}\n`,
 		);
 
 		expect(() => setReleaseVersion("1.9.0", dir)).toThrow(/packages/);

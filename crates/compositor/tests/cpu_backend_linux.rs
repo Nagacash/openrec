@@ -16,12 +16,12 @@
 // resout vers un autre module.
 #![cfg(target_os = "linux")]
 
-use openscreen_compositor::d3d::{create_backend, Backend, Gpu};
+use openrec_compositor::d3d::{create_backend, Backend, Gpu};
 
 /// Pose a 1 par la CI, ou `mesa-vulkan-drivers` est installe. Sur un poste de dev
 /// sans ICD logiciel, ces tests se contentent de le dire : echouer y ferait rougir
 /// une machine ou rien n'est casse, et le signal deviendrait du bruit.
-const REQUIRE: &str = "OPENSCREEN_REQUIRE_CPU_BACKEND";
+const REQUIRE: &str = "OPENREC_REQUIRE_CPU_BACKEND";
 
 fn required() -> bool {
     std::env::var(REQUIRE).is_ok_and(|v| v != "0")

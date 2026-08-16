@@ -207,7 +207,7 @@ unsafe impl Send for VideoEncoder {}
 
 impl VideoEncoder {
     /// Encodeurs software candidats du build LGPL, par codec. La premiere qui
-    /// ouvre gagne ; `OPENSCREEN_EXPORT_ENCODER=<name>` force un choix.
+    /// ouvre gagne ; `OPENREC_EXPORT_ENCODER=<name>` force un choix.
     fn candidate_names(codec: &ExportCodec) -> &'static [&'static str] {
         match codec {
             ExportCodec::H264 => &["libopenh264"],
@@ -216,7 +216,7 @@ impl VideoEncoder {
     }
 
     pub fn open(codec: &ExportCodec, w: i32, h: i32, fps: i32, bit_rate: i64) -> Result<VideoEncoder> {
-        let forced = std::env::var("OPENSCREEN_EXPORT_ENCODER").ok();
+        let forced = std::env::var("OPENREC_EXPORT_ENCODER").ok();
         let mut refused: Vec<String> = Vec::new();
         // Liste par defaut, plus l'encodeur force s'il n'y figure pas (ex. h264_vaapi).
         let defaults = Self::candidate_names(codec);
@@ -238,7 +238,7 @@ impl VideoEncoder {
             }
         }
         match forced {
-            Some(name) => bail!("OPENSCREEN_EXPORT_ENCODER={name} inutilisable : {}", refused.join(" ; ")),
+            Some(name) => bail!("OPENREC_EXPORT_ENCODER={name} inutilisable : {}", refused.join(" ; ")),
             None => bail!("aucun encodeur video utilisable : {}", refused.join(" ; ")),
         }
     }

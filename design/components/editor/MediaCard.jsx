@@ -1,7 +1,7 @@
 import React from 'react';
 
 /**
- * OpenScreen MediaCard — a clip tile in the media library. Gradient
+ * OpenRec MediaCard — a clip tile in the media library. Gradient
  * thumbnail with a film-strip glyph, a drag-handle affordance, and a
  * name/duration/size footer. Selected → 1.5px emerald border.
  */

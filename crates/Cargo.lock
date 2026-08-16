@@ -201,7 +201,7 @@ dependencies = [
  "napi",
  "napi-build",
  "napi-derive",
- "openscreen-compositor",
+ "openrec-compositor",
  "windows",
 ]
 
@@ -914,7 +914,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9f7c3e4beb33f85d45ae3e3a1792185706c8e16d043238c593331cc7cd313b50"
 
 [[package]]
-name = "openscreen-compositor"
+name = "openrec-compositor"
 version = "0.0.0"
 dependencies = [
  "anyhow",
@@ -1001,7 +1001,7 @@ name = "poc-d3d"
 version = "0.0.0"
 dependencies = [
  "anyhow",
- "openscreen-compositor",
+ "openrec-compositor",
  "windows",
 ]
 

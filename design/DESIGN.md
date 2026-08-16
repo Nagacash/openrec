@@ -1,8 +1,8 @@
-# OpenScreen Design System
+# OpenRec Design System
 
 > Category: Video & Productivity Tools
 > Surface: Desktop web (Electron)
-> Source: tokens extracted from `openscreen-editor-2.html` (canonical)
+> Source: tokens extracted from `openrec-editor-2.html` (canonical)
 
 A high-fidelity, professional dark-and-light desktop application design system
 optimized for video recording, post-processing editing, and timeline
@@ -140,10 +140,10 @@ Nothing below 11px.
 
 | File | Role |
 |---|---|
-| `openscreen-editor-2.html` | Latest editor (light + dark themes in one file). Canonical source of tokens. |
-| `openscreen-editor.html` | First editor pass. Light-only. |
+| `openrec-editor-2.html` | Latest editor (light + dark themes in one file). Canonical source of tokens. |
+| `openrec-editor.html` | First editor pass. Light-only. |
 | `editor.html` | Earlier experimental editor with red REC accent. |
-| `openscreen-landing.html` | Marketing landing page. |
+| `openrec-landing.html` | Marketing landing page. |
 | `index.html` | Launcher / overview. |
 | `DESIGN.md` | This document. |
 
@@ -152,5 +152,5 @@ Nothing below 11px.
 ## Open questions / follow-ups
 
 - `editor.html` uses a different red-dominant accent and predates the mint brand color. Keep as historical reference; do not import its tokens into new work.
-- Landing page (`openscreen-landing.html`) is light-only; consider a dark variant once product photography is sourced.
+- Landing page (`openrec-landing.html`) is light-only; consider a dark variant once product photography is sourced.
 - No logo asset is committed yet. Brand mark should be a simple wordmark or geometric mark in mint on the dark canvas.

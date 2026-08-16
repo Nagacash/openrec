@@ -138,7 +138,7 @@ impl Decoder {
             // en interne). On passe `device = NULL`, juste un nom d'optionnel.
             let mut hwdev: *mut crate::ffi::AVBufferRef = ptr::null_mut();
             // VideoToolbox n'est PAS toujours le chemin rapide, et sur les enregistrements
-            // d'openscreen il est le LENT. Mesuré sur une capture 1920x1080@60 Constrained
+            // d'openrec il est le LENT. Mesuré sur une capture 1920x1080@60 Constrained
             // Baseline, décodage seul : VT 215 fps, libavcodec logiciel 3000 fps — 13x. Bout
             // en bout sur l'export (décode + composite + encode), 76 fps contre 182, soit
             // 2,4x, alors même que le chemin logiciel paie en plus swscale et un memcpy
@@ -147,7 +147,7 @@ impl Decoder {
             // La raison est structurelle : le décodeur matériel a une latence fixe par frame
             // et alloue un CVPixelBuffer/IOSurface à chacune, là où un profil trivial se
             // décode en quelques centaines de microsecondes sur des cœurs qui, eux, sont
-            // multiples. Baseline est précisément ce que produit la capture d'openscreen
+            // multiples. Baseline est précisément ce que produit la capture d'openrec
             // (cf. `crates/fixture/fixture.json`, profile_idc 66) et ce que Chrome émet via
             // MediaRecorder — donc le cas courant, pas un cas limite.
             //
@@ -162,7 +162,7 @@ impl Decoder {
             const FF_PROFILE_H264_CONSTRAINED_BASELINE: i32 = 578;
             let is_baseline =
                 profile == FF_PROFILE_H264_BASELINE || profile == FF_PROFILE_H264_CONSTRAINED_BASELINE;
-            let forced = std::env::var("OPENSCREEN_MAC_DECODE").ok();
+            let forced = std::env::var("OPENREC_MAC_DECODE").ok();
             let want_hw = match forced.as_deref() {
                 Some("software") => false,
                 Some("videotoolbox") => true,
@@ -539,7 +539,7 @@ pub enum ExportCodec {
 impl ExportCodec {
     /// Liste ordonnée des encodeurs candidats pour ce codec, **spécifique à macOS**.
     /// Symétrique de `ExportCodec::candidates()` côté Windows — la première candidate
-    /// qui ouvre gagne, sauf si `OPENSCREEN_EXPORT_ENCODER=<name>` force un autre choix
+    /// qui ouvre gagne, sauf si `OPENREC_EXPORT_ENCODER=<name>` force un autre choix
     /// (cf. `VideoEncoder::open`).
     ///
     /// Ordre côté macOS :
@@ -645,7 +645,7 @@ pub struct VideoEncoder {
 impl VideoEncoder {
     /// Ouvre l'encodeur pour `codec` sur la cible `w`x`h` à `fps` fps et `bit_rate` bits/s.
     /// Essaie chaque candidate retournée par `ExportCodec::candidates()` (honorant
-    /// `OPENSCREEN_EXPORT_ENCODER=<name>`) ; la première qui ouvre gagne.
+    /// `OPENREC_EXPORT_ENCODER=<name>`) ; la première qui ouvre gagne.
     ///
     /// Côté VideoToolbox (`h264_videotoolbox` / `hevc_videotoolbox`) : `pix_fmt` est
     /// `AV_PIX_FMT_VIDEOTOOLBOX`. On alloue un `hw_frames_ctx` (`AVHWFramesContext`)
@@ -663,7 +663,7 @@ impl VideoEncoder {
         fps: i32,
         bit_rate: i64,
     ) -> Result<VideoEncoder> {
-        let forced = std::env::var("OPENSCREEN_EXPORT_ENCODER").ok();
+        let forced = std::env::var("OPENREC_EXPORT_ENCODER").ok();
         let mut refused: Vec<String> = Vec::new();
         for &candidate in codec.candidates() {
             if forced.as_deref().is_some_and(|f| f != candidate.name) {
@@ -694,9 +694,9 @@ impl VideoEncoder {
         }
         match forced {
             Some(name) if refused.is_empty() => {
-                bail!("OPENSCREEN_EXPORT_ENCODER={name} ne nomme aucun candidat de ce codec")
+                bail!("OPENREC_EXPORT_ENCODER={name} ne nomme aucun candidat de ce codec")
             }
-            Some(name) => bail!("OPENSCREEN_EXPORT_ENCODER={name} inutilisable ici : {}", refused[0]),
+            Some(name) => bail!("OPENREC_EXPORT_ENCODER={name} inutilisable ici : {}", refused[0]),
             None => bail!(
                 "aucun encodeur vidéo utilisable sur cette machine : {}",
                 refused.join(" ; ")

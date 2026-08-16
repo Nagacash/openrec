@@ -1,7 +1,7 @@
 import React from 'react';
 
 /**
- * OpenScreen Card — the flat bordered surface container. `elevation`
+ * OpenRec Card — the flat bordered surface container. `elevation`
  * "card" (resting) or "pop" (floating). `level` picks the fill surface.
  * Optional `title` renders a bordered header.
  */

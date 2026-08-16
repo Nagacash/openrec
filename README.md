@@ -50,6 +50,7 @@ Electron · React · TypeScript · Vite · Rust (wgpu/Metal) · ScreenCaptureKit
 ## Links
 
 - **Naga Codex:** [nagacodex.cloud](https://nagacodex.cloud)
+- **This repo:** [github.com/Nagacash/openrec](https://github.com/Nagacash/openrec)
 - **Upstream:** [github.com/getopenscreen/openscreen](https://github.com/getopenscreen/openscreen)
 
 ---

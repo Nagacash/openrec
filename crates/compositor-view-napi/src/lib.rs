@@ -1,4 +1,4 @@
-//! Addon napi-rs : pont Electron ↔ `openscreen_compositor::live::LiveView`. Expose la vue
+//! Addon napi-rs : pont Electron ↔ `openrec_compositor::live::LiveView`. Expose la vue
 //! offscreen (Option B, post-readback `Vec<u8>` RGBA8 → `<canvas>` HTML) à la
 //! glue TS (native-bridge domaine "compositor"). Les `#[napi]` sont appelés
 //! depuis le thread principal Node (là où vit la `BrowserWindow`) ; le rendu et
@@ -9,12 +9,12 @@ use napi::bindgen_prelude::*;
 use napi::threadsafe_function::{ErrorStrategy, ThreadsafeFunction, ThreadsafeFunctionCallMode};
 use napi::{Env, JsFunction, Task};
 use napi_derive::napi;
-use openscreen_compositor::compositor::{live_params_from_scene, Compositor};
-use openscreen_compositor::d3d::{Backend, Gpu};
-use openscreen_compositor::gif_export::{GifExportParams, GifStats};
-use openscreen_compositor::live::{LiveView, PausedPreviews};
-use openscreen_compositor::scene::Scene;
-use openscreen_compositor::{config, pipeline};
+use openrec_compositor::compositor::{live_params_from_scene, Compositor};
+use openrec_compositor::d3d::{Backend, Gpu};
+use openrec_compositor::gif_export::{GifExportParams, GifStats};
+use openrec_compositor::live::{LiveView, PausedPreviews};
+use openrec_compositor::scene::Scene;
+use openrec_compositor::{config, pipeline};
 use std::collections::HashMap;
 use std::path::PathBuf;
 use std::sync::{Mutex, OnceLock};
@@ -515,7 +515,7 @@ pub struct GifParamsInput {
 }
 
 /// Tâche d'export GIF (worker libuv, comme `ExportMultiTask`). Le
-/// pipeline natif vit dans `openscreen_compositor::gif_export` ; ce
+/// pipeline natif vit dans `openrec_compositor::gif_export` ; ce
 /// binding n'est qu'un adaptateur qui :
 ///   1. résout la `screen.cursor.json` sidecar selon la convention
 ///      `ExportDialog` (même chemin que `run_composited_multi` côté
@@ -576,11 +576,11 @@ impl Task for ExportGifTask {
         let width = self
             .params
             .width
-            .unwrap_or(openscreen_compositor::gif_export::DEFAULT_GIF_WIDTH);
+            .unwrap_or(openrec_compositor::gif_export::DEFAULT_GIF_WIDTH);
         let height = self
             .params
             .height
-            .unwrap_or(openscreen_compositor::gif_export::DEFAULT_GIF_HEIGHT);
+            .unwrap_or(openrec_compositor::gif_export::DEFAULT_GIF_HEIGHT);
         let comp = Compositor::new_sized(&gpu, width, height)
             .map_err(|e| Error::from_reason(format!("{e:#}")))?;
         if let Some(scene) = &scene {
@@ -589,7 +589,7 @@ impl Task for ExportGifTask {
         comp.set_scene(scene);
 
         let mut progress = throttled_progress(self.on_progress.take());
-        openscreen_compositor::gif_export::export_gif(
+        openrec_compositor::gif_export::export_gif(
             &self.clips,
             &self.out_path,
             &gpu,
@@ -677,11 +677,11 @@ pub struct RemuxTask {
 }
 
 impl Task for RemuxTask {
-    type Output = openscreen_compositor::remux::RemuxStats;
+    type Output = openrec_compositor::remux::RemuxStats;
     type JsValue = RemuxStats;
 
     fn compute(&mut self) -> Result<Self::Output> {
-        openscreen_compositor::remux::remux_to_seekable_matroska(&self.input_path, &self.output_path)
+        openrec_compositor::remux::remux_to_seekable_matroska(&self.input_path, &self.output_path)
             .map_err(|e| Error::from_reason(format!("{e:#}")))
     }
 
@@ -696,7 +696,7 @@ impl Task for RemuxTask {
 
 /// Recopie `input_path` vers `output_path` par le muxer matroska (aucun
 /// ré-encodage) pour doter le fichier des `Cues`/`SeekHead` que `MediaRecorder`
-/// n'écrit pas. Voir `openscreen_compositor::remux` pour le détail.
+/// n'écrit pas. Voir `openrec_compositor::remux` pour le détail.
 ///
 /// `AsyncTask` et pas une fonction synchrone : le remux lit et réécrit tout le
 /// fichier, ce qui se compte en secondes sur un long enregistrement. Le faire

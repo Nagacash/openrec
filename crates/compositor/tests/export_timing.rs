@@ -10,7 +10,7 @@
 //! mis-advanced one stays red for its whole length.
 //!
 //! Needs a D3D11 GPU and the generated media, so it is opt-in: set
-//! OPENSCREEN_TEST_MEDIA to a directory holding `screen_colors.mp4` and
+//! OPENREC_TEST_MEDIA to a directory holding `screen_colors.mp4` and
 //! `webcam_gray.mp4`. Without it every test here skips.
 //!
 //! Regenerate the media with the vendored ffmpeg:
@@ -31,11 +31,11 @@
 // compile aujourd'hui.
 #![cfg(not(target_os = "linux"))]
 
-use openscreen_compositor::compositor::Compositor;
-use openscreen_compositor::config::Cfg;
-use openscreen_compositor::d3d::Gpu;
-use openscreen_compositor::gif_export::{self, GifExportParams};
-use openscreen_compositor::pipeline::{self, ClipSource, ExportCodec, ExportParams};
+use openrec_compositor::compositor::Compositor;
+use openrec_compositor::config::Cfg;
+use openrec_compositor::d3d::Gpu;
+use openrec_compositor::gif_export::{self, GifExportParams};
+use openrec_compositor::pipeline::{self, ClipSource, ExportCodec, ExportParams};
 use std::path::PathBuf;
 
 const SOURCE_SEC: f64 = 4.0;
@@ -104,7 +104,7 @@ fn redness(palette: &[[u8; 3]]) -> f64 {
 }
 
 fn media_dir() -> Option<PathBuf> {
-    let dir = PathBuf::from(std::env::var("OPENSCREEN_TEST_MEDIA").ok()?);
+    let dir = PathBuf::from(std::env::var("OPENREC_TEST_MEDIA").ok()?);
     dir.join("screen_colors.mp4").exists().then_some(dir)
 }
 
@@ -127,7 +127,7 @@ fn whole_clip(dir: &PathBuf) -> ClipSource {
 #[test]
 fn mp4_export_frame_count_follows_output_fps() {
     let Some(dir) = media_dir() else {
-        eprintln!("skipped: set OPENSCREEN_TEST_MEDIA");
+        eprintln!("skipped: set OPENREC_TEST_MEDIA");
         return;
     };
     let gpu = Gpu::create(false).expect("gpu");
@@ -170,7 +170,7 @@ fn mp4_export_frame_count_follows_output_fps() {
 #[test]
 fn gif_export_spans_the_whole_timeline() {
     let Some(dir) = media_dir() else {
-        eprintln!("skipped: set OPENSCREEN_TEST_MEDIA");
+        eprintln!("skipped: set OPENREC_TEST_MEDIA");
         return;
     };
     let out = dir.join("out_timing.gif");

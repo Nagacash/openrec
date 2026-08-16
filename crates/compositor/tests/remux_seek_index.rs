@@ -13,8 +13,8 @@
 //! arbitraires — le test est de niveau CONTENEUR, la charge utile n'est jamais
 //! décodée.
 
-use openscreen_compositor::ffi::*;
-use openscreen_compositor::remux::remux_to_seekable_matroska;
+use openrec_compositor::ffi::*;
+use openrec_compositor::remux::remux_to_seekable_matroska;
 use std::ffi::CString;
 use std::ptr;
 
@@ -108,7 +108,7 @@ fn remux_adds_cues_to_a_live_matroska() {
     // test reste lisible.
     unsafe { av_log_set_level(AV_LOG_QUIET) };
 
-    let dir = std::env::temp_dir().join(format!("openscreen-remux-test-{}", std::process::id()));
+    let dir = std::env::temp_dir().join(format!("openrec-remux-test-{}", std::process::id()));
     std::fs::create_dir_all(&dir).unwrap();
     let input = dir.join("live.webm");
     let output = dir.join("indexed.webm");
@@ -154,9 +154,9 @@ fn remux_refuses_to_write_over_its_own_input() {
 fn remux_reports_an_error_for_a_missing_input() {
     // Le caller TS traite toute erreur comme « garde l'original » ; encore
     // faut-il qu'une entrée absente en produise une plutôt que de paniquer.
-    let out = std::env::temp_dir().join("openscreen-remux-never-written.webm");
+    let out = std::env::temp_dir().join("openrec-remux-never-written.webm");
     let err = remux_to_seekable_matroska(
-        "/nonexistent/openscreen/no-such-recording.webm",
+        "/nonexistent/openrec/no-such-recording.webm",
         out.to_str().unwrap(),
     )
     .expect_err("doit échouer sur une entrée absente");

@@ -1,7 +1,7 @@
 import React from 'react';
 
 /**
- * OpenScreen Select — native dropdown styled to match. Used for
+ * OpenRec Select — native dropdown styled to match. Used for
  * caption style, layout preset, transcript language, etc.
  */
 export function Select({

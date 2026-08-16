@@ -10,12 +10,12 @@
 //!  - un modèle mono-thread coopératif : WM_TIMER cadence la playback à 60 fps ;
 //!    l'export tourne sur le thread UI et rafraîchit la barre entre frames.
 
-use openscreen_compositor::compositor::{Compositor, FIXTURE_FRAMES, OUT_H, OUT_W};
-use openscreen_compositor::config::{self, Cfg};
-use openscreen_compositor::cursor::CursorTrack;
-use openscreen_compositor::d3d::Gpu;
-use openscreen_compositor::live::Player;
-use openscreen_compositor::pipeline;
+use openrec_compositor::compositor::{Compositor, FIXTURE_FRAMES, OUT_H, OUT_W};
+use openrec_compositor::config::{self, Cfg};
+use openrec_compositor::cursor::CursorTrack;
+use openrec_compositor::d3d::Gpu;
+use openrec_compositor::live::Player;
+use openrec_compositor::pipeline;
 use anyhow::Result;
 use std::ffi::c_void;
 use std::time::Instant;
@@ -513,7 +513,7 @@ unsafe fn run_gui_inner(screen: &str, webcam: &str, cursor_json: &str, out_dir: 
     let ww = rc.right - rc.left;
     let wh = rc.bottom - rc.top;
 
-    let title = wide("OpenScreen — POC D3D11 compositor · preview + export");
+    let title = wide("OpenRec — POC D3D11 compositor · preview + export");
     let hwnd = CreateWindowExW(
         WINDOW_EX_STYLE(0),
         PCWSTR(main_cls.as_ptr()),

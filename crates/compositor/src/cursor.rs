@@ -1,4 +1,4 @@
-//! Piste curseur depuis un `.cursor.json` openscreen. Fournit position interpolée
+//! Piste curseur depuis un `.cursor.json` openrec. Fournit position interpolée
 //! et facteur de « click bounce » — consommés par frame (temps fractionnaire), donc
 //! le motion blur du curseur vient gratuitement du supersampling temporel.
 

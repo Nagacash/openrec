@@ -1,19 +1,19 @@
 # Le POC d'origine, conservé tel quel comme banc de mesure et pièce d'époque.
 # Rien ici n'est packagé dans l'app : la GUI Win32 de preview/export (`app.rs`) et le
 # harnais de bench fps (`bench.rs`) ne servent qu'à mesurer et à regarder. Tout ce qui
-# est réellement expédié vit dans `openscreen-compositor` et `compositor-view-napi`.
+# est réellement expédié vit dans `openrec-compositor` et `compositor-view-napi`.
 [package]
 name = "poc-d3d"
 version.workspace = true
 edition.workspace = true
-description = "POC de mesure OpenScreen : GUI Win32 de preview/export + harnais de bench fps (§9/§10) au-dessus d'openscreen-compositor."
+description = "POC de mesure OpenRec : GUI Win32 de preview/export + harnais de bench fps (§9/§10) au-dessus d'openrec-compositor."
 
 [[bin]]
 name = "poc-d3d"
 path = "src/main.rs"
 
 [dependencies]
-openscreen-compositor.workspace = true
+openrec-compositor.workspace = true
 anyhow.workspace = true
 
 # GUI Win32 : Windows-only (le POC ne se compile qu'en no-op ailleurs).

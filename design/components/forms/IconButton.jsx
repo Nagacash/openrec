@@ -1,7 +1,7 @@
 import React from 'react';
 
 /**
- * OpenScreen IconButton — square, icon-only. The workhorse of toolbars,
+ * OpenRec IconButton — square, icon-only. The workhorse of toolbars,
  * the topbar, and floating chrome. Ghost by default; `active` gives the
  * emerald-soft selected look; `tone="danger"` for destructive.
  */

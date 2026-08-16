@@ -4,7 +4,7 @@
 //! `plan_frame`) -> `readback_direct`. Bypass le render-thread de `live.rs`
 //! pour isoler la chaine de rendu elle-meme.
 //!
-//! Opt-in (rend sur GPU) : `OPENSCREEN_LINUX_COMPOSE=1` + la fixture
+//! Opt-in (rend sur GPU) : `OPENREC_LINUX_COMPOSE=1` + la fixture
 //! `crates/fixture/screen.mp4`. Sinon skip (le teardown Vulkan/Mesa segfault a
 //! l'exit apres le rendu -- verifier via la sortie, pas l'exit code).
 
@@ -17,23 +17,23 @@
 
 use std::path::Path;
 
-use openscreen_compositor::compositor::Compositor;
-use openscreen_compositor::config::Cfg;
-use openscreen_compositor::cursor::CursorTrack;
-use openscreen_compositor::d3d::Gpu;
-use openscreen_compositor::pipeline::{
+use openrec_compositor::compositor::Compositor;
+use openrec_compositor::config::Cfg;
+use openrec_compositor::cursor::CursorTrack;
+use openrec_compositor::d3d::Gpu;
+use openrec_compositor::pipeline::{
     run_composited_multi, ClipSource, Decoder, ExportCodec, ExportParams,
 };
-use openscreen_compositor::scene::Scene;
+use openrec_compositor::scene::Scene;
 
 const FIXTURE: &str = "../fixture/screen.mp4";
 const W: u32 = 960;
 const H: u32 = 540;
 
-/// Ecrit un PPM P6 dans `OPENSCREEN_VK_OUT` (defaut `target`) pour inspection.
+/// Ecrit un PPM P6 dans `OPENREC_VK_OUT` (defaut `target`) pour inspection.
 fn write_ppm(name: &str, w: u32, h: u32, rgba: &[u8]) {
     use std::io::Write;
-    let out = std::env::var("OPENSCREEN_VK_OUT").unwrap_or_else(|_| "target".into());
+    let out = std::env::var("OPENREC_VK_OUT").unwrap_or_else(|_| "target".into());
     let _ = std::fs::create_dir_all(&out);
     let path = format!("{out}/{name}.ppm");
     let mut f = std::fs::File::create(&path).expect("create ppm");
@@ -48,8 +48,8 @@ fn write_ppm(name: &str, w: u32, h: u32, rgba: &[u8]) {
 
 #[test]
 fn compose_linux_rend_une_frame() {
-    if std::env::var("OPENSCREEN_LINUX_COMPOSE").is_err() || !Path::new(FIXTURE).is_file() {
-        eprintln!("compose_linux: opt-in (OPENSCREEN_LINUX_COMPOSE=1 + fixture). Skip.");
+    if std::env::var("OPENREC_LINUX_COMPOSE").is_err() || !Path::new(FIXTURE).is_file() {
+        eprintln!("compose_linux: opt-in (OPENREC_LINUX_COMPOSE=1 + fixture). Skip.");
         return;
     }
 
@@ -80,7 +80,7 @@ fn compose_linux_rend_une_frame() {
     println!("compose_linux : {w}x{h} bytes={} mean_R={:.1}", rgba.len(), mean_r);
 
     // PPM P6 pour inspection visuelle.
-    let out = std::env::var("OPENSCREEN_VK_OUT").unwrap_or_else(|_| "target".into());
+    let out = std::env::var("OPENREC_VK_OUT").unwrap_or_else(|_| "target".into());
     let _ = std::fs::create_dir_all(&out);
     let ppm = format!("{out}/compose_linux.ppm");
     {
@@ -158,8 +158,8 @@ fn top_edge_swing(edge: &[Option<u32>]) -> u32 {
 /// casse l'une des trois bornes.
 #[test]
 fn compose_linux_ecran_tilte() {
-    if std::env::var("OPENSCREEN_LINUX_COMPOSE").is_err() || !Path::new(FIXTURE).is_file() {
-        eprintln!("compose_linux tilt: opt-in (OPENSCREEN_LINUX_COMPOSE=1 + fixture). Skip.");
+    if std::env::var("OPENREC_LINUX_COMPOSE").is_err() || !Path::new(FIXTURE).is_file() {
+        eprintln!("compose_linux tilt: opt-in (OPENREC_LINUX_COMPOSE=1 + fixture). Skip.");
         return;
     }
 
@@ -176,7 +176,7 @@ fn compose_linux_ecran_tilte() {
         let render = |json: String| {
             let scene = Scene::from_json(&json).expect("scene json");
             // Le padding transite par les live_params, pas la scene brute.
-            comp.set_live_params(openscreen_compositor::compositor::live_params_from_scene(&scene));
+            comp.set_live_params(openrec_compositor::compositor::live_params_from_scene(&scene));
             comp.set_scene(Some(scene));
             comp.compose_frame(sf, sf, 90.0, &cfg).expect("compose_frame");
             comp.readback_direct().expect("readback_direct")
@@ -234,7 +234,7 @@ fn compose_linux_ecran_tilte() {
 /// ombre, puis on mesure la pente de la bordure de la zone assombrie.
 #[test]
 fn compose_linux_ombre_du_quad_tilte() {
-    if std::env::var("OPENSCREEN_LINUX_COMPOSE").is_err() || !Path::new(FIXTURE).is_file() {
+    if std::env::var("OPENREC_LINUX_COMPOSE").is_err() || !Path::new(FIXTURE).is_file() {
         eprintln!("compose_linux ombre tiltee: opt-in. Skip.");
         return;
     }
@@ -247,7 +247,7 @@ fn compose_linux_ombre_du_quad_tilte() {
         let sf = dec.seek_to(1.0).expect("Decoder::seek_to");
         let render = |json: String, shadow: bool| {
             let scene = Scene::from_json(&json).expect("scene json");
-            comp.set_live_params(openscreen_compositor::compositor::live_params_from_scene(&scene));
+            comp.set_live_params(openrec_compositor::compositor::live_params_from_scene(&scene));
             comp.set_scene(Some(scene));
             let mut cfg = Cfg::c8();
             cfg.shadow = shadow;
@@ -297,7 +297,7 @@ fn compose_linux_ombre_du_quad_tilte() {
 /// mode 13 absent ferait disparaitre le curseur (compte a zero).
 #[test]
 fn compose_linux_curseur_sur_ecran_tilte() {
-    if std::env::var("OPENSCREEN_LINUX_COMPOSE").is_err() || !Path::new(FIXTURE).is_file() {
+    if std::env::var("OPENREC_LINUX_COMPOSE").is_err() || !Path::new(FIXTURE).is_file() {
         eprintln!("compose_linux curseur tilte: opt-in. Skip.");
         return;
     }
@@ -328,7 +328,7 @@ fn compose_linux_curseur_sur_ecran_tilte() {
         let sf = dec.seek_to(1.0).expect("Decoder::seek_to");
         let render = |json: String| {
             let scene = Scene::from_json(&json).expect("scene json");
-            comp.set_live_params(openscreen_compositor::compositor::live_params_from_scene(&scene));
+            comp.set_live_params(openrec_compositor::compositor::live_params_from_scene(&scene));
             comp.set_scene(Some(scene));
             comp.compose_frame(sf, sf, 90.0, &Cfg::c8()).expect("compose_frame");
             comp.readback_direct().expect("readback_direct")
@@ -375,8 +375,8 @@ fn compose_linux_curseur_sur_ecran_tilte() {
 /// PNG) distinct du fond sombre et de l'ecran, pour l'affirmer sans ambiguite.
 #[test]
 fn compose_linux_dessine_le_curseur() {
-    if std::env::var("OPENSCREEN_LINUX_COMPOSE").is_err() || !Path::new(FIXTURE).is_file() {
-        eprintln!("compose_linux curseur: opt-in (OPENSCREEN_LINUX_COMPOSE=1 + fixture). Skip.");
+    if std::env::var("OPENREC_LINUX_COMPOSE").is_err() || !Path::new(FIXTURE).is_file() {
+        eprintln!("compose_linux curseur: opt-in (OPENREC_LINUX_COMPOSE=1 + fixture). Skip.");
         return;
     }
 
@@ -418,7 +418,7 @@ fn compose_linux_dessine_le_curseur() {
         .count();
     println!("compose_linux curseur : {w}x{h} pixels verts={green}");
 
-    let out = std::env::var("OPENSCREEN_VK_OUT").unwrap_or_else(|_| "target".into());
+    let out = std::env::var("OPENREC_VK_OUT").unwrap_or_else(|_| "target".into());
     let _ = std::fs::create_dir_all(&out);
     let ppm = format!("{out}/compose_linux_cursor.ppm");
     {
@@ -441,7 +441,7 @@ fn compose_linux_dessine_le_curseur() {
 /// gris par defaut, pour l'affirmer sans ambiguite.
 #[test]
 fn compose_linux_fond_image() {
-    if std::env::var("OPENSCREEN_LINUX_COMPOSE").is_err() || !Path::new(FIXTURE).is_file() {
+    if std::env::var("OPENREC_LINUX_COMPOSE").is_err() || !Path::new(FIXTURE).is_file() {
         eprintln!("compose_linux fond image: opt-in. Skip.");
         return;
     }
@@ -457,7 +457,7 @@ fn compose_linux_fond_image() {
     let scene = Scene::from_json(&scene_json).expect("scene json");
     // Le padding (et les autres effets) transitent par les live_params, pas la
     // scene brute -> sans ca l'ecran remplit tout le cadre et masque le fond.
-    comp.set_live_params(openscreen_compositor::compositor::live_params_from_scene(&scene));
+    comp.set_live_params(openrec_compositor::compositor::live_params_from_scene(&scene));
     comp.set_scene(Some(scene));
 
     let (w, h, rgba) = unsafe {
@@ -473,7 +473,7 @@ fn compose_linux_fond_image() {
         .count();
     println!("compose_linux fond image : {w}x{h} pixels orange={orange}");
 
-    let out = std::env::var("OPENSCREEN_VK_OUT").unwrap_or_else(|_| "target".into());
+    let out = std::env::var("OPENREC_VK_OUT").unwrap_or_else(|_| "target".into());
     let _ = std::fs::create_dir_all(&out);
     {
         use std::io::Write;
@@ -502,7 +502,7 @@ fn compose_linux_fond_image() {
 /// les images, mais pas forcement dans ce sens-la.
 #[test]
 fn compose_linux_flou_de_velocite_ecran() {
-    if std::env::var("OPENSCREEN_LINUX_COMPOSE").is_err() || !Path::new(FIXTURE).is_file() {
+    if std::env::var("OPENREC_LINUX_COMPOSE").is_err() || !Path::new(FIXTURE).is_file() {
         eprintln!("compose_linux flou de velocite: opt-in. Skip.");
         return;
     }
@@ -585,7 +585,7 @@ fn compose_linux_flou_de_velocite_ecran() {
 /// l'assertion sur le coin haut-gauche (hors boite) le verifie explicitement.
 #[test]
 fn compose_linux_flou_de_velocite_camera() {
-    if std::env::var("OPENSCREEN_LINUX_COMPOSE").is_err() || !Path::new(FIXTURE).is_file() {
+    if std::env::var("OPENREC_LINUX_COMPOSE").is_err() || !Path::new(FIXTURE).is_file() {
         eprintln!("compose_linux flou de velocite camera: opt-in. Skip.");
         return;
     }
@@ -615,7 +615,7 @@ fn compose_linux_flou_de_velocite_camera() {
         let cfg = Cfg::c8();
         let render = |mblur: f32| {
             let scene = Scene::from_json(&scene_of(mblur)).expect("scene json");
-            comp.set_live_params(openscreen_compositor::compositor::live_params_from_scene(&scene));
+            comp.set_live_params(openrec_compositor::compositor::live_params_from_scene(&scene));
             comp.set_scene(Some(scene));
             // frame 126 = t 2,1 s : la camera est a mi-ouverture.
             comp.compose_frame(sf, wf, 126.0, &cfg).expect("compose_frame");
@@ -675,7 +675,7 @@ fn compose_linux_flou_de_velocite_camera() {
 /// serait invisible.
 #[test]
 fn compose_linux_trainee_de_curseur() {
-    if std::env::var("OPENSCREEN_LINUX_COMPOSE").is_err() || !Path::new(FIXTURE).is_file() {
+    if std::env::var("OPENREC_LINUX_COMPOSE").is_err() || !Path::new(FIXTURE).is_file() {
         eprintln!("compose_linux trainee curseur: opt-in. Skip.");
         return;
     }
@@ -718,7 +718,7 @@ fn compose_linux_trainee_de_curseur() {
             let scene = Scene::from_json(&scene_of(mblur)).expect("scene json");
             // `cursor.motionBlur` ET `cursor.size` transitent par les LiveParams,
             // pas par la scene brute : sans ca `plan_cursor` verrait toujours 0.
-            comp.set_live_params(openscreen_compositor::compositor::live_params_from_scene(&scene));
+            comp.set_live_params(openrec_compositor::compositor::live_params_from_scene(&scene));
             comp.set_scene(Some(scene));
             comp.compose_frame(sf, sf, 15.0, &cfg).expect("compose_frame");
             comp.readback_direct().expect("readback_direct").2
@@ -773,8 +773,8 @@ fn compose_linux_trainee_de_curseur() {
 /// contenu est re-validable par ffprobe (cf. la commande dans le run manuel).
 #[test]
 fn export_linux_mp4() {
-    if std::env::var("OPENSCREEN_LINUX_COMPOSE").is_err() || !Path::new(FIXTURE).is_file() {
-        eprintln!("export_linux: opt-in (OPENSCREEN_LINUX_COMPOSE=1 + fixture). Skip.");
+    if std::env::var("OPENREC_LINUX_COMPOSE").is_err() || !Path::new(FIXTURE).is_file() {
+        eprintln!("export_linux: opt-in (OPENREC_LINUX_COMPOSE=1 + fixture). Skip.");
         return;
     }
 
@@ -782,7 +782,7 @@ fn export_linux_mp4() {
     // Petite sortie : l'export est un smoke test, pas un bench.
     let comp = Compositor::new_sized(&gpu, 640, 360).expect("Compositor::new_sized");
 
-    let out = std::env::var("OPENSCREEN_EXPORT_OUT")
+    let out = std::env::var("OPENREC_EXPORT_OUT")
         .unwrap_or_else(|_| std::env::temp_dir().join("os_export_linux.mp4").to_string_lossy().into());
     let clips = vec![ClipSource {
         screen: FIXTURE.to_string(),
@@ -829,7 +829,7 @@ fn export_linux_mp4() {
 /// Opt-in comme les autres tests de ce fichier ; ecrit un PPM a inspecter.
 #[test]
 fn compose_linux_ombre_webcam_ronde_et_texte() {
-    if std::env::var("OPENSCREEN_LINUX_COMPOSE").is_err() || !Path::new(FIXTURE).is_file() {
+    if std::env::var("OPENREC_LINUX_COMPOSE").is_err() || !Path::new(FIXTURE).is_file() {
         eprintln!("compose_linux ombre/webcam/texte: opt-in. Skip.");
         return;
     }
@@ -849,7 +849,7 @@ fn compose_linux_ombre_webcam_ronde_et_texte() {
     let parsed = Scene::from_json(scene_json).expect("scene json");
     // Cf. le commentaire dans compose_linux_forme_webcam_cercle : sans les
     // LiveParams, la scene est parsee et ignoree.
-    comp.set_live_params(openscreen_compositor::compositor::live_params_from_scene(&parsed));
+    comp.set_live_params(openrec_compositor::compositor::live_params_from_scene(&parsed));
     comp.set_scene(Some(parsed));
 
     let (w, h, rgba) = unsafe {
@@ -861,7 +861,7 @@ fn compose_linux_ombre_webcam_ronde_et_texte() {
         comp.readback_direct().expect("readback_direct")
     };
 
-    let out = std::env::var("OPENSCREEN_VK_OUT").unwrap_or_else(|_| "target".into());
+    let out = std::env::var("OPENREC_VK_OUT").unwrap_or_else(|_| "target".into());
     let _ = std::fs::create_dir_all(&out);
     let ppm = format!("{out}/compose_linux_shadow_webcam_text.ppm");
     {
@@ -909,7 +909,7 @@ fn compose_linux_ombre_webcam_ronde_et_texte() {
 /// remplit entierement : le taux de remplissage separe les deux sans ambiguite.
 #[test]
 fn compose_linux_forme_webcam_cercle() {
-    if std::env::var("OPENSCREEN_LINUX_COMPOSE").is_err() || !Path::new(FIXTURE).is_file() {
+    if std::env::var("OPENREC_LINUX_COMPOSE").is_err() || !Path::new(FIXTURE).is_file() {
         eprintln!("compose_linux forme webcam: opt-in. Skip.");
         return;
     }
@@ -936,7 +936,7 @@ fn compose_linux_forme_webcam_cercle() {
         // la forme webcam, le padding et les effets y transitent. Sans cette
         // ligne la scene est parsee mais ignoree, et le test mesure la forme par
         // defaut ("rounded") en croyant mesurer celle qu'il a demandee.
-        comp.set_live_params(openscreen_compositor::compositor::live_params_from_scene(&parsed));
+        comp.set_live_params(openrec_compositor::compositor::live_params_from_scene(&parsed));
         comp.set_scene(Some(parsed));
         unsafe {
             let sf = screen.seek_to(1.0).expect("seek screen");
@@ -1009,7 +1009,7 @@ fn compose_linux_forme_webcam_cercle() {
 /// de verifier qu'il n'y en a aucune.
 #[test]
 fn compose_linux_sans_camera_ne_dessine_pas_de_vignette() {
-    if std::env::var("OPENSCREEN_LINUX_COMPOSE").is_err() || !Path::new(FIXTURE).is_file() {
+    if std::env::var("OPENREC_LINUX_COMPOSE").is_err() || !Path::new(FIXTURE).is_file() {
         eprintln!("compose_linux sans camera: opt-in. Skip.");
         return;
     }
@@ -1022,7 +1022,7 @@ fn compose_linux_sans_camera_ne_dessine_pas_de_vignette() {
 
     let mut render = |has_webcam: bool| -> Vec<u8> {
         let parsed = Scene::from_json(scene_json).expect("scene json");
-        let mut lp = openscreen_compositor::compositor::live_params_from_scene(&parsed);
+        let mut lp = openrec_compositor::compositor::live_params_from_scene(&parsed);
         lp.has_webcam = has_webcam;
         comp.set_live_params(lp);
         comp.set_scene(Some(parsed));
@@ -1066,7 +1066,7 @@ fn compose_linux_sans_camera_ne_dessine_pas_de_vignette() {
             r#""preset":"no-webcam""#,
         ))
         .expect("scene json");
-        comp.set_live_params(openscreen_compositor::compositor::live_params_from_scene(&parsed));
+        comp.set_live_params(openrec_compositor::compositor::live_params_from_scene(&parsed));
         comp.set_scene(Some(parsed));
         unsafe {
             let sf = screen.seek_to(1.0).expect("seek screen");
@@ -1150,7 +1150,7 @@ fn bbox(px: &[usize], w: u32) -> (u32, u32, u32, u32) {
 /// remplir la moitie de leur boite.
 #[test]
 fn compose_linux_annotation_fleche() {
-    if std::env::var("OPENSCREEN_LINUX_COMPOSE").is_err() || !Path::new(FIXTURE).is_file() {
+    if std::env::var("OPENREC_LINUX_COMPOSE").is_err() || !Path::new(FIXTURE).is_file() {
         eprintln!("compose_linux annotation fleche: opt-in. Skip.");
         return;
     }
@@ -1162,7 +1162,7 @@ fn compose_linux_annotation_fleche() {
         let parsed = Scene::from_json(&annotation_scene(annotations)).expect("scene json");
         // Cf. compose_linux_forme_webcam_cercle : sans les LiveParams la scene
         // est parsee puis ignoree, et le test mesure les valeurs par defaut.
-        comp.set_live_params(openscreen_compositor::compositor::live_params_from_scene(&parsed));
+        comp.set_live_params(openrec_compositor::compositor::live_params_from_scene(&parsed));
         comp.set_scene(Some(parsed));
         // Le 3e argument de `compose_frame` est un NUMERO DE FRAME (source_t =
         // frame / 60), pas des secondes. `set_timeline_time` fixe directement
@@ -1228,7 +1228,7 @@ fn compose_linux_annotation_fleche() {
 /// DISPARU — c'est la seule propriete qui rend l'annotation utile.
 #[test]
 fn compose_linux_annotation_flou_et_mosaique() {
-    if std::env::var("OPENSCREEN_LINUX_COMPOSE").is_err() || !Path::new(FIXTURE).is_file() {
+    if std::env::var("OPENREC_LINUX_COMPOSE").is_err() || !Path::new(FIXTURE).is_file() {
         eprintln!("compose_linux annotation flou: opt-in. Skip.");
         return;
     }
@@ -1238,7 +1238,7 @@ fn compose_linux_annotation_flou_et_mosaique() {
 
     let mut render = |annotations: &str| -> Vec<u8> {
         let parsed = Scene::from_json(&annotation_scene(annotations)).expect("scene json");
-        comp.set_live_params(openscreen_compositor::compositor::live_params_from_scene(&parsed));
+        comp.set_live_params(openrec_compositor::compositor::live_params_from_scene(&parsed));
         comp.set_scene(Some(parsed));
         // Le 3e argument de `compose_frame` est un NUMERO DE FRAME (source_t =
         // frame / 60), pas des secondes. `set_timeline_time` fixe directement
@@ -1330,13 +1330,13 @@ fn compose_linux_annotation_flou_et_mosaique() {
 /// — il doit rester 4:1, quelle que soit la boite.
 #[test]
 fn compose_linux_annotation_image() {
-    if std::env::var("OPENSCREEN_LINUX_COMPOSE").is_err() || !Path::new(FIXTURE).is_file() {
+    if std::env::var("OPENREC_LINUX_COMPOSE").is_err() || !Path::new(FIXTURE).is_file() {
         eprintln!("compose_linux annotation image: opt-in. Skip.");
         return;
     }
     // Aplat magenta 400x100 : un rapport 4:1 franc, et une couleur que la
     // fixture ne porte pas.
-    let img_path = std::env::temp_dir().join("openscreen-annotation-4x1.png");
+    let img_path = std::env::temp_dir().join("openrec-annotation-4x1.png");
     let img = image::RgbaImage::from_pixel(400, 100, image::Rgba([255, 0, 255, 255]));
     img.save(&img_path).expect("ecrire le png de test");
 
@@ -1346,7 +1346,7 @@ fn compose_linux_annotation_image() {
 
     let mut render = |annotations: &str| -> Vec<u8> {
         let parsed = Scene::from_json(&annotation_scene(annotations)).expect("scene json");
-        comp.set_live_params(openscreen_compositor::compositor::live_params_from_scene(&parsed));
+        comp.set_live_params(openrec_compositor::compositor::live_params_from_scene(&parsed));
         comp.set_scene(Some(parsed));
         // Le 3e argument de `compose_frame` est un NUMERO DE FRAME (source_t =
         // frame / 60), pas des secondes. `set_timeline_time` fixe directement
@@ -1404,7 +1404,7 @@ fn compose_linux_annotation_image() {
 /// deux rendus est donc l'animation elle-meme.
 #[test]
 fn compose_linux_animation_texte() {
-    if std::env::var("OPENSCREEN_LINUX_COMPOSE").is_err() || !Path::new(FIXTURE).is_file() {
+    if std::env::var("OPENREC_LINUX_COMPOSE").is_err() || !Path::new(FIXTURE).is_file() {
         eprintln!("compose_linux animation texte: opt-in. Skip.");
         return;
     }
@@ -1414,7 +1414,7 @@ fn compose_linux_animation_texte() {
 
     let mut render = |annotations: &str| -> Vec<u8> {
         let parsed = Scene::from_json(&annotation_scene(annotations)).expect("scene json");
-        comp.set_live_params(openscreen_compositor::compositor::live_params_from_scene(&parsed));
+        comp.set_live_params(openrec_compositor::compositor::live_params_from_scene(&parsed));
         comp.set_scene(Some(parsed));
         // Le 3e argument de `compose_frame` est un NUMERO DE FRAME (source_t =
         // frame / 60), pas des secondes. `set_timeline_time` fixe directement

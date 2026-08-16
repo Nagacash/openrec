@@ -963,7 +963,7 @@ fn map_to_indices_dithered(
 // Tests.
 // =====================================================================
 //
-// These tests run under `cargo test -p openscreen-compositor` and
+// These tests run under `cargo test -p openrec-compositor` and
 // don't need a GPU — they exercise the GIF89a writer, the LZW
 // encoder, the median-cut palette, the nearest-color mapping, and
 // the Floyd-Steinberg dither. The full `export_gif` pipeline

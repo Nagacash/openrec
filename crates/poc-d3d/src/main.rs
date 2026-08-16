@@ -1,5 +1,5 @@
 //! Binaire du POC de mesure : GUI Win32 de preview/export, harnais de bench fps, mode live.
-//! Tout le rendu vient d'`openscreen-compositor` — ce crate ne fait que le piloter et le mesurer.
+//! Tout le rendu vient d'`openrec-compositor` — ce crate ne fait que le piloter et le mesurer.
 
 // GUI Win32 + bench encodeurs Windows : Windows-only. Sur les autres plateformes
 // le POC n'a rien a piloter (le rendu/bench passe par les tests du crate compositor).
