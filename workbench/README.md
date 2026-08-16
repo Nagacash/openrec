@@ -1,6 +1,6 @@
 # Workbench — banc d'essai headless de l'agent d'édition
 
-Fait tourner l'agent LLM d'OpenScreen **sans interface graphique**, pour itérer vite sur les
+Fait tourner l'agent LLM d'OpenRec **sans interface graphique**, pour itérer vite sur les
 prompts et sur le contexte fourni au modèle.
 
 Deux axes sont notés séparément, jamais moyennés ensemble :
@@ -51,9 +51,9 @@ Elle vient **exclusivement** de `.env.workbench` à la racine du worktree (gitig
 par `node --env-file`. Aucun parseur maison, jamais `dotenv`.
 
 ```
-OPENSCREEN_WORKBENCH_API_KEY=…
-OPENSCREEN_WORKBENCH_BASE_URL=…
-OPENSCREEN_WORKBENCH_MODEL=…
+OPENREC_WORKBENCH_API_KEY=…
+OPENREC_WORKBENCH_BASE_URL=…
+OPENREC_WORKBENCH_MODEL=…
 ```
 
 `workbench/lib/env.ts` est le **seul** fichier autorisé à nommer ces variables. Si l'une manque,

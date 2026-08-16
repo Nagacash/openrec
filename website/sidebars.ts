@@ -22,12 +22,12 @@ const sidebars: SidebarsConfig = {
 				{
 					type: "link",
 					label: "Contributing",
-					href: "https://github.com/getopenscreen/openscreen/blob/main/CONTRIBUTING.md",
+					href: "https://github.com/Nagacash/openrec/blob/main/CONTRIBUTING.md",
 				},
 				{
 					type: "link",
 					label: "Roadmap",
-					href: "https://github.com/getopenscreen/openscreen/blob/main/ROADMAP.md",
+					href: "https://github.com/Nagacash/openrec/blob/main/ROADMAP.md",
 				},
 			],
 		},

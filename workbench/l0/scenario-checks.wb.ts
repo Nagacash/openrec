@@ -180,7 +180,7 @@ describe("wizard-enhance / beh.sandbox", () => {
 		if (!verdict.ok) expect(verdict.evidence).toContain("grep");
 	});
 
-	it("leaves an OpenScreen tool alone", () => {
+	it("leaves an OpenRec tool alone", () => {
 		expect(
 			check.check(contextFor(scenario, { answer: "…", calls: [{ name: "getTranscript" }] })).ok,
 		).toBe(true);

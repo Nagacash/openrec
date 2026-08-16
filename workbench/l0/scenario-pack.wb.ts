@@ -36,7 +36,7 @@ import {
 	statedMultipliers,
 } from "../lib/language";
 import { buildEvalContext } from "../lib/oracles";
-import { OPENSCREEN_TOOLS, PHANTOM_TOOLS } from "../lib/prompts";
+import { OPENREC_TOOLS, PHANTOM_TOOLS } from "../lib/prompts";
 import type { Check, EvalContext, Scenario } from "../lib/scenario";
 import type { WireCall, WireTranscript } from "../lib/wire";
 import { allScenarios, getScenario } from "../scenarios/registry";
@@ -628,7 +628,7 @@ describe("les demoScripts ne peuvent nommer qu'un outil qui existe", () => {
 	// Les 8 fantômes restent autorisés : `cursor-question` et `wizard-enhance-bare`
 	// rejouent des tours live de 2026-07-31 où le modèle appelait `ls`/`glob`, et
 	// c'est précisément ce que ces demos doivent continuer à exercer.
-	const KNOWN = new Set<string>([...OPENSCREEN_TOOLS, ...PHANTOM_TOOLS]);
+	const KNOWN = new Set<string>([...OPENREC_TOOLS, ...PHANTOM_TOOLS]);
 
 	for (const scenario of allScenarios()) {
 		it(`${scenario.id} n'appelle que des noms connus`, () => {

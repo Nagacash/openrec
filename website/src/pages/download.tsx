@@ -16,16 +16,16 @@ import { type AssetKind, findAsset, formatSize, type LatestRelease } from "../li
 import { jsonLd, SOFTWARE_ID, softwareApplicationLd, WEBSITE_ID } from "../lib/structured-data";
 import styles from "./download.module.css";
 
-const REPO_URL = "https://github.com/getopenscreen/openscreen";
+const REPO_URL = "https://github.com/Nagacash/openrec";
 const RELEASES_URL = `${REPO_URL}/releases`;
 const LATEST_URL = `${RELEASES_URL}/latest`;
-const PAGE_URL = "https://getopenscreen.com/download/";
+const PAGE_URL = "https://nagacodex.cloud/download/";
 
 // Shared by <Layout> and the WebPage node below so the two cannot drift: a
 // structured-data description that contradicts the meta one is worse than none.
 const PAGE_TITLE = "Download for Windows, macOS & Linux";
 const PAGE_DESCRIPTION =
-	"Download OpenScreen free for Windows, macOS, and Linux — .dmg, .exe, .deb, .rpm, .pacman, AppImage, and a Nix flake. Open source, no account, no watermark.";
+	"Download OpenRec free for Windows, macOS, and Linux — .dmg, .exe, .deb, .rpm, .pacman, AppImage, and a Nix flake. Open source, no account, no watermark.";
 
 type PlatformSpec = {
 	id: string;
@@ -74,7 +74,7 @@ const PLATFORMS: PlatformSpec[] = [
  * entity itself under its canonical @id. Emitting the SoftwareApplication here
  * as well as on the landing page is not duplication — the shared @id makes both
  * copies one entity — and it is what lets this page, the one we want ranking for
- * "openscreen download", carry the app's category, platforms, price, and version.
+ * "openrec download", carry the app's category, platforms, price, and version.
  */
 function downloadPageLd(release: LatestRelease): string {
 	return jsonLd(
@@ -108,7 +108,7 @@ export default function DownloadPage() {
 						{release ? `${release.tag} · MIT licensed` : "MIT licensed · free forever"}
 					</span>
 					<Heading as="h1" className={styles.title}>
-						Download OpenScreen
+						Download OpenRec
 					</Heading>
 					<p className={styles.tagline}>
 						A free, open-source screen recorder and video editor. No account, no watermark, no
@@ -163,7 +163,7 @@ export default function DownloadPage() {
 							</div>
 							<pre className={styles.code}>
 								<span className={styles.accentText}>xattr</span> -rd com.apple.quarantine
-								/Applications/Openscreen.app
+								/Applications/Openrec.app
 							</pre>
 							<p className={styles.panelFoot}>
 								Give your terminal Full Disk Access in System Settings first, then run it.
@@ -176,7 +176,7 @@ export default function DownloadPage() {
 								<span>Nix: run it without installing</span>
 							</div>
 							<pre className={styles.code}>
-								<span className={styles.accentText}>nix</span> run github:getopenscreen/openscreen
+								<span className={styles.accentText}>nix</span> run github:Nagacash/openrec
 							</pre>
 							<p className={styles.panelFoot}>
 								Per-distribution steps are in the{" "}

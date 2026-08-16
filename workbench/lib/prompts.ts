@@ -11,7 +11,7 @@
 export const AI_ENHANCE_PROMPT =
 	"Automatically enhance this recording: (1) add smart zoom-ins on the moments where the cursor dwells or interacts with the UI, each focused on the cursor's location; and (2) cut the dead time — long pauses, silences, and idle stretches where nothing happens — to keep the pacing tight and natural. Apply the edits directly to the timeline.";
 
-/** The 19 tools OpenScreen builds in `deep-agent/service.ts` (`buildTools`).
+/** The 19 tools OpenRec builds in `deep-agent/service.ts` (`buildTools`).
  * `moveClip` reordering a clip had NO tool while the system prompt promised one,
  * which is what pushed the model onto `replaceTimeline` (D-DESTRUCT).
  * `getCursorTrack` is the newest: the app records pointer telemetry and loads it
@@ -25,7 +25,7 @@ export const AI_ENHANCE_PROMPT =
  * counts a call LangChain refused, so `cursor-question` and `cursor-blind` both
  * scored 1.0 on turns where nothing was ever read. Every name here is frozen
  * against the real surface by `l1/end-to-end.wb.ts`. */
-export const OPENSCREEN_TOOLS = [
+export const OPENREC_TOOLS = [
 	"getCurrentDocument",
 	"getTranscript",
 	"getCursorTrack",
@@ -75,7 +75,7 @@ export const PHANTOM_TOOLS = [
 
 /** Exactly our 19, and nothing else. A change here means the agent's context
  * changed shape — which is the one thing a report cannot be compared across. */
-export const EXPECTED_TOOL_COUNT = OPENSCREEN_TOOLS.length;
+export const EXPECTED_TOOL_COUNT = OPENREC_TOOLS.length;
 
 const PHANTOM_SET: ReadonlySet<string> = new Set<string>(PHANTOM_TOOLS);
 

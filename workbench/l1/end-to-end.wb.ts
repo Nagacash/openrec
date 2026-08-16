@@ -4,7 +4,7 @@
 //
 // This is the layer that proves the machinery works end to end, and the only
 // offline layer where D3 is observable at all: `allowAgentEdits` lives in
-// `chat-service.ts`, one storey above `invokeOpenScreenAgent`, so a test that
+// `chat-service.ts`, one storey above `invokeOpenRecAgent`, so a test that
 // starts at the agent cannot see it. (It used to be read there and thrown away
 // with `void editsAllowed;`; it now reaches both the prompt and the executor,
 // and both halves are asserted below.)
@@ -13,7 +13,7 @@ import { describe, expect, it } from "vitest";
 import { SYSTEM_PROMPT } from "../../electron/ai-edition/deep-agent/service";
 import { singleClip, twoClipsWithTrim } from "../lib/fixtures";
 import { fakeCursorReader, runScenario } from "../lib/harness";
-import { EXPECTED_TOOL_COUNT, OPENSCREEN_TOOLS, PHANTOM_TOOLS } from "../lib/prompts";
+import { EXPECTED_TOOL_COUNT, OPENREC_TOOLS, PHANTOM_TOOLS } from "../lib/prompts";
 import { buildReport, fingerprintOf, renderMarkdown, summarizeScenario } from "../lib/report";
 import { runRepetition, runScenarioReps } from "../lib/runner";
 import { allScenarios, getScenario } from "../scenarios/registry";
@@ -27,7 +27,7 @@ describe("the context the model actually receives", () => {
 			script: [{ kind: "text", text: "hi" }],
 		});
 		expect(run.wire.toolNames).toHaveLength(EXPECTED_TOOL_COUNT);
-		for (const name of OPENSCREEN_TOOLS) expect(run.wire.toolNames).toContain(name);
+		for (const name of OPENREC_TOOLS) expect(run.wire.toolNames).toContain(name);
 		// D1's mechanical cause was `createDeepAgent` handing the model eight
 		// filesystem/todo/sub-agent tools over an EMPTY in-memory backend, which it
 		// then mistook for the project. The surface is the fix; this is its lock.

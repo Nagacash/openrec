@@ -1,8 +1,8 @@
 /**
- * OpenScreen docs site — global theme.
+ * OpenRec docs site — global theme.
  *
- * Tokens and light/dark values are lifted verbatim from the OpenScreen
- * Design System ("OpenScreen Docs Site.dc.html", claude.ai/design) —
+ * Tokens and light/dark values are lifted verbatim from the OpenRec
+ * Design System ("OpenRec Docs Site.dc.html", claude.ai/design) —
  * same --os-* names, same values, including its light-theme token swap.
  * Infima's variables are retargeted at --os-* instead of layering a
  * separate override on top, so the whole site — navbar, sidebar, TOC,
@@ -144,7 +144,7 @@ body {
 }
 
 /* ---- navbar ----
-   Matches "OpenScreen Docs Site.dc.html" header 1:1: 60px height,
+   Matches "OpenRec Docs Site.dc.html" header 1:1: 60px height,
    28px side padding, 18px item gap, divider after the brand lockup,
    muted secondary nav links, a bordered icon-box theme toggle, a
    bordered GitHub pill, and a filled Download pill — in that order. */
@@ -397,7 +397,7 @@ body {
 
 /* ===================================================================
    Docs layout — sidebar / article / TOC restyled after the
-   OpenScreen Design System's docs screen: rounded active states,
+   OpenRec Design System's docs screen: rounded active states,
    quiet borders, monospace kickers, borderless "fact card" tables.
    =================================================================== */
 

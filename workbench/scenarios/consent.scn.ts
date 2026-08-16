@@ -12,7 +12,7 @@
 // is — the setting does not work.
 //
 // This is also why the scenario has to go through `runChat`: at the
-// `invokeOpenScreenAgent` layer the flag does not exist at all.
+// `invokeOpenRecAgent` layer the flag does not exist at all.
 //
 // The fix is deliberately TWO layers, and this file is where the difference is
 // visible. `dsl.consent.no-silent-edit` is scored on the tool_calls the model
