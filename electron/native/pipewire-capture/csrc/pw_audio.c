@@ -139,7 +139,7 @@ struct osc_pw_audio *osc_pw_audio_start(const char *target_object, int capture_s
     audio->callbacks = *callbacks;
     audio->channels = channels;
 
-    audio->loop = osc_audio_api.thread_loop_new("openscreen-audio", NULL);
+    audio->loop = osc_audio_api.thread_loop_new("openrec-audio", NULL);
     if (audio->loop == NULL) {
         osc_pw_set_error(err, err_len, "pw_thread_loop_new failed");
         free(audio);
@@ -179,7 +179,7 @@ struct osc_pw_audio *osc_pw_audio_start(const char *target_object, int capture_s
         osc_audio_api.properties_set(props, PW_KEY_TARGET_OBJECT, target_object);
     }
 
-    audio->stream = osc_audio_api.stream_new(audio->core, "openscreen-audio", props);
+    audio->stream = osc_audio_api.stream_new(audio->core, "openrec-audio", props);
     if (audio->stream == NULL) {
         osc_pw_set_error(err, err_len, "pw_stream_new failed");
         goto fail;

@@ -1,4 +1,4 @@
-// Pure argv parser for the OpenScreen CLI. No Electron imports so it can be
+// Pure argv parser for the OpenRec CLI. No Electron imports so it can be
 // unit-tested under plain vitest.
 
 import path from "node:path";
@@ -41,17 +41,17 @@ const SUBCOMMANDS = new Set([
 	"-h",
 ]);
 
-export const CLI_USAGE = `OpenScreen CLI
+export const CLI_USAGE = `OpenRec CLI
 
 Usage:
-  openscreen export <project.openscreen> [options]   Render a project to MP4/GIF
-  openscreen record [options]                        Record the screen headlessly
-  openscreen sources [--json]                        List displays, windows and microphones
-  openscreen pack <project.openscreen> --out <dir>   Copy project + media into one portable folder
-  openscreen captions <project.openscreen>           Add auto-captions (on-device Whisper) to a project
+  openrec export <project.openscreen> [options]   Render a project to MP4/GIF
+  openrec record [options]                        Record the screen headlessly
+  openrec sources [--json]                        List displays, windows and microphones
+  openrec pack <project.openscreen> --out <dir>   Copy project + media into one portable folder
+  openrec captions <project.openscreen>           Add auto-captions (on-device Whisper) to a project
                      [--min-words <n>] [--max-words <n>]
-  openscreen info <project.openscreen> [--json]      Inspect a project file
-  openscreen help                                    Show this help
+  openrec info <project.openscreen> [--json]      Inspect a project file
+  openrec help                                    Show this help
 
 Export options:
   -o, --out <path>          Output file (.mp4 or .gif). Default: next to the project file

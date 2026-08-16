@@ -31,7 +31,7 @@ interface CliOutput {
 	progress(p: CliProgressEvent): void;
 }
 
-// stdout/stderr may be a closed pipe (`openscreen export | head`); writes must
+// stdout/stderr may be a closed pipe (`openrec export | head`); writes must
 // never take the process down — Electron would show a GUI error dialog.
 function safeWrite(stream: NodeJS.WriteStream, text: string): void {
 	try {
@@ -244,7 +244,7 @@ export function runCli(command: CliCommand): void {
 		};
 	}
 
-	// A consumer closing the pipe (`openscreen export | head`) must not crash the
+	// A consumer closing the pipe (`openrec export | head`) must not crash the
 	// process, and main-process exceptions must never surface as Electron's GUI
 	// error dialog — report on stderr and exit non-zero instead.
 	const ignoreStreamError = () => {

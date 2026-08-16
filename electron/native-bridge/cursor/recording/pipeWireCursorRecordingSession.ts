@@ -35,7 +35,7 @@ import type { CursorRecordingSession } from "./session";
  * is the honest outcome: no cursor file beats a file full of {0,0}.
  */
 
-const HELPER_NAME = "openscreen-pipewire-helper";
+const HELPER_NAME = "openrec-pipewire-helper";
 const READY_TIMEOUT_MS = 5_000;
 const STOP_GRACE_MS = 500;
 
@@ -50,7 +50,7 @@ function platformArchTag() {
 }
 
 function helperCandidates() {
-	const envPath = process.env.OPENSCREEN_LINUX_CURSOR_HELPER_EXE?.trim();
+	const envPath = process.env.OPENREC_LINUX_CURSOR_HELPER_EXE?.trim();
 	const appRoot = process.env.APP_ROOT ? path.resolve(process.env.APP_ROOT) : process.cwd();
 	const archTag = platformArchTag();
 	const resourceRoot =

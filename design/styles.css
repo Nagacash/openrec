@@ -1,10 +1,10 @@
 /* ============================================================
-   OpenScreen Design System — global entry point.
+   OpenRec Design System — global entry point.
    Consumers link THIS file. It is a manifest of @imports only;
    never add rules here. Everything reachable from these imports
    (tokens + @font-face + Google font @imports) ships to
    consumers and is indexed by the compiler.
-   Source of truth: getopenscreen/openscreen (src/index.css).
+   Source of truth: Nagacash/openrec (src/index.css).
    ============================================================ */
 
 @import url("./tokens/base.css");

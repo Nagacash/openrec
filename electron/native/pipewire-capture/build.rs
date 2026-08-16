@@ -41,7 +41,7 @@ fn build_pipewire_shim(root: &Path) {
         .include(root.join("csrc"))
         .flag_if_supported("-std=gnu11")
         .warnings(true)
-        .compile("openscreen_pw_shim");
+        .compile("openrec_pw_shim");
 
     for source in sources {
         println!("cargo:rerun-if-changed={}", root.join(source).display());
@@ -68,7 +68,7 @@ fn build_pipewire_shim(root: &Path) {
 /// Twin of `freestanding_header_args()` in crates/compositor/build.rs. Both live in
 /// build.rs rather than in the npm build scripts so that a bare `cargo build` works
 /// too — scripts/build-linux-compositor-addon.mjs used to carry a copy of this, and
-/// `cargo check -p openscreen-compositor` stayed broken for as long as it did.
+/// `cargo check -p openrec-compositor` stayed broken for as long as it did.
 fn freestanding_header_args() -> Vec<String> {
     if let Ok(extra) = std::env::var("BINDGEN_EXTRA_CLANG_ARGS") {
         // Already configured by the caller; bindgen picks that up on its own.

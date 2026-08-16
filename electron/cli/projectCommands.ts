@@ -1,5 +1,5 @@
 // The two CLI commands that only touch the project file and its media:
-// `openscreen pack` and `openscreen info`. They live outside cliMain.ts so they
+// `openrec pack` and `openrec info`. They live outside cliMain.ts so they
 // carry no `electron` import and stay unit-testable — the caller passes the
 // writer, so nothing here knows about process.stdout either.
 

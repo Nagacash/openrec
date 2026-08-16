@@ -50,7 +50,7 @@ import {
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-// CLI mode: `openscreen export|record|info|help ...` runs headless without
+// CLI mode: `openrec export|record|info|help ...` runs headless without
 // HUD/tray/menu. Parsed before any GUI side effects; see electron/cli/.
 const cliCommand = parseCliArgs(process.argv, app.isPackaged ? 1 : 2);
 
@@ -123,7 +123,7 @@ const isMac = process.platform === "darwin";
 const trayIconSize = isMac ? 16 : 24;
 
 // Tray Icons
-const defaultTrayIcon = getTrayIcon("openscreen.png", trayIconSize);
+const defaultTrayIcon = getTrayIcon("openrec.png", trayIconSize);
 const recordingTrayIcon = getTrayIcon("rec-button.png", trayIconSize);
 
 function createWindow() {
@@ -147,7 +147,7 @@ function showMainWindow() {
 	createWindow();
 }
 
-// CLI runs skip the single-instance lock so `openscreen export/record` works
+// CLI runs skip the single-instance lock so `openrec export/record` works
 // while the GUI app is open (they share nothing but the recordings directory).
 const hasSingleInstanceLock = cliCommand ? false : app.requestSingleInstanceLock();
 
@@ -699,7 +699,7 @@ const appReady = !cliCommand && hasSingleInstanceLock ? app.whenReady() : null;
 appReady?.then(async () => {
 	if (isDiagnosticModeEnabled()) {
 		mainLogBuffer.install();
-		console.info("[diagnostic] OPENSCREEN_DIAGNOSTIC=1, capturing console.* into ring buffer");
+		console.info("[diagnostic] OPENREC_DIAGNOSTIC=1, capturing console.* into ring buffer");
 	}
 
 	// Force "regular" activation policy so the Dock icon appears. The HUD overlay

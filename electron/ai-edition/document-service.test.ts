@@ -8,7 +8,7 @@ import { registerMediaLinks } from "../media/mediaLinksRegistry";
 import { DocumentNotFoundError, DocumentService, ProjectFileError } from "./document-service";
 
 async function makeTempDir(): Promise<string> {
-	const base = await fs.mkdtemp(path.join(os.tmpdir(), "openscreen-ai-edition-"));
+	const base = await fs.mkdtemp(path.join(os.tmpdir(), "openrec-ai-edition-"));
 	return base;
 }
 
@@ -228,9 +228,9 @@ describe("DocumentService", () => {
 		it("migrates a legacy .axcut project to .openscreen on access", async () => {
 			// A project written by an older build: same document bytes, `.axcut` name.
 			const created = await service.createProject("Legacy");
-			const openscreenPath = path.join(tempDir, `${created.project.id}.openscreen`);
+			const openrecPath = path.join(tempDir, `${created.project.id}.openscreen`);
 			const axcutPath = path.join(tempDir, `${created.project.id}.axcut`);
-			await fs.rename(openscreenPath, axcutPath);
+			await fs.rename(openrecPath, axcutPath);
 
 			// A fresh service (new process) must still surface and load it, renaming
 			// the file across in the process.
@@ -241,7 +241,7 @@ describe("DocumentService", () => {
 				project: { id: created.project.id, title: "Legacy" },
 			});
 			await expect(fs.access(axcutPath)).rejects.toBeTruthy();
-			await expect(fs.access(openscreenPath)).resolves.toBeUndefined();
+			await expect(fs.access(openrecPath)).resolves.toBeUndefined();
 		});
 	});
 

@@ -7,8 +7,8 @@
  * sees it.
  */
 
-#ifndef OPENSCREEN_PW_INTERNAL_H
-#define OPENSCREEN_PW_INTERNAL_H
+#ifndef OPENREC_PW_INTERNAL_H
+#define OPENREC_PW_INTERNAL_H
 
 #include <stdarg.h>
 #include <stddef.h>
@@ -63,4 +63,4 @@ extern struct osc_pw_audio_api osc_audio_api;
 /* Shared so both files report failures in the same shape. */
 void osc_pw_set_error(char *err, size_t err_len, const char *format, ...);
 
-#endif /* OPENSCREEN_PW_INTERNAL_H */
+#endif /* OPENREC_PW_INTERNAL_H */

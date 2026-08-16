@@ -32,12 +32,12 @@ import {
 	anthropicCachingMiddleware,
 	buildSystemPrompt,
 	buildTools,
-	type OpenScreenAgentSink,
+	type OpenRecAgentSink,
 	SYSTEM_PROMPT,
 	TOOL_DESCRIPTIONS,
 } from "./service";
 
-const OPENSCREEN_TOOLS = [
+const OPENREC_TOOLS = [
 	"getCurrentDocument",
 	"getTranscript",
 	"getCursorTrack",
@@ -158,7 +158,7 @@ interface SinkEvent {
 	summary?: string;
 }
 
-function recordingSink(): { sink: OpenScreenAgentSink; events: SinkEvent[] } {
+function recordingSink(): { sink: OpenRecAgentSink; events: SinkEvent[] } {
 	const events: SinkEvent[] = [];
 	return {
 		events,
@@ -191,9 +191,9 @@ function toolsFor(document: AxcutDocument) {
 }
 
 describe("the tool surface handed to the model", () => {
-	it("is exactly OpenScreen's 21 tools", () => {
+	it("is exactly OpenRec's 21 tools", () => {
 		const { tools } = toolsFor(fixtureDocument());
-		expect(tools.map((t) => t.name)).toEqual(OPENSCREEN_TOOLS);
+		expect(tools.map((t) => t.name)).toEqual(OPENREC_TOOLS);
 	});
 
 	it("carries none of the tools deepagents used to inject", () => {
@@ -247,7 +247,7 @@ describe("prompt caching on the Anthropic-wire providers", () => {
 });
 
 describe("the sink announces each call exactly once, with the real verdict", () => {
-	for (const name of OPENSCREEN_TOOLS) {
+	for (const name of OPENREC_TOOLS) {
 		it(`${name}: one start, one end, ok from the executor`, async () => {
 			const document = fixtureDocument();
 			const args = ARGS[name];
@@ -269,7 +269,7 @@ describe("the sink announces each call exactly once, with the real verdict", () 
 
 	it("covers both verdicts, so a sink hard-coding ok:true could not pass", () => {
 		const document = fixtureDocument();
-		const verdicts = OPENSCREEN_TOOLS.map(
+		const verdicts = OPENREC_TOOLS.map(
 			(name) => executeAgentTool(document, name, JSON.stringify(ARGS[name])).ok,
 		);
 		expect(verdicts).toContain(true);
@@ -355,13 +355,13 @@ describe("one description of the tools, not two", () => {
 
 	it("the mutating flag production reads matches the tools that return a document", () => {
 		const document = fixtureDocument();
-		for (const name of OPENSCREEN_TOOLS) {
+		for (const name of OPENREC_TOOLS) {
 			const result = executeAgentTool(document, name, JSON.stringify(ARGS[name]));
 			// A read must never produce a document; a write that succeeded must.
 			if (!isMutatingTool(name)) expect(result.document, `${name} wrote`).toBeUndefined();
 			else if (result.ok) expect(result.document, `${name} returned nothing`).toBeDefined();
 		}
-		expect(OPENSCREEN_TOOLS.filter((n) => !isMutatingTool(n))).toEqual([
+		expect(OPENREC_TOOLS.filter((n) => !isMutatingTool(n))).toEqual([
 			"getCurrentDocument",
 			"getTranscript",
 			"getCursorTrack",
@@ -422,7 +422,7 @@ describe("the tools when the user has turned project edits off", () => {
 	it("still builds all 21 — the model has to be able to NAME the edit", () => {
 		const { sink } = recordingSink();
 		const tools: BuiltTool[] = buildTools({ current: fixtureDocument() }, sink, false);
-		expect(tools.map((t) => t.name)).toEqual(OPENSCREEN_TOOLS);
+		expect(tools.map((t) => t.name)).toEqual(OPENREC_TOOLS);
 	});
 
 	it("refuses every write through the tool, and the sink says so", async () => {
@@ -431,7 +431,7 @@ describe("the tools when the user has turned project edits off", () => {
 		const tools: BuiltTool[] = buildTools(holder, sink, false);
 		const before = holder.current;
 
-		for (const name of OPENSCREEN_TOOLS.filter((n) => isMutatingTool(n))) {
+		for (const name of OPENREC_TOOLS.filter((n) => isMutatingTool(n))) {
 			const tool = tools.find((t) => t.name === name);
 			if (!tool) throw new Error(`${name} is not built`);
 			const result = await tool.invoke(ARGS[name] ?? {});

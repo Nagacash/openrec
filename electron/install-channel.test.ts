@@ -12,7 +12,7 @@ function probe(overrides: Partial<InstallProbe> = {}): InstallProbe {
 	return {
 		platform: "linux",
 		isPackaged: true,
-		execPath: "/opt/Openscreen/openscreen",
+		execPath: "/opt/OpenRec/openrec",
 		windowsStore: false,
 		env: {},
 		hasFlatpakInfo: false,
@@ -31,7 +31,7 @@ describe("classifyInstall", () => {
 	it("classifies the installers we build and own", () => {
 		expect(classifyInstall(probe({ platform: "win32" }))).toBe("nsis");
 		expect(classifyInstall(probe({ platform: "darwin" }))).toBe("dmg");
-		expect(classifyInstall(probe({ env: { APPIMAGE: "/home/u/Apps/Openscreen.AppImage" } }))).toBe(
+		expect(classifyInstall(probe({ env: { APPIMAGE: "/home/u/Apps/OpenRec.AppImage" } }))).toBe(
 			"appimage",
 		);
 		for (const packageType of ["deb", "rpm", "pacman"] as const) {
@@ -41,16 +41,14 @@ describe("classifyInstall", () => {
 
 	it("classifies the channels a package manager owns", () => {
 		expect(classifyInstall(probe({ platform: "win32", windowsStore: true }))).toBe("store");
-		expect(classifyInstall(probe({ env: { FLATPAK_ID: "com.getopenscreen.OpenScreen" } }))).toBe(
+		expect(classifyInstall(probe({ env: { FLATPAK_ID: "cloud.nagacodex.openrec" } }))).toBe(
 			"flatpak",
 		);
 		expect(classifyInstall(probe({ hasFlatpakInfo: true }))).toBe("flatpak");
-		expect(
-			classifyInstall(probe({ env: { SNAP: "/snap/openscreen/42", SNAP_REVISION: "42" } })),
-		).toBe("snap");
-		expect(classifyInstall(probe({ execPath: "/nix/store/abc-openscreen/bin/openscreen" }))).toBe(
-			"nix",
+		expect(classifyInstall(probe({ env: { SNAP: "/snap/openrec/42", SNAP_REVISION: "42" } }))).toBe(
+			"snap",
 		);
+		expect(classifyInstall(probe({ execPath: "/nix/store/abc-openrec/bin/openrec" }))).toBe("nix");
 	});
 
 	// The ordering cases. Each of these markers coexists with a self-owned one, and getting the
@@ -64,7 +62,7 @@ describe("classifyInstall", () => {
 		).toBe("snap");
 		expect(
 			classifyInstall(
-				probe({ execPath: "/nix/store/x/bin/openscreen", env: { APPIMAGE: "/x.AppImage" } }),
+				probe({ execPath: "/nix/store/x/bin/openrec", env: { APPIMAGE: "/x.AppImage" } }),
 			),
 		).toBe("nix");
 		// The Microsoft Store build is still a win32 packaged app; without the check it is "nsis".

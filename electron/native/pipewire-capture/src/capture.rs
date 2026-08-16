@@ -568,7 +568,7 @@ mod tests {
 
     #[test]
     fn the_timeline_does_not_start_until_the_first_frame_is_staged() {
-        let output = std::env::temp_dir().join("openscreen-capture-epoch.mp4");
+        let output = std::env::temp_dir().join("openrec-capture-epoch.mp4");
         let (mut capture, _) =
             Capture::start(&output, 320, 240, 30, Some(1_000_000), Some(Backend::Software), Vec::new())
                 .expect("start");
@@ -587,7 +587,7 @@ mod tests {
     fn a_static_screen_still_produces_frames() {
         // The whole reason the clock drives the output: one staged frame, no
         // further arrivals, and the file must still fill with frames.
-        let output = std::env::temp_dir().join("openscreen-capture-static.mp4");
+        let output = std::env::temp_dir().join("openrec-capture-static.mp4");
         let (mut capture, _) =
             Capture::start(&output, 320, 240, 30, Some(1_000_000), Some(Backend::Software), Vec::new())
                 .expect("start");
@@ -612,7 +612,7 @@ mod tests {
     /// size with black.
     #[test]
     fn a_window_is_staged_from_its_crop_inside_a_larger_frame() {
-        let output = std::env::temp_dir().join("openscreen-capture-crop.mp4");
+        let output = std::env::temp_dir().join("openrec-capture-crop.mp4");
         let (mut capture, _) =
             Capture::start(&output, 320, 240, 30, Some(1_000_000), Some(Backend::Software), Vec::new())
                 .expect("start");
@@ -643,7 +643,7 @@ mod tests {
     /// i.e. every window not touching the left edge.
     #[test]
     fn a_crop_against_the_right_edge_is_not_rejected_as_truncated() {
-        let output = std::env::temp_dir().join("openscreen-capture-edge.mp4");
+        let output = std::env::temp_dir().join("openrec-capture-edge.mp4");
         let (mut capture, _) =
             Capture::start(&output, 320, 240, 30, Some(1_000_000), Some(Backend::Software), Vec::new())
                 .expect("start");
@@ -666,7 +666,7 @@ mod tests {
     /// end into whatever follows it in the mapping.
     #[test]
     fn a_shrunken_window_is_read_from_inside_the_frame() {
-        let output = std::env::temp_dir().join("openscreen-capture-shrunk.mp4");
+        let output = std::env::temp_dir().join("openrec-capture-shrunk.mp4");
         let (mut capture, _) =
             Capture::start(&output, 320, 240, 30, Some(1_000_000), Some(Backend::Software), Vec::new())
                 .expect("start");
@@ -691,7 +691,7 @@ mod tests {
     /// frame of a window that never moved.
     #[test]
     fn a_stable_odd_sized_window_is_not_reported_as_resized() {
-        let output = std::env::temp_dir().join("openscreen-capture-odd.mp4");
+        let output = std::env::temp_dir().join("openrec-capture-odd.mp4");
         // 321x241 rounds to the 320x240 the encoder is opened at.
         let (mut capture, _) =
             Capture::start(&output, 320, 240, 30, Some(1_000_000), Some(Backend::Software), Vec::new())
@@ -711,7 +711,7 @@ mod tests {
 
     #[test]
     fn an_uncropped_frame_reports_no_divergence() {
-        let output = std::env::temp_dir().join("openscreen-capture-nocrop.mp4");
+        let output = std::env::temp_dir().join("openrec-capture-nocrop.mp4");
         let (mut capture, _) =
             Capture::start(&output, 320, 240, 30, Some(1_000_000), Some(Backend::Software), Vec::new())
                 .expect("start");
@@ -723,7 +723,7 @@ mod tests {
 
     #[test]
     fn paused_time_does_not_advance_the_timeline() {
-        let output = std::env::temp_dir().join("openscreen-capture-pause.mp4");
+        let output = std::env::temp_dir().join("openrec-capture-pause.mp4");
         let (mut capture, _) =
             Capture::start(&output, 320, 240, 30, Some(1_000_000), Some(Backend::Software), Vec::new())
                 .expect("start");
@@ -756,7 +756,7 @@ mod tests {
         ring.push_for_test(&vec![0.5; capacity * 3]);
         assert!(ring.dropped_samples() > 0, "the ring must have overflowed for this test to mean anything");
 
-        let output = std::env::temp_dir().join("openscreen-capture-audio-preroll.mp4");
+        let output = std::env::temp_dir().join("openrec-capture-audio-preroll.mp4");
         let (mut capture, _) = Capture::start(
             &output,
             320,
@@ -789,7 +789,7 @@ mod tests {
         let ring = Arc::new(AudioRing::new(1, AUDIO_SAMPLE_RATE as usize, AUDIO_CHANNELS));
         ring.push_for_test(&[0.9, -0.9, 0.4, -0.4]);
 
-        let output = std::env::temp_dir().join("openscreen-capture-gain.mp4");
+        let output = std::env::temp_dir().join("openrec-capture-gain.mp4");
         let (mut capture, _) = Capture::start(
             &output,
             320,
@@ -825,7 +825,7 @@ mod tests {
         // was silence, while the microphone sat in a track nothing selects.
         let system = Arc::new(AudioRing::new(1, AUDIO_SAMPLE_RATE as usize, AUDIO_CHANNELS));
         let mic = Arc::new(AudioRing::new(1, AUDIO_SAMPLE_RATE as usize, AUDIO_CHANNELS));
-        let output = std::env::temp_dir().join("openscreen-capture-one-track.mp4");
+        let output = std::env::temp_dir().join("openrec-capture-one-track.mp4");
         let (mut capture, _) = Capture::start(
             &output,
             320,
@@ -874,7 +874,7 @@ mod tests {
         // still arriving. AUDIO_STARVE_SAMPLES is what breaks that deadlock.
         let system = Arc::new(AudioRing::new(2, AUDIO_SAMPLE_RATE as usize, AUDIO_CHANNELS));
         let dead = Arc::new(AudioRing::new(2, AUDIO_SAMPLE_RATE as usize, AUDIO_CHANNELS));
-        let output = std::env::temp_dir().join("openscreen-capture-starve.mp4");
+        let output = std::env::temp_dir().join("openrec-capture-starve.mp4");
         let (mut capture, _) = Capture::start(
             &output,
             320,
@@ -907,7 +907,7 @@ mod tests {
 
     #[test]
     fn catch_up_is_bounded_so_a_stall_cannot_block_stop() {
-        let output = std::env::temp_dir().join("openscreen-capture-catchup.mp4");
+        let output = std::env::temp_dir().join("openrec-capture-catchup.mp4");
         let (mut capture, _) =
             Capture::start(&output, 320, 240, 60, Some(1_000_000), Some(Backend::Software), Vec::new())
                 .expect("start");

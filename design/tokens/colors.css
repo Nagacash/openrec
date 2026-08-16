@@ -1,8 +1,8 @@
 /* ============================================================
-   OpenScreen — Color tokens
+   OpenRec — Color tokens
    Base palette (shadcn "new-york", stone base) + signature
-   OpenScreen green. Values lifted verbatim from src/index.css.
-   OpenScreen is DARK-FIRST: the recorder HUD, source selector,
+   OpenRec green. Values lifted verbatim from src/index.css.
+   OpenRec is DARK-FIRST: the recorder HUD, source selector,
    and video-editor studio all run on near-black surfaces. The
    light theme exists (shadcn :root) but is rarely the product.
    ============================================================ */
