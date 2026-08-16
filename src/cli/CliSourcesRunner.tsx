@@ -1,4 +1,4 @@
-// Hidden-window runner for `openscreen sources`: enumerates capturable
+// Hidden-window runner for `openrec sources`: enumerates capturable
 // displays/windows (via the same get-sources IPC the GUI picker uses) and
 // microphone inputs, then hands the payload to the CLI controller to print.
 

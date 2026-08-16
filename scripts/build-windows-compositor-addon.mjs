@@ -44,7 +44,7 @@ async function runInVsEnv(command) {
 	}
 
 	const cmdPath = path.join(
-		fs.mkdtempSync(path.join(process.env.TEMP ?? ROOT, "openscreen-build-compositor-")),
+		fs.mkdtempSync(path.join(process.env.TEMP ?? ROOT, "openrec-build-compositor-")),
 		"build.cmd",
 	);
 	fs.writeFileSync(

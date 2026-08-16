@@ -1,5 +1,6 @@
 import { Check, Languages, NotepadText, Settings } from "lucide-react";
 import { memo } from "react";
+import logoMark from "@/assets/openrec-mark.png";
 import { formatTimePadded } from "../../utils/timeUtils";
 import { Button } from "../ui/button";
 import { Tooltip } from "../ui/tooltip";
@@ -9,7 +10,6 @@ import {
 	getIcon,
 	ICON_SIZE,
 	MicIcon,
-	OpenInEditorIcon,
 	OrientationIcon,
 	RecordGlyph,
 	SourceIcon,
@@ -357,7 +357,13 @@ export const HudStudioButton = memo(function HudStudioButton({
 				className={`${hudIconBtnClasses} ${disabled ? "opacity-30 cursor-not-allowed pointer-events-none" : ""}`}
 				onClick={onClick}
 			>
-				<OpenInEditorIcon />
+				{/* Decorative: the tooltip already names the action. */}
+				<img
+					src={logoMark}
+					alt=""
+					draggable={false}
+					className="h-[18px] w-[18px] shrink-0 object-contain"
+				/>
 			</button>
 		</Tooltip>
 	);

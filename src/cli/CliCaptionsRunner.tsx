@@ -1,4 +1,4 @@
-// Hidden-window runner for `openscreen captions`: transcribes the project's
+// Hidden-window runner for `openrec captions`: transcribes the project's
 // audio with the on-device Whisper worker and writes the resulting caption
 // annotations back into the project. Mirrors VideoEditor.generateAutoCaptions.
 

@@ -82,7 +82,7 @@ impl Backend {
 }
 
 /// Order of preference. Public so the probe can be driven from a test or from
-/// `OPENSCREEN_LINUX_ENCODER` without duplicating the list.
+/// `OPENREC_LINUX_ENCODER` without duplicating the list.
 pub const LADDER: [Backend; 3] = [Backend::Vaapi, Backend::Vulkan, Backend::Software];
 
 /// Must run before anything creates a Vulkan instance — which, in this process,
@@ -1115,7 +1115,7 @@ impl Drop for Muxer {
 /// resolution; a 4K capture on a many-core desktop with more memory channels may
 /// well behave differently, and this makes checking it a one-liner.
 fn sws_thread_count() -> usize {
-    if let Ok(raw) = std::env::var("OPENSCREEN_LINUX_SWS_THREADS") {
+    if let Ok(raw) = std::env::var("OPENREC_LINUX_SWS_THREADS") {
         if let Ok(count) = raw.trim().parse::<usize>() {
             return count.clamp(1, 32);
         }
@@ -1123,10 +1123,10 @@ fn sws_thread_count() -> usize {
     1
 }
 
-/// Parses `OPENSCREEN_LINUX_ENCODER`. Returns `None` when unset, which means
+/// Parses `OPENREC_LINUX_ENCODER`. Returns `None` when unset, which means
 /// "walk the ladder".
 pub fn forced_backend_from_env() -> Result<Option<Backend>, String> {
-    let Ok(raw) = std::env::var("OPENSCREEN_LINUX_ENCODER") else {
+    let Ok(raw) = std::env::var("OPENREC_LINUX_ENCODER") else {
         return Ok(None);
     };
     match raw.trim().to_ascii_lowercase().as_str() {
@@ -1135,7 +1135,7 @@ pub fn forced_backend_from_env() -> Result<Option<Backend>, String> {
         "vulkan" => Ok(Some(Backend::Vulkan)),
         "software" | "openh264" | "libopenh264" => Ok(Some(Backend::Software)),
         other => Err(format!(
-            "OPENSCREEN_LINUX_ENCODER={other} is not one of auto, vaapi, vulkan, software"
+            "OPENREC_LINUX_ENCODER={other} is not one of auto, vaapi, vulkan, software"
         )),
     }
 }
@@ -1217,30 +1217,30 @@ mod tests {
 
     #[test]
     fn forced_backend_parsing_rejects_typos_instead_of_falling_back() {
-        std::env::set_var("OPENSCREEN_LINUX_ENCODER", "vulcan");
+        std::env::set_var("OPENREC_LINUX_ENCODER", "vulcan");
         let error = forced_backend_from_env().expect_err("must reject");
         assert!(error.contains("vulcan"), "{error}");
-        std::env::set_var("OPENSCREEN_LINUX_ENCODER", "vaapi");
+        std::env::set_var("OPENREC_LINUX_ENCODER", "vaapi");
         assert_eq!(forced_backend_from_env().unwrap(), Some(Backend::Vaapi));
-        std::env::remove_var("OPENSCREEN_LINUX_ENCODER");
+        std::env::remove_var("OPENREC_LINUX_ENCODER");
         assert_eq!(forced_backend_from_env().unwrap(), None);
     }
 
     /// The whole pipeline — ladder, encode, mux — against a real file, with no
     /// portal and no compositor involved.
     ///
-    /// Opt-in via `OPENSCREEN_LINUX_ENCODE_TEST=1` because it depends on the
+    /// Opt-in via `OPENREC_LINUX_ENCODE_TEST=1` because it depends on the
     /// GPU: on this hardware it selects Vulkan, on a headless CI box it falls
     /// through to software, and both are correct. Run it after any change to the
     /// ladder, and read the printed backend — that line is the measurement.
     #[test]
     fn ladder_encodes_a_playable_mp4() {
-        if std::env::var("OPENSCREEN_LINUX_ENCODE_TEST").is_err() {
-            eprintln!("skipped: set OPENSCREEN_LINUX_ENCODE_TEST=1 to run");
+        if std::env::var("OPENREC_LINUX_ENCODE_TEST").is_err() {
+            eprintln!("skipped: set OPENREC_LINUX_ENCODE_TEST=1 to run");
             return;
         }
         let (width, height, fps) = (1920, 1080, 60);
-        let output = std::env::temp_dir().join("openscreen-encoder-smoke.mp4");
+        let output = std::env::temp_dir().join("openrec-encoder-smoke.mp4");
         let _ = std::fs::remove_file(&output);
 
         let mut encoder = VideoEncoder::open(

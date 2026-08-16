@@ -28,7 +28,7 @@ const LEGACY = [
 	"TranscriptEditor",
 	"ai-edition-roadmap",
 	"ai-edition-collision-analysis",
-	"openscreen-inventory",
+	"openrec-inventory",
 	"axcut-inventory",
 	"main-vs-ai-edition",
 	"ai-edition-remediation",

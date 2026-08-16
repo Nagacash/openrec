@@ -17,8 +17,8 @@
 //   node scripts/test-whisper-stt.mjs --language fr  # force a language instead of auto
 //
 // Env overrides:
-//   OPENSCREEN_WHISPER_SERVER_EXE  helper binary (default: the staged one for this host)
-//   OPENSCREEN_WHISPER_MODEL       GGML model    (default: the userData cache location)
+//   OPENREC_WHISPER_SERVER_EXE  helper binary (default: the staged one for this host)
+//   OPENREC_WHISPER_MODEL       GGML model    (default: the userData cache location)
 
 import { spawn, spawnSync } from "node:child_process";
 import fs from "node:fs";
@@ -36,7 +36,7 @@ const argOf = (flag) => {
 
 const TAG = `${process.platform}-${process.arch}`;
 const BIN =
-	process.env.OPENSCREEN_WHISPER_SERVER_EXE ??
+	process.env.OPENREC_WHISPER_SERVER_EXE ??
 	path.join(
 		ROOT,
 		"electron",
@@ -46,7 +46,7 @@ const BIN =
 		process.platform === "win32" ? "whisper-stt-server.exe" : "whisper-stt-server",
 	);
 
-const MODEL = process.env.OPENSCREEN_WHISPER_MODEL ?? defaultModelPath();
+const MODEL = process.env.OPENREC_WHISPER_MODEL ?? defaultModelPath();
 const LANGUAGE = argOf("--language") ?? "auto";
 const WAV_ARG = argOf("--wav");
 const REF_ARG = argOf("--ref");
@@ -56,7 +56,7 @@ const REF_ARG = argOf("--ref");
  * ([electron/stt/index.ts:69](../electron/stt/index.ts)).
  *
  * The leaf of that userData path is `app.getName()`, which is package.json's
- * `name` ("openscreen") in dev and the productName once packaged — *not*
+ * `name` ("openrec") in dev and the productName once packaged — *not*
  * "Electron", which is only what a bare `electron .` with no app name would
  * use. Probe the plausible names and take the one that exists, so this works
  * whether the model was cached by the app or by a bare helper run.
@@ -70,7 +70,7 @@ function defaultModelPath() {
 				? [process.env.APPDATA ?? ""]
 				: [process.env.XDG_CONFIG_HOME || path.join(os.homedir(), ".config")];
 	const candidates = roots.flatMap((root) =>
-		["openscreen", "Openscreen", "Electron"].map((appName) => path.join(root, appName, file)),
+		["openrec", "Openrec", "Electron"].map((appName) => path.join(root, appName, file)),
 	);
 	return candidates.find((p) => fs.existsSync(p)) ?? candidates[0];
 }
@@ -178,9 +178,7 @@ async function main() {
 			if (label === "helper binary") {
 				console.error("       Build it: bash scripts/build-whisper-stt.sh");
 			} else {
-				console.error(
-					"       Run a transcription in the app once, or set OPENSCREEN_WHISPER_MODEL.",
-				);
+				console.error("       Run a transcription in the app once, or set OPENREC_WHISPER_MODEL.");
 			}
 			process.exit(1);
 		}

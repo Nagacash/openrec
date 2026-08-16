@@ -3,13 +3,13 @@ import { archOf, buildFeedYml } from "./mac-update-feed.mjs";
 
 const ARM = {
 	version: "1.9.3",
-	url: "Openscreen-Mac-arm64-1.9.3.zip",
+	url: "Openrec-Mac-arm64-1.9.3.zip",
 	sha512: "ARMDIGEST==",
 	size: 111,
 };
 const X64 = {
 	version: "1.9.3",
-	url: "Openscreen-Mac-x64-1.9.3.zip",
+	url: "Openrec-Mac-x64-1.9.3.zip",
 	sha512: "X64DIGEST==",
 	size: 222,
 };
@@ -17,15 +17,15 @@ const NOW = new Date("2026-08-13T09:00:00.000Z");
 
 describe("archOf", () => {
 	it("reads the substring electron-updater actually matches on", () => {
-		expect(archOf("Openscreen-Mac-arm64-1.9.3.zip")).toBe("arm64");
-		expect(archOf("Openscreen-Mac-x64-1.9.3.zip")).toBe("x64");
+		expect(archOf("Openrec-Mac-arm64-1.9.3.zip")).toBe("arm64");
+		expect(archOf("Openrec-Mac-x64-1.9.3.zip")).toBe("x64");
 	});
 
 	// The whole reason this helper exists. Our DMGs are named for the user; the ZIPs must be
 	// named for the updater, and the two conventions collide.
 	it("refuses a marketing-named ZIP instead of silently calling it x64", () => {
-		expect(() => archOf("Openscreen-macOS-Apple-Silicon-1.9.3.zip")).toThrow(/arm64/);
-		expect(() => archOf("Openscreen-macOS-Intel-1.9.3.zip")).toThrow(/marketing/);
+		expect(() => archOf("Openrec-macOS-Apple-Silicon-1.9.3.zip")).toThrow(/arm64/);
+		expect(() => archOf("Openrec-macOS-Intel-1.9.3.zip")).toThrow(/marketing/);
 	});
 });
 
@@ -33,8 +33,8 @@ describe("buildFeedYml", () => {
 	it("emits one feed listing both architectures", () => {
 		const yml = buildFeedYml([ARM, X64], NOW);
 		expect(yml).toContain("version: 1.9.3");
-		expect(yml).toContain("  - url: Openscreen-Mac-arm64-1.9.3.zip");
-		expect(yml).toContain("  - url: Openscreen-Mac-x64-1.9.3.zip");
+		expect(yml).toContain("  - url: Openrec-Mac-arm64-1.9.3.zip");
+		expect(yml).toContain("  - url: Openrec-Mac-x64-1.9.3.zip");
 		expect(yml).toContain("releaseDate: '2026-08-13T09:00:00.000Z'");
 		// Two entries, not one — the failure mode of electron-builder#5592 is a feed that
 		// silently lists a single arch after the second job overwrites the first.
@@ -43,7 +43,7 @@ describe("buildFeedYml", () => {
 
 	it("points the arch-blind fallback at x64 so it degrades to Rosetta, never to broken", () => {
 		const yml = buildFeedYml([ARM, X64], NOW);
-		expect(yml).toMatch(/^path: Openscreen-Mac-x64-1\.9\.3\.zip$/m);
+		expect(yml).toMatch(/^path: Openrec-Mac-x64-1\.9\.3\.zip$/m);
 		expect(yml).toMatch(/^sha512: X64DIGEST==$/m);
 	});
 

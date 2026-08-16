@@ -121,7 +121,7 @@ function resolveLibclangDir() {
 // No BINDGEN_EXTRA_CLANG_ARGS is set below, on purpose. On distributions shipping only
 // `libclang.so.1` (no -dev package) clang cannot find its own `stddef.h`, and this
 // script used to paper over that by pointing bindgen at gcc's copies. That only ever
-// covered the build that goes through here: `cargo check -p openscreen-compositor` on a
+// covered the build that goes through here: `cargo check -p openrec-compositor` on a
 // stock Ubuntu still died on `'stddef.h' file not found`, x86_64 included. The fallback
 // now lives in crates/compositor/build.rs (`freestanding_header_args()`), which covers
 // both entry points — and, being the only claimant, cannot lose to a worse guess made
@@ -277,7 +277,7 @@ await run("cargo", ["build", "-p", "compositor-view-napi", "--release"], {
 	env: {
 		...process.env,
 		FFMPEG_DIR: stagedFfmpegDir,
-		OPENSCREEN_FFMPEG_SYMBOL_PREFIX: SYMBOL_PREFIX,
+		OPENREC_FFMPEG_SYMBOL_PREFIX: SYMBOL_PREFIX,
 		LIBCLANG_PATH: resolveLibclangDir(),
 		// `$ORIGIN` is resolved by the dynamic linker against the directory the
 		// .node itself lives in, so the ffmpeg copies below are found wherever the

@@ -221,7 +221,7 @@ function assertLgpl(exePath, extraEnv) {
 		throw new Error(
 			"This ffmpeg is NOT an LGPL build and must not be shipped:\n" +
 				`${problems.map((p) => `  - ${p}`).join("\n")}\n` +
-				"Bundling it would relicense OpenScreen under the GPL.",
+				"Bundling it would relicense OpenRec under the GPL.",
 		);
 	}
 	const ver = run(exePath, ["-hide_banner", "-version"], opts).stdout ?? "";
@@ -371,7 +371,7 @@ function findSharedLibs(dir) {
 
 /** Downloads `spec.asset`, verifies its pinned SHA-256, and extracts it into a fresh temp dir. */
 async function downloadAndExtract(spec) {
-	const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "openscreen-ffmpeg-"));
+	const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "openrec-ffmpeg-"));
 	const url = `${BASE}/${spec.asset}`;
 	console.log(`Downloading ${spec.asset}\n  from ${RELEASE_TAG}`);
 	const res = await fetch(url);

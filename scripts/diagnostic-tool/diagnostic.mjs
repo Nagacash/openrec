@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// OpenScreen standalone diagnostic tool.
+// OpenRec standalone diagnostic tool.
 //
 // Runs the native capture helper outside the Electron app, captures its
 // stdout/stderr, and writes a JSON report you can attach to a bug report.
@@ -13,9 +13,9 @@
 //   node diagnostic.mjs --window              # capture a window (default: display)
 //
 // Helper discovery:
-//   1. $OPENSCREEN_HELPER_EXE (any path)
+//   1. $OPENREC_HELPER_EXE (any path)
 //   2. ./wgc-capture.exe                          (Windows)
-//      ./openscreen-screencapturekit-helper        (macOS)
+//      ./openrec-screencapturekit-helper        (macOS)
 //   3. ./helpers/<platform>-<arch>/<helper-name>  (CI artifact layout)
 
 import { spawn } from "node:child_process";
@@ -33,8 +33,8 @@ const HELPER_CANDIDATES = {
 		arm64: { name: "wgc-capture.exe", kind: "windows" },
 	},
 	darwin: {
-		x64: { name: "openscreen-screencapturekit-helper", kind: "mac" },
-		arm64: { name: "openscreen-screencapturekit-helper", kind: "mac" },
+		x64: { name: "openrec-screencapturekit-helper", kind: "mac" },
+		arm64: { name: "openrec-screencapturekit-helper", kind: "mac" },
 	},
 };
 
@@ -84,14 +84,14 @@ function parseArgs(argv) {
 }
 
 function printHelp() {
-	console.log(`OpenScreen standalone diagnostic tool
+	console.log(`OpenRec standalone diagnostic tool
 
 Usage:
   node diagnostic.mjs [flags]
 
 Flags:
   -d, --duration <seconds>   Recording length before sending stop (default: 10)
-  -o, --output  <path>       Output JSON path (default: ./openscreen-diagnostic-<timestamp>.json)
+  -o, --output  <path>       Output JSON path (default: ./openrec-diagnostic-<timestamp>.json)
   --source <display|window>  Capture source type (default: display)
   --window                   Shortcut for --source window
   --system-audio             Also capture system (loopback) audio
@@ -107,7 +107,7 @@ failing recording used -- --system-audio, --mic, or both.
 }
 
 function findHelper() {
-	const explicit = process.env.OPENSCREEN_HELPER_EXE?.trim();
+	const explicit = process.env.OPENREC_HELPER_EXE?.trim();
 	if (explicit && fs.existsSync(explicit)) return { path: explicit, kind: null };
 
 	const platform = process.platform;
@@ -125,10 +125,10 @@ function findHelper() {
 
 	throw new Error(
 		`Native helper not found for ${platform}-${arch}. Looked for:\n` +
-			`  $OPENSCREEN_HELPER_EXE\n` +
+			`  $OPENREC_HELPER_EXE\n` +
 			`  ${inScriptDir}\n` +
 			`  ${inHelpersDir}\n` +
-			`Download the matching diagnostic bundle from the OpenScreen releases / CI artifacts.`,
+			`Download the matching diagnostic bundle from the OpenRec releases / CI artifacts.`,
 	);
 }
 
@@ -137,7 +137,7 @@ function buildConfig(opts) {
 	return {
 		schemaVersion: 2,
 		recordingId: now,
-		outputPath: path.join(os.tmpdir(), `openscreen-diag-${now}.mp4`),
+		outputPath: path.join(os.tmpdir(), `openrec-diag-${now}.mp4`),
 		sourceType: opts.source === "window" ? "window" : "display",
 		sourceId: opts.source === "window" ? "window:0:0" : "screen:0:0",
 		displayId: 0,
@@ -270,7 +270,7 @@ function run(opts) {
 function buildReport(result) {
 	const stopTiming = parseStopTiming(result.stderr);
 	const stopElapsedMs = result.stopSentAt > 0 ? result.tExit - result.stopSentAt : null;
-	const helperPath = process.env.OPENSCREEN_HELPER_EXE?.trim() || "(auto-resolved)";
+	const helperPath = process.env.OPENREC_HELPER_EXE?.trim() || "(auto-resolved)";
 
 	return {
 		timestamp: new Date(result.t0).toISOString(),
@@ -318,7 +318,7 @@ async function main() {
 
 	const report = buildReport(result);
 	const outputPath =
-		opts.output ?? path.join(process.cwd(), `openscreen-diagnostic-${Date.now()}.json`);
+		opts.output ?? path.join(process.cwd(), `openrec-diagnostic-${Date.now()}.json`);
 	await fs.promises.writeFile(outputPath, JSON.stringify(report, null, 2), "utf-8");
 
 	console.log("");

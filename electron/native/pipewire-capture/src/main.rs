@@ -1,4 +1,4 @@
-//! OpenScreen Linux capture helper.
+//! OpenRec Linux capture helper.
 //!
 //! WHY THIS EXISTS. Two reasons, and they turned out to be the same reason.
 //!
@@ -216,7 +216,7 @@ enum Message {
 }
 
 fn main() {
-    let debug = std::env::var("OPENSCREEN_PIPEWIRE_DEBUG")
+    let debug = std::env::var("OPENREC_PIPEWIRE_DEBUG")
         .map(|value| !matches!(value.as_str(), "" | "0" | "false"))
         .unwrap_or(false);
     let mut emitter = Emitter::new(std::io::stdout(), debug);

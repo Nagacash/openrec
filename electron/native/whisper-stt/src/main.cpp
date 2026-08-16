@@ -1,4 +1,4 @@
-// whisper-stt-server: long-lived HTTP helper for OpenScreen's STT pipeline.
+// whisper-stt-server: long-lived HTTP helper for OpenRec's STT pipeline.
 //
 // Wires the POC's transcription core (tools/stt-eval/whispercpp-dtw-poc/harness/wcpp_dtw_bench.cpp)
 // into an httplib-shaped loop, so the Electron main process can keep the same
@@ -237,18 +237,18 @@ int main(int argc, char** argv) {
 	// ponytail: prefer env var (matches the prior native STT model env var
 	// shape; the Node wrapper passes both ways).
 	if (model_path.empty()) {
-		if (const char* p = std::getenv("OPENSCREEN_WHISPER_MODEL")) model_path = p;
+		if (const char* p = std::getenv("OPENREC_WHISPER_MODEL")) model_path = p;
 	}
 	if (port == 0) {
-		if (const char* p = std::getenv("OPENSCREEN_WHISPER_PORT")) port = std::atoi(p);
+		if (const char* p = std::getenv("OPENREC_WHISPER_PORT")) port = std::atoi(p);
 	}
-	if (const char* p = std::getenv("OPENSCREEN_WHISPER_THREADS")) threads = std::atoi(p);
+	if (const char* p = std::getenv("OPENREC_WHISPER_THREADS")) threads = std::atoi(p);
 	// Only a fallback, never an override: the app always passes --host 127.0.0.1,
 	// and an env var that can widen a shipped binary's bind address behind an
 	// explicit flag is a hole, not a knob. Anything but loopback is refused
 	// outright — this server has no authentication of any kind.
 	if (!host_from_flag) {
-		if (const char* p = std::getenv("OPENSCREEN_WHISPER_HOST")) host = p;
+		if (const char* p = std::getenv("OPENREC_WHISPER_HOST")) host = p;
 	}
 	if (host != "127.0.0.1" && host != "::1" && host != "localhost") {
 		std::cerr << "FATAL: refusing to bind " << host
@@ -259,7 +259,7 @@ int main(int argc, char** argv) {
 
 	if (model_path.empty()) {
 		std::cerr << "FATAL: --model <path-to-ggml.bin> or "
-		             "OPENSCREEN_WHISPER_MODEL is required" << std::endl;
+		             "OPENREC_WHISPER_MODEL is required" << std::endl;
 		return 2;
 	}
 	log("boot: model=" + model_path + " host=" + host +
@@ -315,7 +315,7 @@ int main(int argc, char** argv) {
 		const auto tmp_wav_id = tmp_wav_counter.fetch_add(1, std::memory_order_relaxed);
 		const auto tmp_wav_ts = std::chrono::high_resolution_clock::now().time_since_epoch().count();
 		const std::string tmp_wav = (std::filesystem::temp_directory_path() /
-		                             ("openscreen-stt-" + std::to_string(tmp_wav_ts) +
+		                             ("openrec-stt-" + std::to_string(tmp_wav_ts) +
 		                              "-" + std::to_string(tmp_wav_id) + ".wav")).string();
 		{
 			std::ofstream out(tmp_wav, std::ios::binary);

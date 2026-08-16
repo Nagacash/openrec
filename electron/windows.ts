@@ -9,8 +9,8 @@ const VITE_DEV_SERVER_URL = process.env["VITE_DEV_SERVER_URL"];
 const RENDERER_DIST = path.join(APP_ROOT, "dist");
 const HEADLESS = process.env["HEADLESS"] === "true";
 
-const CONTENT_PROTECTION_DISABLED = process.env["OPENSCREEN_DISABLE_CONTENT_PROTECTION"] === "1";
-const CONTENT_PROTECTION_FORCED = process.env["OPENSCREEN_FORCE_CONTENT_PROTECTION"] === "1";
+const CONTENT_PROTECTION_DISABLED = process.env["OPENREC_DISABLE_CONTENT_PROTECTION"] === "1";
+const CONTENT_PROTECTION_FORCED = process.env["OPENREC_FORCE_CONTENT_PROTECTION"] === "1";
 
 const CONTENT_PROTECTION_BREAKS_DISPLAY = (() => {
 	if (process.platform !== "darwin") return false;
@@ -22,7 +22,7 @@ function applyContentProtection(win: BrowserWindow, label: string) {
 	if (CONTENT_PROTECTION_DISABLED) {
 		console.warn(
 			`[content-protection] OFF for the ${label} window ` +
-				"(OPENSCREEN_DISABLE_CONTENT_PROTECTION=1) — it will appear in screen captures, " +
+				"(OPENREC_DISABLE_CONTENT_PROTECTION=1) — it will appear in screen captures, " +
 				"including recordings. Unset it for anything but automated testing.",
 		);
 		return;
@@ -32,7 +32,7 @@ function applyContentProtection(win: BrowserWindow, label: string) {
 			`[content-protection] OFF for the ${label} window — macOS ` +
 				`${process.getSystemVersion()} never displays a content-protected window, so ` +
 				"enabling it would make this window permanently invisible. It may therefore appear " +
-				"in screen captures. Set OPENSCREEN_FORCE_CONTENT_PROTECTION=1 to re-test.",
+				"in screen captures. Set OPENREC_FORCE_CONTENT_PROTECTION=1 to re-test.",
 		);
 		return;
 	}

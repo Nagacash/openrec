@@ -23,7 +23,7 @@ set -euo pipefail
 TAG="${1:?usage: stage-whisper-stt.sh <platform-arch tag>}"
 ARTIFACT="whisper-stt-${TAG}"
 DEST="electron/native/bin/${TAG}"
-REPO="${GITHUB_REPOSITORY:-getopenscreen/openscreen}"
+REPO="${GITHUB_REPOSITORY:-Nagacash/openrec}"
 
 # Asserts that GCC's OpenMP runtime travelled with the binaries, on Linux only.
 #

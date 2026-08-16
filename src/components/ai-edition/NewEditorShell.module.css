@@ -1,5 +1,5 @@
 /* Editor shell — 4-row grid: titlebar · workbench · handle · bottombar.
- * Mirrors design/openscreen-editor.html. Tokens come from
+ * Mirrors design/openrec-editor.html. Tokens come from
  * src/styles/design-tokens.css (light + dark via :root[data-theme="dark"]). */
 
 .app {
@@ -1465,7 +1465,7 @@
 }
 
 /* Lane pills: zoom / speed / annotation / skip. Flat wash fill + 1.5px frame
- * per the v4 design (design/OpenScreen Editor v4.dc.html pillStyle) — no
+ * per the v4 design (design/OpenRec Editor v4.dc.html pillStyle) — no
  * gradient, no tab caps. Selected pills gain an accent ring. */
 .zoomPill,
 .speedPill,

@@ -1,4 +1,4 @@
-// Hidden-window runner for `openscreen export`. Loads an .openscreen project,
+// Hidden-window runner for `openrec export`. Loads an .openscreen project,
 // migrates it to the AxcutDocument the native Rust compositor consumes, and
 // drives exportMultiNative/exportGifNative — mirroring the v4 ExportDialog so
 // CLI exports and GUI exports stay pixel-identical. The hidden window does no
@@ -71,7 +71,7 @@ function probeVideoDimensions(
 }
 
 function replaceExtension(filePath: string, newExtension: string): string {
-	return filePath.replace(/\.(openscreen|json)$/i, "") + newExtension;
+	return filePath.replace(/\.(openrec|json)$/i, "") + newExtension;
 }
 
 /** Mirrors ExportDialog.buildNativeClipList: trim-narrowed visible clips mapped

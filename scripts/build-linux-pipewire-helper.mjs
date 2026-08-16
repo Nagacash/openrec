@@ -34,7 +34,7 @@ if (process.platform !== "linux") {
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, "..");
-const helperName = "openscreen-pipewire-helper";
+const helperName = "openrec-pipewire-helper";
 const crateDir = path.join(root, "electron", "native", "pipewire-capture");
 const manifest = path.join(crateDir, "Cargo.toml");
 // Mirrored into the crate's own build/ folder so `npm run dev` (candidate #2 in

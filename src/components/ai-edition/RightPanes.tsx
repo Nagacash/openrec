@@ -1,4 +1,4 @@
-// Six right-rail panes matching design/openscreen-editor.html. Each control
+// Six right-rail panes matching design/openrec-editor.html. Each control
 // reads from + writes to the project document via `useEditorSettings`, so the
 // design's UI is the canonical surface (no more "more options" link to a
 // legacy panel — the legacy SettingsPanel is still available to the legacy

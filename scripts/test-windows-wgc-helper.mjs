@@ -8,44 +8,43 @@ import { fileURLToPath } from "node:url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, "..");
 const HELPER_PATH =
-	process.env.OPENSCREEN_WGC_CAPTURE_EXE ??
+	process.env.OPENREC_WGC_CAPTURE_EXE ??
 	path.join(ROOT, "electron", "native", "bin", "win32-x64", "wgc-capture.exe");
 
-const DURATION_MS = Number(process.env.OPENSCREEN_WGC_TEST_DURATION_MS ?? 5000);
+const DURATION_MS = Number(process.env.OPENREC_WGC_TEST_DURATION_MS ?? 5000);
 const WITH_SYSTEM_AUDIO =
-	process.env.OPENSCREEN_WGC_TEST_SYSTEM_AUDIO === "true" ||
-	process.argv.includes("--system-audio");
+	process.env.OPENREC_WGC_TEST_SYSTEM_AUDIO === "true" || process.argv.includes("--system-audio");
 const WITH_MICROPHONE =
-	process.env.OPENSCREEN_WGC_TEST_MICROPHONE === "true" ||
+	process.env.OPENREC_WGC_TEST_MICROPHONE === "true" ||
 	process.argv.includes("--microphone") ||
 	process.argv.includes("--mic");
 const WITH_WINDOW =
-	process.env.OPENSCREEN_WGC_TEST_WINDOW === "true" || process.argv.includes("--window");
+	process.env.OPENREC_WGC_TEST_WINDOW === "true" || process.argv.includes("--window");
 const WITH_WEBCAM =
-	process.env.OPENSCREEN_WGC_TEST_WEBCAM === "true" || process.argv.includes("--webcam");
+	process.env.OPENREC_WGC_TEST_WEBCAM === "true" || process.argv.includes("--webcam");
 const CAPTURE_CURSOR =
-	process.env.OPENSCREEN_WGC_TEST_CAPTURE_CURSOR === "true" ||
+	process.env.OPENREC_WGC_TEST_CAPTURE_CURSOR === "true" ||
 	process.argv.includes("--capture-cursor");
 const WITH_SOFTWARE_ENCODER =
-	process.env.OPENSCREEN_WGC_TEST_SOFTWARE_ENCODER === "true" ||
+	process.env.OPENREC_WGC_TEST_SOFTWARE_ENCODER === "true" ||
 	process.argv.includes("--software-encoder");
 const WITH_SOFTWARE_FALLBACK =
-	process.env.OPENSCREEN_WGC_TEST_SOFTWARE_FALLBACK === "true" ||
+	process.env.OPENREC_WGC_TEST_SOFTWARE_FALLBACK === "true" ||
 	process.argv.includes("--software-fallback");
 const INJECT_DEFAULT_SINK_WRITER_FAILURE_ENV =
-	"OPENSCREEN_WGC_TEST_INJECT_DEFAULT_SINK_WRITER_FAILURE_ONCE";
+	"OPENREC_WGC_TEST_INJECT_DEFAULT_SINK_WRITER_FAILURE_ONCE";
 const INJECTION_MARKER = "TEST-ONLY: Injected default sink-writer creation failure";
-const STALL_READBACK_ENV = "OPENSCREEN_WGC_TEST_STALL_READBACK_MS";
+const STALL_READBACK_ENV = "OPENREC_WGC_TEST_STALL_READBACK_MS";
 /**
  * Reproduces issue #252 on ordinary hardware: holds the frame lock across a
  * stall the way a wedged GPU readback does. Before the fix the helper hung
  * forever with no `[stop-timing]` output at all; it must now always exit.
  */
 const WITH_STALLED_READBACK =
-	process.env.OPENSCREEN_WGC_TEST_STALL_READBACK === "true" ||
+	process.env.OPENREC_WGC_TEST_STALL_READBACK === "true" ||
 	process.argv.includes("--stall-readback");
 const STALL_READBACK_MS = Number(process.env[STALL_READBACK_ENV] ?? 60_000);
-const STOP_BUDGET_ENV = "OPENSCREEN_WGC_STOP_BUDGET_MS";
+const STOP_BUDGET_ENV = "OPENREC_WGC_STOP_BUDGET_MS";
 /**
  * The helper's global shutdown ceiling, pinned into its environment below so
  * the harness and the helper cannot drift apart. It matters because the
@@ -370,7 +369,7 @@ if (!fs.existsSync(HELPER_PATH)) {
 
 const outputPath = path.join(
 	os.tmpdir(),
-	`openscreen-wgc-helper-${WITH_WEBCAM ? "webcam" : WITH_WINDOW ? "window" : WITH_SYSTEM_AUDIO || WITH_MICROPHONE ? "audio" : "video"}-${process.pid}-${Date.now()}-${randomUUID()}.mp4`,
+	`openrec-wgc-helper-${WITH_WEBCAM ? "webcam" : WITH_WINDOW ? "window" : WITH_SYSTEM_AUDIO || WITH_MICROPHONE ? "audio" : "video"}-${process.pid}-${Date.now()}-${randomUUID()}.mp4`,
 );
 const webcamOutputPath = WITH_WEBCAM ? outputPath.replace(/\.mp4$/i, "-webcam.mp4") : null;
 
@@ -395,14 +394,14 @@ const config = {
 	captureSystemAudio: WITH_SYSTEM_AUDIO,
 	captureMic: WITH_MICROPHONE,
 	captureCursor: CAPTURE_CURSOR,
-	microphoneDeviceId: process.env.OPENSCREEN_WGC_TEST_MICROPHONE_DEVICE_ID ?? "default",
-	microphoneDeviceName: process.env.OPENSCREEN_WGC_TEST_MICROPHONE_DEVICE_NAME ?? "",
+	microphoneDeviceId: process.env.OPENREC_WGC_TEST_MICROPHONE_DEVICE_ID ?? "default",
+	microphoneDeviceName: process.env.OPENREC_WGC_TEST_MICROPHONE_DEVICE_NAME ?? "",
 	microphoneGain: 1.4,
 	webcamEnabled: WITH_WEBCAM,
-	webcamDeviceId: process.env.OPENSCREEN_WGC_TEST_WEBCAM_DEVICE_ID ?? "",
-	webcamDeviceName: process.env.OPENSCREEN_WGC_TEST_WEBCAM_DEVICE_NAME ?? "",
+	webcamDeviceId: process.env.OPENREC_WGC_TEST_WEBCAM_DEVICE_ID ?? "",
+	webcamDeviceName: process.env.OPENREC_WGC_TEST_WEBCAM_DEVICE_NAME ?? "",
 	webcamDirectShowClsid: resolveDirectShowWebcamClsid(
-		process.env.OPENSCREEN_WGC_TEST_WEBCAM_DEVICE_NAME ?? "",
+		process.env.OPENREC_WGC_TEST_WEBCAM_DEVICE_NAME ?? "",
 	),
 	webcamWidth: 640,
 	webcamHeight: 360,

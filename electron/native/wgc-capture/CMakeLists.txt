@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD_LIBRARIES
   "kernel32.lib user32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib"
   CACHE STRING "" FORCE)
 
-project(openscreen-wgc-capture LANGUAGES CXX)
+project(openrec-wgc-capture LANGUAGES CXX)
 
 # Static CRT (/MT), not CMake's default /MD. With /MD both helpers import
 # VCRUNTIME140.dll, VCRUNTIME140_1.dll and MSVCP140.dll, which are NOT part of

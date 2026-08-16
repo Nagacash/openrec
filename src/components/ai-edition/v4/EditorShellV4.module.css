@@ -1,5 +1,5 @@
-/* OpenScreen Editor v4 shell — Media / Edit / Rec modes.
- * Ported 1:1 from design/OpenScreen Editor v4.dc.html. All colors read the
+/* OpenRec Editor v4 shell — Media / Edit / Rec modes.
+ * Ported 1:1 from design/OpenRec Editor v4.dc.html. All colors read the
  * global --* design tokens (src/styles/design-tokens.css); dark is the hero
  * look, light is a full token swap handled by the token layer. */
 

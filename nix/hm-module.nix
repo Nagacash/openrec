@@ -1,11 +1,11 @@
-# Home Manager module for OpenScreen
+# Home Manager module for OpenRec
 # Usage in flake-based Home Manager config:
 #
-#   inputs.openscreen.url = "github:EtienneLescot/openscreen";
+#   inputs.openrec.url = "github:EtienneLescot/openrec";
 #
 #   { inputs, ... }: {
-#     imports = [ inputs.openscreen.homeManagerModules.default ];
-#     programs.openscreen.enable = true;
+#     imports = [ inputs.openrec.homeManagerModules.default ];
+#     programs.openrec.enable = true;
 #   }
 self:
 {
@@ -16,17 +16,17 @@ self:
 }:
 
 let
-  cfg = config.programs.openscreen;
+  cfg = config.programs.openrec;
 in
 {
-  options.programs.openscreen = {
-    enable = lib.mkEnableOption "OpenScreen screen recorder";
+  options.programs.openrec = {
+    enable = lib.mkEnableOption "OpenRec screen recorder";
 
     package = lib.mkOption {
       type = lib.types.package;
-      default = self.packages.${pkgs.stdenv.hostPlatform.system}.openscreen;
-      defaultText = lib.literalExpression "inputs.openscreen.packages.\${pkgs.stdenv.hostPlatform.system}.openscreen";
-      description = "The OpenScreen package to use.";
+      default = self.packages.${pkgs.stdenv.hostPlatform.system}.openrec;
+      defaultText = lib.literalExpression "inputs.openrec.packages.\${pkgs.stdenv.hostPlatform.system}.openrec";
+      description = "The OpenRec package to use.";
     };
   };
 

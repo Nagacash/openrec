@@ -669,7 +669,7 @@ int main(int argc, char* argv[]) {
 
     char injectDefaultSinkWriterFailure[2]{};
     const DWORD injectDefaultSinkWriterFailureLength = GetEnvironmentVariableA(
-        "OPENSCREEN_WGC_TEST_INJECT_DEFAULT_SINK_WRITER_FAILURE_ONCE",
+        "OPENREC_WGC_TEST_INJECT_DEFAULT_SINK_WRITER_FAILURE_ONCE",
         injectDefaultSinkWriterFailure,
         static_cast<DWORD>(sizeof(injectDefaultSinkWriterFailure)));
     const bool injectDefaultSinkWriterFailureOnce =
@@ -681,7 +681,7 @@ int main(int argc, char* argv[]) {
     // with virtual display drivers; this makes the same failure reachable on
     // ordinary hardware, so the stop path can be regression-tested at all.
     const int testStallReadbackMs =
-        std::max(0, readEnvInt("OPENSCREEN_WGC_TEST_STALL_READBACK_MS", 0));
+        std::max(0, readEnvInt("OPENREC_WGC_TEST_STALL_READBACK_MS", 0));
 
     std::cout << "{\"event\":\"ready\",\"schemaVersion\":2}" << std::endl;
 
@@ -823,7 +823,7 @@ int main(int argc, char* argv[]) {
     // #252. Neither has happened, and defaulting it on means every user carries
     // the risk so that the few who reproduce #252 might not have to.
     //
-    // Set OPENSCREEN_WGC_ENABLE_DXGI_INPUT=1 to turn it on -- that is what the
+    // Set OPENREC_WGC_ENABLE_DXGI_INPUT=1 to turn it on -- that is what the
     // people in #252 and #327 should be given to test with.
     //
     // The other two conditions are unchanged and still required: software
@@ -832,7 +832,7 @@ int main(int argc, char* argv[]) {
     // webcamActive -- the latter is only set once webcam capture has started,
     // well after this.
     encoderOptions.useDxgiInput =
-        readEnvInt("OPENSCREEN_WGC_ENABLE_DXGI_INPUT", 0) == 1 &&
+        readEnvInt("OPENREC_WGC_ENABLE_DXGI_INPUT", 0) == 1 &&
         !config.preferSoftwareEncoder &&
         (!config.webcamEnabled || writeSeparateWebcam);
 
@@ -1324,9 +1324,9 @@ int main(int argc, char* argv[]) {
     // the software encoder legitimately takes seconds (issue #34 raised the
     // app-side timeout for precisely this), so it gets whatever is left of the
     // ceiling rather than a step budget of its own.
-    const int shutdownBudgetMs = std::max(2000, readEnvInt("OPENSCREEN_WGC_STOP_BUDGET_MS", 50000));
+    const int shutdownBudgetMs = std::max(2000, readEnvInt("OPENREC_WGC_STOP_BUDGET_MS", 50000));
     const int stepBudgetMs =
-        std::min(shutdownBudgetMs, std::max(1000, readEnvInt("OPENSCREEN_WGC_STEP_BUDGET_MS", 8000)));
+        std::min(shutdownBudgetMs, std::max(1000, readEnvInt("OPENREC_WGC_STEP_BUDGET_MS", 8000)));
     std::atomic<int64_t> currentStepDeadlineMs{stepBudgetMs};
 
     auto beginStopStep = [&](const char* step, int budgetMs) {

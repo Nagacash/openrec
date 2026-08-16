@@ -2,7 +2,7 @@
 
 #include <Windows.h>
 
-// Every OpenScreen native helper runs per-monitor-v2 DPI aware, and this is the
+// Every OpenRec native helper runs per-monitor-v2 DPI aware, and this is the
 // one place that says so.
 //
 // A DPI-unaware process does not get real coordinates from Win32: every rect and
