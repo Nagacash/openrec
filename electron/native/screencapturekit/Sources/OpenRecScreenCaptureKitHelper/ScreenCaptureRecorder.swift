@@ -350,7 +350,7 @@ final class ScreenCaptureRecorder: NSObject, SCStreamOutput, SCStreamDelegate {
 			code: "writer-failed-during-capture",
 			message: "\(stage): "
 				+ (writer.error.map { "\($0)" }
-					?? "AVAssetWriter status \(writer.status.rawValue)"),
+					?? "AVAssetWriter status \(writer.status.rawValue)")
 		)
 	}
 
